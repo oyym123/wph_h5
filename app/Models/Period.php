@@ -21,7 +21,7 @@ class Period extends Common
      */
     protected $fillable = [
         'product_id',
-		'bid_price',
+        'bid_price',
         'code',
         'status',
         'auctioneer_id',
@@ -53,7 +53,7 @@ class Period extends Common
     public function dealEnd($where = [], $type = 0)
     {
         $data = [];
-        if ($type == 1) {
+        if ($type == 1) {//表示微拍头条的数据
             $where = ['product.is_home_recommend' => Product::RECOMMEND_YES];
             $periods1 = DB::table('period')
                 ->select(['*', 'period.id'])
@@ -79,7 +79,7 @@ class Period extends Common
                     'id' => $period['id'],
                     'period_code' => $period['code'],
                     'bid_price' => $period['bid_price'],
-                    'nickname' => $user ? $user->name : '',
+                    'nickname' => $user ? self::changeStr($user->name, 7, '...') : '',
                     'avatar' => $user ? env('QINIU_URL_IMAGES') . $user->avatar : '',
                     'title' => $product->title,
                     'short_title' => $product->title,
@@ -103,7 +103,7 @@ class Period extends Common
                     'id' => $period->id,
                     'period_code' => $period->code,
                     'bid_price' => $period->bid_price,
-                    'nickname' => $period->user ? $period->user->nickname : '',
+                    'nickname' => $period->user ? self::changeStr($period->user->nickname, 7, '...')  : '',
                     'avatar' => $period->user ? $period->user->getAvatar() : '',
                     'title' => $product->title,
                     'short_title' => $product->title,
@@ -398,15 +398,15 @@ class Period extends Common
 
             $period = $check ? intval(substr($check->code, -4)) : 0;
             $code = date('Ymd', time()) . str_pad($period + 1, 4, '0', STR_PAD_LEFT);
-			$temproduct = Product::find($productId);
+            $temproduct = Product::find($productId);
             $robot_rate = round($temproduct->init_price / $temproduct->sell_price, 2);
             $data = [
                 'product_id' => $productId,
-				'bid_price'=>$temproduct->init_price,
+                'bid_price' => $temproduct->init_price,
                 'countdown_length' => $temproduct->countdown_length,
                 'auctioneer_id' => Auctioneer::randAuctioneer(),
                 'status' => self::STATUS_IN_PROGRESS,
-                'robot_rate' => config('bid.robot_rate')+ $robot_rate,// 
+                'robot_rate' => config('bid.robot_rate') + $robot_rate,//
                 'person_rate' => mt_rand(100, 150) / 100,
                 'code' => $code,
             ];

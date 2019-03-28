@@ -286,4 +286,21 @@ class Common extends Model
         print_r($data);
         exit;
     }
+
+
+    /**
+     * @param string $string 要截取的字符串
+     * @param int $len 要截取的长度
+     * @param string $tail 截取后结尾替换的字符换
+     * @return string $string 返回截取后的字符串
+     */
+    public static function changeStr($string, $len, $tail = '...')
+    {
+        if (mb_strlen($string) > $len) {
+            $tmp = mb_substr($string, 0, $len, 'utf8');
+            return $tmp . $tail;
+        } else {
+            return $string;
+        }
+    }
 }
