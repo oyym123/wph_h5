@@ -55,6 +55,11 @@ class HomeController extends WebController
      */
     public function index()
     {
+
+        $period = new Period();
+        $period->userId = $this->userId;
+        $period->limit = $this->limit;
+        $period->offset = $this->offset;
         $data = [
             'banner' => [
                 [
@@ -114,11 +119,10 @@ class HomeController extends WebController
                     'url' => 'https://' . $_SERVER["HTTP_HOST"] . '/api/common-problems',
                 ]
             ],
-            'last_deal' => (new  Period())->dealEnd([], 1)
+            'last_deal' => (new  Period())->dealEnd([], 1),
+            'hot_bid' => $period->getProductList(1)
         ];
-
         return view('h5.home.index', $data);
-        // self::showMsg($data);
     }
 
     /**

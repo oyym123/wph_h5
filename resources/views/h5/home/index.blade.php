@@ -31,6 +31,7 @@
                 pagination: '.swiper-pagination',
                 paginationClickable: true
             });
+
         </script>
         <!-- 导航栏 -->
         <div id="indexnav">
@@ -77,44 +78,28 @@
         <!-- 最近成交 -->
         <div class="list-block">
             <div class="row no-gutter">
-                <div class="col-33"
-                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=13&amp;perid=39009'">
-                    <div class="lately">
-								<span class="endimg">
-									<img class="endlogo"
-                                         src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/MhWS4KKskzzcKAk24jkYSeqcYjEz2c.png">
+                @foreach ($last_deal as $k => $v)
+                    <div class="col-33" onclick="location.href=''">
+                        <div class="lately">
+                            @if(!empty($v['end_time']))
+								<span class="endimg" >
+									<img class="endlogo"  src="{{ $v['img_cover'] }}">
 								</span>
-                        <p class="endmoney">￥77.40</p>
-                        <p class="endmember" style=" overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-                            【英国卫裤】代理</p>
-                    </div>
-                </div>
-                <div class="col-33"
-                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=9&amp;perid=39008'">
-                    <div class="lately">
-								<span class="endimg">
-									<img class="endlogo"
-                                         src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/xN81zXokjXNeLGRNAC9VcxXfnx100k.png">
+                                @else
+                                <span style="position:relative;display: inline-block;width: 4rem;height: 4rem;margin: 0 auto;">
+									<img class="endlogo" src="{{ $v['img_cover'] }}">
 								</span>
-                        <p class="endmoney">￥87.00</p>
-                        <p class="endmember" style=" overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-                            美美琴15807867833</p>
+                            @endif
+                            <p class="endmoney">{{ $v['bid_price'] }}</p>
+                            <p class="endmember" style=" overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                                {{ $v['nickname'] }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="col-33"
-                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=10&amp;perid=39007'">
-                    <div class="lately">
-								<span class="endimg">
-									<img class="endlogo"
-                                         src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/w7XmJw8xMGkut2Azu9mPxTgjmjzP6P.png">
-								</span>
-                        <p class="endmoney">￥97.50</p>
-                        <p class="endmember" style=" overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
-                            合拾⑩</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
+
+
         <div class="mod_guide" style="display: none;">
             <div class="r_red">
                 <a class="icon-close-x" id="J-close"></a>
@@ -130,6 +115,7 @@
                    href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=signin">立即领取</a>
             </div>
         </div>
+
         <!-- 商品 -->
         <div class="list-block goods-list">
             <div class="buttons-tab">
@@ -140,24 +126,37 @@
             <div class="tabs">
                 <div id="goodslist" class="tab active">
                     <div class="" id="listgoods" style="padding-left: 0;padding-right: 0;position: relative;">
-                        <div class="gooddiv">
-                            <div class="collection"><input type="hidden" name="cl" class="cl" value=""> <span id="7"
-                                                                                                              onclick="cancelcollection(this)"
-                                                                                                              class="scbutton ed cancelcollection"
-                                                                                                              style="display: none;">     已收藏    </span>
-                                <span id="7" class="scbutton addcollection" onclick="addcollection(this)">     <i
-                                            class="icon iconfont icon-add"></i>     收藏    </span></div>
-                            <div onclick="togoods(7)"><span class="goodimg" id="logo38936">     <img
-                                            class="goodlogo"
-                                            src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/N91ZRoJJ71O8oTjJMVe1eeeL4Jjj99.png">    </span>
-                                <p id="sy38936" sytime="5" perid="38936" class="downtime">00:00:06</p>    <input
-                                        type="hidden" value="0" id="end38936"> <input type="hidden" value="278"
-                                                                                      id="mid38936">
-                                <p class="goodmoney tipout" id="bg38936">￥<span id="money38936">1386.00</span></p>
-                                <p id="name38936" class="goodmember">优能</p>    <span class="toauc"
-                                                                                     id="perbutton38936">参与竞拍</span>
+                        @foreach ($hot_bid as $k => $v)
+                            <a href="{{ $v['url'] }}" class="external" style="width:20%;">
+                                <img src="{{ $v['img'] }}" alt="">
+                                <span>{{ $v['title'] }}</span>
+                            </a>
+                            <div class="gooddiv">
+                                <div class="collection">
+                                    <input type="hidden" name="cl" class="cl" value="">
+                                    <span id="7" onclick="cancelcollection(this)" class="scbutton ed cancelcollection" style="display: none;">
+                                        已收藏
+                                    </span>
+                                    <span id="7" class="scbutton addcollection" onclick="addcollection(this)">
+                                        <i class="icon iconfont icon-add"></i>
+                                        收藏
+                                    </span>
+                                </div>
+                                <div onclick="togoods(7)"><span class="goodimg" id="logo38936">
+                                        <img class="goodlogo" src="">
+                                    </span>
+                                    <p id="sy38936" sytime="5" perid="38936" class="downtime">00:00:06</p>
+                                    <input type="hidden" value="0" id="end38936">
+                                    <input type="hidden" value="278" id="mid38936">
+                                    <p class="goodmoney tipout" id="bg38936">￥<span id="money38936">1386.00</span></p>
+                                    <p id="name38936" class="goodmember">优能</p>
+                                    <span class="toauc" id="perbutton38936">参与竞拍</span>
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
+
+
+
                         <div class="gooddiv">
                             <div class="collection"><input type="hidden" name="cl" class="cl" value=""> <span
                                         id="17" onclick="cancelcollection(this)"

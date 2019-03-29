@@ -61,7 +61,7 @@ class Period extends Common
                 ->where([
                         'period.deleted_at' => null,
                         'period.status' => self::STATUS_IN_PROGRESS
-                    ] + $where)->offset($this->offset)->limit(3)->inRandomOrder()->get()->toArray();
+                    ] + $where)->offset($this->offset)->limit(1)->inRandomOrder()->get()->toArray();
 
             $periods2 = DB::table('period')
                 ->select(['*', 'period.id'])
@@ -69,7 +69,7 @@ class Period extends Common
                 ->where([
                         'period.deleted_at' => null,
                         'period.status' => self::STATUS_OVER
-                    ] + $where)->offset($this->offset)->limit(3)->inRandomOrder()->get()->toArray();
+                    ] + $where)->offset($this->offset)->limit(2)->inRandomOrder()->get()->toArray();
             $periods = array_merge(array_map('get_object_vars', $periods2), array_map('get_object_vars', $periods1));
             foreach ($periods as $period) {
                 $product = Product::find($period['product_id']);
@@ -79,7 +79,7 @@ class Period extends Common
                     'id' => $period['id'],
                     'period_code' => $period['code'],
                     'bid_price' => $period['bid_price'],
-                    'nickname' => $user ? self::changeStr($user->name, 7, '...') : '',
+                    'nickname' => $user ? self::changeStr($user->name, 7, '...') : '佚名',
                     'avatar' => $user ? env('QINIU_URL_IMAGES') . $user->avatar : '',
                     'title' => $product->title,
                     'short_title' => $product->title,
