@@ -234,7 +234,7 @@
     <span class="goodimg" id="logo{{d.data[i].img_cover}}">
     <img class="goodlogo" src="{{ d.data[i].img_cover}}"/>
     </span>
-    <p id="sy{{d.data[i].id}}" sytime='{{d.data[i].countdown}}' perid="{{d.data[i].id}}" class="downtime">00:00:00</p>
+    <p id="sy{{d.data[i].id}}" sytime='{{d.data[i].countdown}}' perid="{{d.data[i].id}}" class="downtime"></p>
     <input type="hidden" value="0" id="end{{d.data[i].id}}"  />
     <input type="hidden" value="{{d.data[i].bid_price}}" id="mid{{d.data[i].id}}"  />
     <input type="hidden" id="period_ids" value="{{d.data[i].id}}" />
@@ -382,7 +382,7 @@
                     s = '0' + s;
                 }
                 txt = h + ":" + m + ":" + s;
-                $(this).text(txt);
+              //  $(this).text(txt);
                 begintime = begintime - 1;
                 $(this).attr('sytime', begintime);
             } else {
@@ -396,7 +396,7 @@
                     }
                     $('#perbutton' + perid).css('background-color', '#999999');
                     $('#sy' + perid).attr('sytime', 0);
-                    $('#sy' + perid).text('00:00:00');
+                   // $('#sy' + perid).text('00:00:00');
                     $('#sy' + perid).css('color', 'black');
                     $('#bg' + perid).css('color', 'black');
                     $('#logo' + perid).addClass('endimg');
@@ -423,7 +423,7 @@
                     var nowmid = $('#mid' + val.a).val();
                     if (val.c !== nowmid) {
                         $('#mid' + val.a).val(val.finalmid);
-                        $('#sy' + val.a).attr('sytime', val.h);
+                        $('#sy' + val.a).attr('sytime', val.h)
                         //$('#name' + val.a).text(val.d);
                         $('#bg' + val.a).attr('class', 'goodmoney tipin');
                         var t = setTimeout(function () {
