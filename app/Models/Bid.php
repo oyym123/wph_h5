@@ -382,6 +382,7 @@ class Bid extends Common
             DB::table('period')->where(['id' => $period->id])->update(['bid_price' => $price]);//自增0.1
             $rate = $period->bid_price / $product->sell_price;
             $time = date('Y-m-d H:i:s', time());
+      
             $data = [
                 'product_id' => $period->product_id,
                 'period_id' => $period->id,

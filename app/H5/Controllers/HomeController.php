@@ -2,7 +2,7 @@
 
 namespace App\H5\Controllers;
 
-use App\Api\components\WebController;
+use App\H5\components\WebController;
 use App\Models\Income;
 use App\Models\Period;
 
@@ -65,7 +65,7 @@ class HomeController extends WebController
                 [
                     'id' => 1,
                     'title' => '新手指南',
-                    'img' => env('QINIU_URL_IMAGES') . 'banner-zhinan.jpg',
+                    'img' => config('qiniu.domain') . 'banner-zhinan.jpg',
                     'function' => 'html',
                     'params' => [
                         'key' => 'url',
@@ -76,7 +76,7 @@ class HomeController extends WebController
                 [
                     'id' => 3,
                     'title' => '拍品',
-                    'img' => env('QINIU_URL_IMAGES') . 'banner-iphone.jpg',
+                    'img' => config('qiniu.domain') . 'banner-iphone.jpg',
                     'function' => 'html',
                     'params' => [
                         'key' => 'url',
@@ -89,38 +89,37 @@ class HomeController extends WebController
                 [
                     'id' => 0,
                     'title' => '手机专区',
-                    'img' => env('QINIU_URL_IMAGES') . 'tuiguang2.png',
+                    'img' => config('qiniu.domain') . 'tuiguang2.png',
                     'url' => 'invite.html',
                 ],
                 [
                     'id' => 1,
                     'title' => '充值',
-                    'img' => env('QINIU_URL_IMAGES') . 'chongzhi2018.png',
+                    'img' => config('qiniu.domain') . 'chongzhi2018.png',
                     'url' => 'recharge.html',
                 ],
                 [
 
                     'id' => 2,
                     'title' => '限时秒杀',
-                    'img' => env('QINIU_URL_IMAGES') . 'shiyuanzuanqv2018.png',
+                    'img' => config('qiniu.domain') . 'shiyuanzuanqv2018.png',
                     'url' => 'goods_list.html',
                 ], [
 
                     'id' => 3,
                     'title' => '晒单',
-                    'img' => env('QINIU_URL_IMAGES') . 'shaidan2018.png',
+                    'img' => config('qiniu.domain') . 'shaidan2018.png',
                     'url' => 'share.html',
 
                 ],
                 [
                     'id' => 4,
                     'title' => '常见问题',
-                    'img' => env('QINIU_URL_IMAGES') . 'changjianwenti2018.png',
+                    'img' => config('qiniu.domain') . 'changjianwenti2018.png',
                     'url' => 'https://' . $_SERVER["HTTP_HOST"] . '/api/common-problems',
                 ]
             ],
             'last_deal' => (new  Period())->dealEnd([], 1),
-            'hot_bid' => $period->getProductList(1)
         ];
         return view('h5.home.index', $data);
     }

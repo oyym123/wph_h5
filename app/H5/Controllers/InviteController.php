@@ -8,7 +8,7 @@
 
 namespace App\H5\Controllers;
 
-use App\Api\components\WebController;
+use App\H5\components\WebController;
 use App\Models\Invite;
 
 class InviteController extends WebController

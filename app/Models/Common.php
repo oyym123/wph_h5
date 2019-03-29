@@ -71,7 +71,7 @@ class Common extends Model
     /** 获取七牛云图片 */
     public static function getImg($img)
     {
-        return env('QINIU_URL_IMAGES') . $img;
+        return config('qiniu.domain') . $img;
     }
 
     /** 获取七牛云多张图片 */
@@ -84,7 +84,7 @@ class Common extends Model
             $image = json_decode($imgs);
         }
         foreach ($image as $img) {
-            $data[] = env('QINIU_URL_IMAGES') . $img;
+            $data[] = config('qiniu.domain') . $img;
         }
         return $data;
     }

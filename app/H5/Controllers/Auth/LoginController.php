@@ -1,7 +1,7 @@
 <?php
 namespace App\H5\Controllers\Auth;
 
-use App\Api\components\WebController;
+use App\H5\components\WebController;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends WebController

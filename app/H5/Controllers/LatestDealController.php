@@ -9,7 +9,7 @@
 namespace App\H5\Controllers;
 
 
-use App\Api\components\WebController;
+use App\H5\components\WebController;
 use App\Models\Period;
 
 class LatestDealController extends WebController

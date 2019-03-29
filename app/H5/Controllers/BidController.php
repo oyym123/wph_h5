@@ -10,7 +10,7 @@ namespace App\H5\Controllers;
 
 use App\Models\AutoBid;
 use App\Models\Bid;
-use App\Api\components\WebController;
+use App\H5\components\WebController;
 use App\Models\BidSocket;
 
 class BidController extends WebController

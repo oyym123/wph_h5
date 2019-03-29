@@ -140,7 +140,8 @@ class WebController extends Controller
         }
 
         //   if ((isset($_GET['debug']) && $_GET['debug'] == '1') || strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') == true) {
-        if ((isset($_GET['debug']) && $_GET['debug'] == '1') || self::isWindows()) {
+       // if ((isset($_GET['debug']) && $_GET['debug'] == '1') || self::isWindows()) {
+        if ((isset($_GET['debug']) && $_GET['debug'] == '1')) {
             echo "<pre>";
             print_r($_REQUEST);
             print_r($item);
@@ -212,7 +213,7 @@ class WebController extends Controller
     /** 获取图片 */
     public function getImage($img)
     {
-        return env('QINIU_URL_IMAGES') . $img;
+        return config('qiniu.domain') . $img;
     }
 
     /** 获取微信授权 */

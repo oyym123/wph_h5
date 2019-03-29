@@ -220,7 +220,8 @@ class Period extends Common
                     'id' => $period->id,
                     'product_id' => $product->id,
                     'period_code' => $period->code,
-                    'title' => $product->title,
+                    'bid_price' => $period->bid_price,
+                    'title' => self::changeStr($product->title, 29, '...'),
                     'status' => 0, //正在进行中
                     'img_cover' => self::getImg($product->img_cover),
                     'sell_price' => number_format($bid->getLastBidInfo($redis, $period->id, 'bid_price'), 2),
@@ -234,7 +235,6 @@ class Period extends Common
         }
         return $this->putCache($cacheKey, $res, 0.1);
     }
-
 
     /** 获取产品详情 */
     public function getProductDetail($id, $flag = 0)

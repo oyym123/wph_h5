@@ -20,7 +20,7 @@ use App\Models\Withdraw;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\RegisterUserPost;
 use App\User;
-use App\Api\components\WebController;
+use App\H5\components\WebController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Ramsey\Uuid\Uuid;

@@ -9,7 +9,7 @@
 namespace App\H5\Controllers;
 
 
-use App\Api\components\WebController;
+use App\H5\components\WebController;
 use App\Models\Evaluate;
 use App\Models\Order;
 use App\Models\Upload;
@@ -101,7 +101,7 @@ class EvaluateController extends WebController
         $img = Upload::oneImg($this->request->img);
         self::showMsg([
             'url' => $img,
-            'full_url' => env('QINIU_URL_IMAGES') . $img
+            'full_url' => config('qiniu.domain') . $img
         ]);
     }
 
