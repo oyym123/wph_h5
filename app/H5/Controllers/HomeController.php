@@ -96,7 +96,7 @@ class HomeController extends WebController
                     'id' => 1,
                     'title' => '充值',
                     'img' => config('qiniu.domain') . 'chongzhi2018.png',
-                    'url' => 'recharge.html',
+                    'url' => '/h5/pay/recharge-center',
                 ],
                 [
 

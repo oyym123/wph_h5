@@ -51,9 +51,6 @@
                     @endforeach
                 </div>
             </div>
-        </div>
-    </div>
-
     <script type="text/html" id="lateauc">
         {{--{{# for(var i = 0, len = d.length; i< len; i++){ }}--}}
         {{--<div class="ui-block deal_list" onclick="location.href='{{d[i].a}}'">--}}
@@ -104,6 +101,6 @@
             $.init();
         });
     </script>
-    </body></html>
+
     @parent
 @stop

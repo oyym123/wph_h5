@@ -83,22 +83,22 @@
     <div class="page page-current page-inited" id="page-index">
         <nav class="bar bar-tab bar-footer" style="z-index: 99;">
             <a class="tab-item external "
-               href="home">
+               href="/h5/home">
                 <span class="icon iconfont icon-home_light"></span>
                 <span class="tab-label">首页</span>
             </a>
             <a class="tab-item external active"
-               href="latest-deal">
+               href="/h5/latest-deal">
                 <span class="icon iconfont icon-hot"></span>
                 <span class="tab-label">最新成交</span>
             </a>
             <a class="tab-item external "
-               href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=category">
+               href="/h5/product/type">
                 <span class="icon iconfont icon-similar"></span>
                 <span class="tab-label">分类</span>
             </a>
             <a class="tab-item external "
-               href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=index">
+               href="/h5/user/center">
                 <span class="icon iconfont icon-my_light"></span>
                 <span class="tab-label">我的</span>
             </a>

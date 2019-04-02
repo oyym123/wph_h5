@@ -88,7 +88,7 @@ class BidController extends WebController
         if ($this->offset >= 1) {
             self::showMsg('最多显示100条！', 0);
         }
-        self::showMsg($bid->bidRecord($this->request->period_id));
+        return view('h5.bid.record',$bid->bidRecord($this->request->period_id));
     }
 
 

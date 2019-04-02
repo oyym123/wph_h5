@@ -151,7 +151,7 @@ class ProductController extends WebController
         $period->userId = $this->userId;
         $period->userEntity = $this->userIdent;
         $flag = $this->request->flag ?: 0;
-        self::showMsg($period->getProductDetail($this->request->period_id, $flag));
+        return view('h5.product.detail',$period->getProductDetail($this->request->period_id, $flag));
     }
 
     /**
@@ -234,7 +234,7 @@ class ProductController extends WebController
      */
     public function type()
     {
-        self::showMsg(ProductType::getList());
+        return view('h5.product.type',ProductType::getList());
     }
 
     /**

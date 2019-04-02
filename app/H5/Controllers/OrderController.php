@@ -398,7 +398,7 @@ class OrderController extends WebController
         if (empty($result) && $this->offset == 0) {
             self::showMsg('没有数据', 2);
         }
-        self::showMsg($result);
+        return view('h5.order.my-auction',$data);
     }
 
 

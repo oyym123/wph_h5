@@ -126,72 +126,7 @@
             <div class="tabs">
                 <div id="goodslist" class="tab active">
                     <div class="" id="listgoods" style="padding-left: 0;padding-right: 0;position: relative;">
-                        {{--@foreach ($hot_bid as $k => $v)--}}
 
-                            <div class="gooddiv">
-                                <div class="collection">
-                                    <input type="hidden" name="cl" class="cl" value="">
-                                    <span id="7" onclick="cancelcollection(this)" class="scbutton ed cancelcollection" style="display: none;">
-                                        已收藏
-                                    </span>
-                                    <span id="7" class="scbutton addcollection" onclick="addcollection(this)">
-                                        <i class="icon iconfont icon-add"></i>
-                                        收藏
-                                    </span>
-                                </div>
-                                <div onclick="togoods(7)"><span class="goodimg" id="logo38936">
-                                        <img class="goodlogo" src="">
-                                    </span>
-                                    <p id="sy38936" sytime="5" perid="38936" class="downtime">00:00:06</p>
-                                    <input type="hidden" value="0" id="end38936">
-                                    <input type="hidden" value="278" id="mid38936">
-                                    <p class="goodmoney tipout" id="bg38936">￥<span id="money38936">1386.00</span></p>
-                                    <p id="name38936" class="goodmember">优能</p>
-                                    <span class="toauc" id="perbutton38936">参与竞拍</span>
-                                </div>
-                            </div>
-                        {{--@endforeach--}}
-
-
-
-                        <div class="gooddiv">
-                            <div class="collection"><input type="hidden" name="cl" class="cl" value=""> <span
-                                        id="17" onclick="cancelcollection(this)"
-                                        class="scbutton ed cancelcollection"
-                                        style="display: none;">     已收藏    </span> <span id="17"
-                                                                                         class="scbutton addcollection"
-                                                                                         onclick="addcollection(this)">     <i
-                                            class="icon iconfont icon-add"></i>     收藏    </span></div>
-                            <div onclick="togoods(17)"><span class="goodimg" id="logo38867">     <img
-                                            class="goodlogo"
-                                            src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/kF2nPnXnYxmWk2kMgxr1RFwM923rR4.png">    </span>
-                                <p id="sy38867" sytime="10" perid="38867" class="downtime">00:00:06</p>    <input
-                                        type="hidden" value="0" id="end38867"> <input type="hidden" value="263"
-                                                                                      id="mid38867">
-                                <p class="goodmoney tipout" id="bg38867">￥<span id="money38867">2591.40</span></p>
-                                <p id="name38867" class="goodmember">龙海菌业</p>    <span class="toauc"
-                                                                                       id="perbutton38867">参与竞拍</span>
-                            </div>
-                        </div>
-                        <div class="gooddiv">
-                            <div class="collection"><input type="hidden" name="cl" class="cl" value=""> <span
-                                        id="18" onclick="cancelcollection(this)"
-                                        class="scbutton ed cancelcollection"
-                                        style="display: none;">     已收藏    </span> <span id="18"
-                                                                                         class="scbutton addcollection"
-                                                                                         onclick="addcollection(this)">     <i
-                                            class="icon iconfont icon-add"></i>     收藏    </span></div>
-                            <div onclick="togoods(18)"><span class="goodimg" id="logo38894">     <img
-                                            class="goodlogo"
-                                            src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/JkV20zARKqBd2buaDDmVbu7VdJ8cdc.png">    </span>
-                                <p id="sy38894" sytime="13" perid="38894" class="downtime">00:00:14</p>    <input
-                                        type="hidden" value="0" id="end38894"> <input type="hidden" value="481"
-                                                                                      id="mid38894">
-                                <p class="goodmoney tipout" id="bg38894">￥<span id="money38894">1533.50</span></p>
-                                <p id="name38894" class="goodmember">艾你依旧</p>    <span class="toauc"
-                                                                                       id="perbutton38894">参与竞拍</span>
-                            </div>
-                        </div>
 
                         <div style="clear: both;"></div>
                     </div>
@@ -294,13 +229,13 @@
     $(function () {
         get_goods(1);
         $('#J-deallistWrapper').vTicker();
-        var tt = setInterval("begin()", 1000);
+        var tt = setInterval("begin()", 9000);
         if ($(window).height() > 700) {
             $('.txt').css('margin-top', '67%');
         }
     });
     function togoods(id) {
-        location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=goods&ac=goods&do=detail&id=" + id;
+        location.href = "product/detail?period_id=" + id;
     }
     function get_goods(type) {
         $.get("home/get-period", {
@@ -330,13 +265,13 @@
     }
     function addcollection(obj) {
         var id = $(obj).attr('id');
-        location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=signin"
+        location.href = "/h5/collection/collect?product_id="+id
     }
     function cancelcollection(obj) {
         var id = $(obj).attr('id');
-        $.post(
-            "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=cancelcollection",
-            {id: id},
+        $.get(
+            "/h5/collection/collect",
+            {product_id: id},
             function (d) {
                 var a = $(".cl").val();
                 console.log(a);
@@ -422,7 +357,7 @@
                 } else {
                     var nowmid = $('#mid' + val.a).val();
                     if (val.c !== nowmid) {
-                        $('#mid' + val.a).val(val.finalmid);
+                        $('#mid' + val.a).val(val.a);
                         $('#sy' + val.a).attr('sytime', val.h)
                         //$('#name' + val.a).text(val.d);
                         $('#bg' + val.a).attr('class', 'goodmoney tipin');
@@ -439,49 +374,7 @@
 
 
 </script>
-<script>
-    wx.ready(function () {
-        var shareData = {
-            title: "iPhoneX仅需一折即可到手，快来抢购！！！",
-            desc: "[粉丝昵称]倾力推荐，赶快来领取！",
-            link: "",
-            imgUrl: "http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/JkV20zARKqBd2buaDDmVbu7VdJ8cdc.png",
-        };
-        //分享朋友
-        wx.onMenuShareAppMessage({
-            title: shareData.title,
-            desc: shareData.desc,
-            link: shareData.link,
-            imgUrl: shareData.imgUrl,
-            trigger: function (res) {
-            },
-            success: function (res) {
-                shareover();
-            },
-            cancel: function (res) {
-            },
-            fail: function (res) {
-                alert(JSON.stringify(res));
-            }
-        });
-        //朋友圈
-        wx.onMenuShareTimeline({
-            title: shareData.title,
-            link: shareData.link,
-            imgUrl: shareData.imgUrl,
-            trigger: function (res) {
-            },
-            success: function (res) {
-                shareover();
-            },
-            cancel: function (res) {
-            },
-            fail: function (res) {
-                alert(JSON.stringify(res));
-            }
-        });
-    });
-</script>
+
 
 @parent
 @stop

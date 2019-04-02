@@ -33,7 +33,7 @@ class PayController extends WebController
      */
     public function rechargeCenter()
     {
-        self::showMsg((new RechargeCard())->lists());
+        return view('h5.pay.recharge-center',(new RechargeCard())->lists());
     }
 
 

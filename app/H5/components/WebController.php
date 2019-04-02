@@ -14,7 +14,7 @@ class WebController extends Controller
     public $offset = 0;
     public $limit = 20;
     public $pages = 0;
-    public $userId = 0;
+    public $userId = 6775;
     public $userIdent = 0;
     public $request;
     public $token;

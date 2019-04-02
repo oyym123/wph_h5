@@ -48,6 +48,6 @@ class AuctioneerController extends WebController
      */
     public function index()
     {
-        self::showMsg((new Auctioneer())->home($this->request->auctioneer_id));
+        return view('h5.auctioneer.index',(new Auctioneer())->home($this->request->auctioneer_id));
     }
 }

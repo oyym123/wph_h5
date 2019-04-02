@@ -37,6 +37,7 @@ class CollectionController extends WebController
             'user_id' => $this->userId,
             'product_id' => $this->request->product_id
         ];
-        self::showMsg((new Collection())->saveData($data));
+        (new Collection())->saveData($data);
+      //  self::showMsg();
     }
 }

@@ -117,7 +117,7 @@ class UserController extends WebController
                 $data['gift_currency'] = config('bid.user_gift_currency');
                 $data['spid'] = $request->spid ?: '';
                 $model = (new User())->saveData($data);
-		
+
 
                 if ($request->invite_code && empty($model->be_invited_code)) {
                     if ((new Invite())->checkoutCode($request->invite_code, $model->id)) {
@@ -242,7 +242,7 @@ class UserController extends WebController
             'invite_currency' => $this->userIdent->invite_currency,
             'shopping_currency' => $this->userIdent->shopping_currency,
         );
-        self::showMsg($data);
+        return view('h5.user.center', $data);
     }
 
     /**
@@ -316,7 +316,7 @@ class UserController extends WebController
 //            'expend' => (new Expend())->detail($this->userId),
 //            'income' => (new Income())->detail($this->userId),
         ];
-        self::showMsg($data);
+        return view('h5.user.property',$data);
     }
 
     /**
