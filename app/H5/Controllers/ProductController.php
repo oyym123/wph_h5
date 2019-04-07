@@ -236,7 +236,7 @@ class ProductController extends WebController
      */
     public function type()
     {
-        return view('h5.product.type',ProductType::getList());
+        return view('h5.product.type',['data'=>ProductType::getList(),'product_type_active'=>1]);
     }
 
     /**

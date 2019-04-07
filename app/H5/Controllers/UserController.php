@@ -241,6 +241,7 @@ class UserController extends WebController
             'gift_currency' => $this->userIdent->gift_currency,
             'invite_currency' => $this->userIdent->invite_currency,
             'shopping_currency' => $this->userIdent->shopping_currency,
+            'user_center_active' => 1
         );
         return view('h5.user.center', $data);
     }
@@ -316,7 +317,7 @@ class UserController extends WebController
 //            'expend' => (new Expend())->detail($this->userId),
 //            'income' => (new Income())->detail($this->userId),
         ];
-        return view('h5.user.property',$data);
+        return view('h5.user.property', $data);
     }
 
     /**

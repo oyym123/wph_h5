@@ -51,7 +51,8 @@ class LatestDealController extends WebController
         $model->offset = $this->offset;
         return view('h5.latest-deal.index', [
             'last_deal' => $model->dealEnd([], 1),
-            'list' => $model->dealEnd()
+            'list' => $model->dealEnd(),
+            'latest_active' => 1
         ]);
     }
 }
