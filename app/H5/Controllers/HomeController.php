@@ -109,7 +109,7 @@ class HomeController extends WebController
                     'id' => 3,
                     'title' => '晒单',
                     'img' => config('qiniu.domain') . 'shaidan2018.png',
-                    'url' => 'share.html',
+                    'url' => '/h5/evaluate/lists',
 
                 ],
                 [

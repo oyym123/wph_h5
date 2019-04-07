@@ -263,7 +263,8 @@ class Period extends Common
         }
 
         $expend = (new Expend())->periodExpend($period->id, $this->userId);
-
+        $bid =new Bid();
+        $bid->limit =3;
         $data = [
             'detail' => [
                 'id' => $period->id,
@@ -340,7 +341,7 @@ class Period extends Common
                     'f' => '',
                     'a' => '',
                 ),
-            //'bid_records' => $bid->bidRecord($period->id)
+            'bid_records' => $bid->bidRecord($period->id),
         ];
         return $this->putCache($cacheKey, $data, 0.025);
     }

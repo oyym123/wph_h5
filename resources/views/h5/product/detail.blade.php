@@ -15,7 +15,7 @@
                 </a>
                 <a class="button button-link button-nav pull-left"
                    style="padding-top: .5rem;padding-left: .3rem;color: #999999;"
-                   href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=dashboard&amp;ac=home&amp;do=index"><i
+                   href="/h5/home"><i
                             class="icon iconfont icon-homefill"></i></a>
                 <h1 class="title">商品详情</h1>
                 <span class="news"
@@ -47,32 +47,18 @@
                     <div class="banner swiper-container-horizontal swiper-container-android" id="ban_adv">
                         <div class="swiper-wrapper"
                              style="transform: translate3d(-1800px, 0px, 0px); transition-duration: 0ms;">
-                            <div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="4"
-                                 style="width: 360px;"><img
-                                        src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/IanI01mvI1s121jrhtRfNiRIfSHjaj.png">
-                            </div>
-                            <div class="swiper-slide" data-swiper-slide-index="0" style="width: 360px;"><img
-                                        src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/C5c9HeVtO5TB0w0He29C9fveTTk5vw.png">
-                            </div>
-                            <div class="swiper-slide" data-swiper-slide-index="1" style="width: 360px;"><img
-                                        src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/nqxSwqVXUqQBmBv3V2q2mviQmSDUib.png">
-                            </div>
-                            <div class="swiper-slide" data-swiper-slide-index="2" style="width: 360px;"><img
-                                        src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/AYLZTFWTiNlO0Ls4ROZOrt45tRlITS.png">
-                            </div>
-                            <div class="swiper-slide swiper-slide-prev" data-swiper-slide-index="3"
-                                 style="width: 360px;"><img
-                                        src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/qu6QfkluNoaFUlfO66O6lkZX6o8lMn.png">
-                            </div>
-                            <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="4"
-                                 style="width: 360px;"><img
-                                        src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/IanI01mvI1s121jrhtRfNiRIfSHjaj.png">
-                            </div>
-                            <div class="swiper-slide swiper-slide-duplicate swiper-slide-next"
-                                 data-swiper-slide-index="0" style="width: 360px;"><img
-                                        src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/C5c9HeVtO5TB0w0He29C9fveTTk5vw.png">
-                            </div>
+
+
+                            @foreach ($detail['imgs'] as $k => $v)
+                                <div class="swiper-slide"
+                                     data-swiper-slide-index="{{ $k }}" style="width: 360px;height:50%"><img
+                                            src="{{ $v }}">
+                                </div>
+                            @endforeach
+
                         </div>
+
+
                         <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"><span
                                     class="swiper-pagination-bullet"></span><span
                                     class="swiper-pagination-bullet"></span><span
@@ -81,16 +67,6 @@
                                     class="swiper-pagination-bullet swiper-pagination-bullet-active"></span></div>
                     </div>
                     <style>
-                        .endimg:after {
-                            content: "";
-                            position: absolute;
-                            left: 0;
-                            top: 0;
-                            right: 0;
-                            bottom: 0;
-                            background: url(https://demo.weliam.cn/addons/weliam_fastauction/app/resource//images/traded.png) 50% 50% no-repeat rgba(255, 255, 255, 0.5);
-                            background-size: 75% auto;
-                        }
 
                         .banner {
                             visibility: visible;
@@ -108,24 +84,6 @@
                             bottom: 5px;
                             right: 10px;
                             z-index: 100;
-                        }
-
-                        .dotList li {
-                            margin-right: 8px;
-                            padding-top: 1px;
-                            display: inline-block;
-                            background: url(https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/halfcard/icon_dot.png) no-repeat;
-                            width: 6px;
-                            height: 6px;
-                            background-size: 6px
-                        }
-
-                        .dotList li.cur {
-                            padding-top: 0;
-                            width: 8px;
-                            height: 8px;
-                            background: url(https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/halfcard/icon_selectDot.png) no-repeat;
-                            background-size: 8px
                         }
 
                         .pricediv {
@@ -237,25 +195,39 @@
                             <span class="pricon">￥</span><span class="prtxt" id="prtxt1">{{ $price['c'] }}</span>
                         </div>
                         <div class="oldprice">
-                            <p style="text-decoration:line-through;">市场价</p>
+                            <p>市场价</p>
                             <p style="text-decoration:line-through;">￥{{ $detail['sell_price'] }}</p>
                         </div>
                         <div class="downtime">
                             <p id="sytxt"> 距结束还剩</p>
-                            <p style="font-size: 20px;" id="sytime" sytime="8">00:00:09</p>
+                            <p style="font-size: 20px;" id="sytime" sytime="{{ $detail['countdown_length'] }}">
+                                00:00:09</p>
                             <input id="endflag" type="hidden" value="0">
                         </div>
                     </div>
                     <!--商品名称-->
                     <div class="goodsname">{{ $detail['title'] }}</div>
-                    <!--出价信息-->
+                {{--<div class="aucinfo">--}}
+                {{--<div class="infodiv havelist" style="display: block;">若无人出价，--}}
+                {{--<span class="infored" id="finalname">雨过天晴</span>--}}
+                {{--将以<span class="infored">￥--}}
+                {{--<span id="prtxt2">578.40</span>--}}
+                {{--</span>拍得本商品--}}
+                {{--</div>--}}
+                {{--<div class="infodiv nolist" style="display: none;">暂无人出价</div>--}}
+                {{--</div>--}}
+                <!--出价信息-->
                     <div class="aucinfo">
-                        <div class="infodiv havelist" style="display: block;">若无人出价，<span class="infored"
-                                                                                          id="finalname">雨过天晴</span>将以<span
-                                    class="infored">￥<span id="prtxt2">578.40</span></span>拍得本商品
+                        <div class="" style="font-size: larger;color: rgb(162, 162, 162)">
+                            <span style="position:relative;right: 2.5rem">出价
+                                <span style="color:#000;">{{ $detail['bid_users_count'] }} </span>人
+                            </span>
+                            |
+                            <span style="position:relative;left: 2.5rem"> 收藏
+                                <span style="color:#000;">  {{ $detail['collection_users_count'] }}</span> 人 </span>
                         </div>
-                        <div class="infodiv nolist" style="display: none;">暂无人出价</div>
                     </div>
+
                 </div>
                 <!--商品详情-->
 
@@ -312,38 +284,48 @@
                     }
                 </style>
                 <div class="buysuccess">
-                    <div onclick="location.href='/h5/bid/record?period_id={{ $detail['id'] }}'" style="border-bottom:1px solid #F3F3F3;"><img
-                                src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/chujia.png"
-                                style="height: 25px;width: 25px;"><span
-                                style="position: relative;top: -6px;">出价记录</span><span
-                                style="color: #999999;position: relative;top: -6px;margin-left: 5px;"><span
-                                    id="auctimes">5784</span>条</span><span style="float: right;color: #999999;"><i
+                    <div onclick="location.href='/h5/bid/record?period_id={{ $detail['id'] }}&limit=100'"
+                         style="border-bottom:1px solid #F3F3F3;">
+                        <img src="/images/h5/chujia.png" style="height: 25px;width: 25px;"><span
+                                style="position: relative;top: -6px;">出价记录</span>
+                        <span style="color: #999999;position: relative;top: -6px;margin-left: 5px;"><span
+                                    id="auctimes">{{ $detail['bid_users_count'] }}</span>条</span><span
+                                style="float: right;color: #999999;"><i
                                     class="icon iconfont icon-right"></i></span></div>
                     <div class="infolist" id="infolist">
-                        <div style="color: #EF1544;"><i class="icon iconfont icon-mobile"></i><span class="infoname">雨过天晴</span><span
-                                    class="infostatus">领先</span><span class="infoaddress">四川成都</span><span
-                                    class="infoprice">￥578.40</span></div>
-                        <div><i class="icon iconfont icon-mobile"></i><span class="infoname">Blue -x1N</span><span
-                                    class="infostatus">出局</span><span class="infoaddress">河北保定</span><span
-                                    class="infoprice">￥578.30</span></div>
-                        <div><i class="icon iconfont icon-mobile"></i><span class="infoname">A鱼儿离不开谁</span><span
-                                    class="infostatus">出局</span><span class="infoaddress">山东潍坊</span><span
-                                    class="infoprice">￥578.20</span></div>
+                        @foreach ($bid_records as $k => $v)
+                            @if($v['bid_type'] ==1)
+                                <div style="color : #EF1544;">
+                                    <i class="icon iconfont icon-mobile"></i>
+                                    <span class="infoname">{{ $v['nickname'] }}</span>
+                                    <span class="infostatus">{{ $v['bid_type'] ? '领先' : '出局' }}</span>
+                                    <span class="infoaddress">{{ $v['area'] }}</span>
+                                    <span class="infoprice">￥{{ $v['bid_price'] }}</span>
+                                </div>
+                            @else
+                                <div><i class="icon iconfont icon-mobile"></i>
+                                    <span class="infoname">{{ $v['nickname'] }}</span>
+                                    <span class="infostatus">{{ $v['bid_type'] ? '领先' : '出局' }}</span>
+                                    <span class="infoaddress">{{ $v['area'] }}</span>
+                                    <span class="infoprice">￥{{ $v['bid_price'] }}</span>
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
                 </div>
                 <!--是否差价购买-->
                 <style>
                     .buyflag {
                         padding: 1px 5px 1px 5px;
-                        border: 1px solid #333;
-                        color: #333;
+                        border: 1px solid rgb(163, 163, 163);
+
                     }
                 </style>
                 <div style="background-color: white;margin-top: .5rem;padding: .5rem .8rem;">
-                    <span class="buyflag">可差价购买</span>
+                    <span class="buyflag" style="color: rgb(163,163,163)">可差价购买</span>
                     <span style="color: #999999;margin-left: 5px;">我已消费
-					<span id="auccoin">0</span>拍币/
-					<span id="givecoin">0</span>赠币
+					<span id="auccoin">{{ $expended['used_real_bids'] }}</span>拍币/
+					<span id="givecoin">{{ $expended['used_gift_bids']  }}</span>赠币
 				</span>
                     <!--<span style="float: right;color: #999999;"><i class="icon iconfont icon-right"></i></span>-->
                 </div>
@@ -367,28 +349,71 @@
                         <div class="row no-gutter">
                             <div class="col-50" style="text-align: left;">
                                 <span style="width: 3rem;display: inline-block;">起拍价</span><span
-                                        style="color: #999999;">￥0.00</span>
+                                        style="color: #999999;">￥{{ $detail['init_price'] }}</span>
                             </div>
                             <div class="col-50" style="text-align: left;padding-left: 10px;">
                                 <span style="width: 3.5rem;display: inline-block;">加价幅度</span><span
-                                        style="color: #999999;">￥0.10</span>
+                                        style="color: #999999;">￥{{ $detail['price_add_length'] }}</span>
                             </div>
                             <div class="col-50" style="text-align: left;">
                                 <span style="width: 3rem;display: inline-block;">手续费</span><span
-                                        style="color: #999999;">1拍币/次</span>
+                                        style="color: #999999;">{{ $detail['bid_step'] }}拍币/次</span>
                             </div>
                             <div class="col-50" style="text-align: left;padding-left: 10px;">
                                 <span style="width: 3.5rem;display: inline-block;">倒计时</span><span
-                                        style="color: #999999;">10S</span>
+                                        style="color: #999999;">{{ $detail['countdown'] }}S</span>
                             </div>
                             <div class="col-50" style="text-align: left;">
                                 <span style="width: 3rem;display: inline-block;">差价购买</span><span
-                                        style="color: #999999;">有</span>
+                                        style="color: #999999;">  @if($detail['buy_by_diff'] ==1)  有 @else
+                                        无 @endif</span>
                             </div>
                             <div class="col-50" style="text-align: left;padding-left: 10px;">
                                 <span style="width: 3.5rem;display: inline-block;">退币比例</span><span
-                                        style="color: #999999;">30%</span>
+                                        style="color: #999999;">{{ $detail['return_proportion'] }}%</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="buysuccess">
+                    <div onclick="location.href='/h5/bid/record?period_id={{ $detail['id'] }}&limit=100'"
+                         style="border-bottom:1px solid #F3F3F3;">
+                        <img src="/images/h5/chujia.png" style="height: 25px;width: 25px;"><span
+                                style="position: relative;top: -6px;">往期成交</span>
+                        <a href="/h5/product/past-deals?product_id={{ $detail['product_id'] }}">  <span
+                                    style="position: relative;top: -9px;left: 9.7rem;">
+                            <span id="auctimes">更多</span></span>
+                            <span style="float: right;color: #999999;"><i class="icon iconfont icon-right"></i></span>
+                        </a>
+                    </div>
+                    <!-- 最近成交 -->
+                    <div class="list-block">
+                        <div class="row no-gutter">
+                            @if(!empty($past_deal))
+                                @foreach ($past_deal[0] as $k => $v)
+                                    @if($k<=2)
+                                        <div class="col-33"
+                                             onclick="location.href='/h5/product/detail?period={{ $v['id'] }}'">
+                                            <div class="lately">
+                                                @if(!empty($v['end_time']))
+                                                    <span class="endimg">
+									<img class="endlogo" src="{{ $v['img_cover'] }}">
+								</span>
+                                                @else
+                                                    <span style="position:relative;display: inline-block;width: 4rem;height: 4rem;margin: 0 auto;">
+									<img class="endlogo" src="{{ $v['img_cover'] }}">
+								</span>
+                                                @endif
+                                                <p class="endmoney">{{ $v['bid_price'] }}</p>
+                                                <p class="endmember"
+                                                   style=" overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                                                    {{ $v['nickname'] }}</p>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -413,100 +438,116 @@
                 <!--晒单等-->
                 <div class="list-block" style="margin-top: .7rem;background-color: #FFFFFF;">
                     <div class="buttons-tab">
-                        <a href="#goodslist" class="tab-link button active">晒单</a>
-                        <a href="#selfing" class="tab-link button">往期成交</a>
+                        <a href="#goodslist" class="tab-link button active">拍品展示</a>
+                        <a href="#selfing" class="tab-link button">宝贝评价</a>
                         <a href="#collection" class="tab-link button ">竞拍规则</a>
                     </div>
                     <div class="tabs">
                         <div id="goodslist" class="tab active">
-                            <div class="" id="listgoods" style="padding-left: 0;padding-right: 0;position: relative;">
-                                <div class="nodata-default">
-                                </div>
-                            </div>
+                            @foreach($detail['desc_imgs'] as $v)
+                                <img style="width: 100%" src="{{ $v }}">
+                            @endforeach
                         </div>
                         <div id="selfing" class="tab">
-                            <div class="" id="latelist" style="background-color: #EFEFF4;">
 
-                                <div class="ui-block deal_list"
-                                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=17&amp;perid=39033'">
-                                    <span class="time_line">2019-03-31 01:18:53</span> <span class="cover">     <img
-                                                src="http://wx.qlogo.cn/mmopen/bnppphzhh51JSic7ONhENO09fhpHzRDnuNSo5eUHYxkaZdah8LtCVjOLMCnlLCbFfoqgeoRNv0ZrzY5ACIhgtC1gPcUI9lmiaj/0">    </span>
-                                    <span class="info_text">     <span
-                                                class="deal_user hidelong">成交人：莫冰玉</span>     <span
-                                                class="market_price">用户人ID：100282</span>     <span class="deal_price">成交价：<em>￥2600.00</em></span>    </span>
-                                    <span class="save_price" style="top: 0.5rem;"><em>74.00%</em>节省</span></div>
-                                <div class="ui-block deal_list"
-                                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=17&amp;perid=38867'">
-                                    <span class="time_line">2019-03-29 01:33:26</span> <span class="cover">     <img
-                                                src="http://wx.qlogo.cn/mmopen/bnppphzhh51JSic7ONhENO3cKQgGSf7mTlQXAX4oBr0VYPQtoRicozawP8w02jWKc2DLUy4GfBW6d5AG2cCDt0aIclsjmvgjyS/0">    </span>
-                                    <span class="info_text">     <span
-                                                class="deal_user hidelong">成交人：刘国</span>     <span class="market_price">用户人ID：100264</span>     <span
-                                                class="deal_price">成交价：<em>￥2939.60</em></span>    </span> <span
-                                            class="save_price" style="top: 0.5rem;"><em>70.60%</em>节省</span></div>
-                                <div class="ui-block deal_list"
-                                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=17&amp;perid=38616'">
-                                    <span class="time_line">2019-03-26 19:27:16</span> <span class="cover">     <img
-                                                src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/S4IUiRR7Ab0727iOBL2T0U0AA207oP.jpg">    </span>
-                                    <span class="info_text">     <span
-                                                class="deal_user hidelong">成交人：恰逢花开</span>     <span
-                                                class="market_price">用户人ID：100003</span>     <span class="deal_price">成交价：<em>￥2844.90</em></span>    </span>
-                                    <span class="save_price" style="top: 0.5rem;"><em>71.55%</em>节省</span></div>
-                                <div class="ui-block deal_list"
-                                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=17&amp;perid=38421'">
-                                    <span class="time_line">2019-03-23 19:26:05</span> <span class="cover">     <img
-                                                src="http://wx.qlogo.cn/mmopen/0E5dSLj0tJiciceZicMxtw56XqwpZJCo2w91edIdDicmNGX5mVhsP9TQ1TmoITMszQUjqwuMGIrDIt0lytsVQOyibOmu8CibdhhUQs/0">    </span>
-                                    <span class="info_text">     <span
-                                                class="deal_user hidelong">成交人：昙花</span>     <span class="market_price">用户人ID：100341</span>     <span
-                                                class="deal_price">成交价：<em>￥2772.70</em></span>    </span> <span
-                                            class="save_price" style="top: 0.5rem;"><em>72.27%</em>节省</span></div>
-                                <div class="ui-block deal_list"
-                                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=17&amp;perid=37936'">
-                                    <span class="time_line">2019-03-21 16:35:09</span> <span class="cover">     <img
-                                                src="http://wx.qlogo.cn/mmopen/0E5dSLj0tJ8m0ictFPBZibmicNWVRCDx43rOFVszs76YTjP0LpU0icZJEozCxGBUgbQOAUY2oUJVIoe4LAEUAoAZqNEIXkOQVaz2/132">    </span>
-                                    <span class="info_text">     <span class="deal_user hidelong">成交人：悠然而行</span>     <span
-                                                class="market_price">用户人ID：100311</span>     <span class="deal_price">成交价：<em>￥2941.50</em></span>    </span>
-                                    <span class="save_price" style="top: 0.5rem;"><em>70.58%</em>节省</span></div>
-                                <div class="ui-block deal_list"
-                                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=17&amp;perid=37729'">
-                                    <span class="time_line">2019-03-16 09:53:32</span> <span class="cover">     <img
-                                                src="http://wx.qlogo.cn/mmopen/mOP2TFQTJ59kUIveqn1pfYVEuialicRsxjJX2IYOCkBxK3ib2yia810ANVSaOjVL6lgAmOcd3PugPmmSL7FibHBCZ0lDxmq88BxdK/132">    </span>
-                                    <span class="info_text">     <span class="deal_user hidelong">成交人：松</span>     <span
-                                                class="market_price">用户人ID：100322</span>     <span class="deal_price">成交价：<em>￥2879.50</em></span>    </span>
-                                    <span class="save_price" style="top: 0.5rem;"><em>71.20%</em>节省</span></div>
-                                <div class="ui-block deal_list"
-                                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=17&amp;perid=37498'">
-                                    <span class="time_line">2019-03-14 04:58:50</span> <span class="cover">     <img
-                                                src="https://demo.weliam.cn/addons/weliam_fastauction/web/resource/images/head_imgs/u=1128297044,2887253680&amp;fm=27&amp;gp=0.jpg">    </span>
-                                    <span class="info_text">     <span
-                                                class="deal_user hidelong">成交人：cici</span>     <span
-                                                class="market_price">用户人ID：100414</span>     <span class="deal_price">成交价：<em>￥2707.60</em></span>    </span>
-                                    <span class="save_price" style="top: 0.5rem;"><em>72.92%</em>节省</span></div>
-                                <div class="ui-block deal_list"
-                                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=17&amp;perid=37255'">
-                                    <span class="time_line">2019-03-12 03:15:06</span> <span class="cover">     <img
-                                                src="http://wx.qlogo.cn/mmopen/0E5dSLj0tJiciceZicMxtw56TmuKg9FlWMTtuzxDRqecJjSVouILGvSRiajYzQOtKAF6udmFXVb616lcichhiapp56ZkrgbbicibNNwI/0">    </span>
-                                    <span class="info_text">     <span
-                                                class="deal_user hidelong">成交人：韩露</span>     <span class="market_price">用户人ID：100300</span>     <span
-                                                class="deal_price">成交价：<em>￥2839.10</em></span>    </span> <span
-                                            class="save_price" style="top: 0.5rem;"><em>71.61%</em>节省</span></div>
-                                <div class="ui-block deal_list"
-                                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=17&amp;perid=3706'">
-                                    <span class="time_line">2019-03-09 23:05:52</span> <span class="cover">     <img
-                                                src="https://demo.weliam.cn/addons/weliam_fastauction/web/resource/images/head_imgs/u=1122970967,3437945858&amp;fm=27&amp;gp=0.jpg">    </span>
-                                    <span class="info_text">     <span class="deal_user hidelong">成交人：煊煊妈～浙江</span>     <span
-                                                class="market_price">用户人ID：100387</span>     <span class="deal_price">成交价：<em>￥2562.10</em></span>    </span>
-                                    <span class="save_price" style="top: 0.5rem;"><em>74.38%</em>节省</span></div>
-                                <div class="ui-block deal_list"
-                                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=17&amp;perid=3441'">
-                                    <span class="time_line">2018-03-22 23:53:30</span> <span class="cover">     <img
-                                                src="">    </span> <span class="info_text">     <span
-                                                class="deal_user hidelong">成交人：Fcy</span>     <span
-                                                class="market_price">用户人ID：100338</span>     <span class="deal_price">成交价：<em>￥2503.30</em></span>    </span>
-                                    <span class="save_price" style="top: 0.5rem;"><em>74.97%</em>节省</span></div>
+
+                            <div class="wrap">
+                                <div class="mui-content mui-scroll-wrapper" id="mainContainer" data-pullrefresh="1">
+                                    <div class="mui-pull-top-pocket">
+                                        <div class="mui-pull">
+                                            <div class="mui-pull-loading mui-icon mui-icon-pulldown"></div>
+                                            <div class="mui-pull-caption">下拉可以刷新</div>
+                                        </div>
+                                    </div>
+                                    <div class="mui-scroll"
+                                         style="transform: translate3d(0px, -8px, 0px) translateZ(0px); transition-duration: 0ms;">
+                                        <header class="ui-navigation"><a class="icon-back mui-action-back"></a>晒单<a href="share_my.html"
+                                                                                                                    class="icon-toshare"></a>
+                                        </header>
+                                        <div class="share_list" id="J-shareList">
+                                            <div class="share_li">
+                                                <div class="cover"><img
+                                                            src="https://qnimg.gogobids.com/avatar/b1b0aeb05bae50bb015bae5498c23e58?imageView2/1/w/90/h/90">
+                                                </div>
+                                                <div class="title"><span class="name">好运来哟</span><span class="time">2019-03-29 00:17:21</span></div>
+                                                <div class="share_info" data-id="50511"><h3 class="hidelong">泰福高 3层304不锈钢保温饭盒1.5L 颜色随机</h3>
+                                                    <div class="desc">非常满意 设计完美合理 非常方便</div>
+                                                    <div class="imgs"><img
+                                                                src="https://qnimg.gogobids.com/FoSZbaYAweNts9nn39QzJx6t8BEp?imageView2/1/w/150/h/150"><img
+                                                                src="https://qnimg.gogobids.com/FjcyYl4VEJu-E-7sKw8OQN8LsFid?imageView2/1/w/150/h/150">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="share_li">
+                                                <div class="cover"><img
+                                                            src="https://qnimg.gogobids.com/avatar/b1b0aeb05b5c15fa015b5c1e800b09bf?imageView2/1/w/90/h/90">
+                                                </div>
+                                                <div class="title"><span class="name">睡神</span><span class="time">2019-03-29 00:14:02</span></div>
+                                                <div class="share_info" data-id="50496"><h3 class="hidelong">飞利浦 电动剃须刀 S5082/61</h3>
+                                                    <div class="desc">宝贝很满意，是正品，物流神速赞一个</div>
+                                                    <div class="imgs"><img
+                                                                src="https://qnimg.gogobids.com/Fv4dMhRS_Q9xWIVDGzbqckrpwa1o?imageView2/1/w/150/h/150"><img
+                                                                src="https://qnimg.gogobids.com/FjVAxu-RO8Pjr8xi8xfQOVd519Ek?imageView2/1/w/150/h/150">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="mui-pull-bottom-pocket mui-block mui-visibility">
+                                            <div class="mui-pull">
+                                                <div class="mui-pull-loading mui-icon mui-spinner mui-hidden"></div>
+                                                <div class="mui-pull-caption mui-pull-caption-down"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mui-scrollbar mui-scrollbar-vertical" style="transition-duration: 500ms; opacity: 0;">
+                                        <div class="mui-scrollbar-indicator"
+                                             style="transition-duration: 0ms; display: block; height: 273px; transform: translate3d(0px, 1px, 0px) translateZ(0px);"></div>
+                                    </div>
+                                </div>
                             </div>
+
+
                         </div>
                         <div id="collection" class="tab">
                             <div class="" id="listcol" style="padding: 1rem;">
+                                <p>
+                                    <span style="font-family: 微软雅黑, &quot;Microsoft YaHei&quot;; font-size: 14px; color: rgb(89, 89, 89);"></span>
+                                </p>
+                                <p style="margin-top:0;margin-bottom:0;padding:0 0 0 0 ;line-height:28px"><span
+                                            style="font-family: 微软雅黑; font-size: 14px; color: rgb(89, 89, 89);"></span>
+                                </p>
+                                <p style="margin-top:0;margin-bottom:0;padding:0 0 0 0 ;line-height:28px"><span
+                                            style="font-family: 微软雅黑; font-size: 14px; color: rgb(89, 89, 89);">(1) 所有商品竞拍初始价均为0元起，每出一次出价会消耗一定数量的拍币，同时商品价格以0.1元递增。</span>
+                                </p>
+                                <p style="margin-top:0;margin-bottom:0;padding:0 0 0 0 ;line-height:28px"><span
+                                            style="font-family: 微软雅黑; font-size: 14px; color: rgb(89, 89, 89);"><br/></span>
+                                </p>
+                                <p style="margin-top:0;margin-bottom:0;padding:0 0 0 0 ;line-height:28px"><span
+                                            style="color: rgb(89, 89, 89); font-family: 微软雅黑; font-size: 14px;">(2) 在初始倒计时内即可出价，初始倒计时后进入竞拍倒计时，当您出价后，该件商品的计时器将被自动重置，以便其他用户进行出价竞争。如果没有其他用户对该件商品出价，计时器归零时，您便成功拍得了该商品。</span>
+                                </p>
+                                <p style="margin-top:0;margin-bottom:0;padding:0 0 0 0 ;line-height:28px"><span
+                                            style="font-family: 微软雅黑; font-size: 14px; color: rgb(89, 89, 89);"><br/></span>
+                                </p>
+                                <p style="margin-top:0;margin-bottom:0;padding:0 0 0 0 ;line-height:28px"><span
+                                            style="font-family: 微软雅黑; font-size: 14px; color: rgb(89, 89, 89);">(3) 若拍卖成功，请在30天内以成交价购买竞拍商品，超过30天未下单，视为放弃，不返拍币。</span>
+                                </p>
+                                <p style="margin-top:0;margin-bottom:0;padding:0 0 0 0 ;line-height:28px"><span
+                                            style="font-family: 微软雅黑; font-size: 14px; color: rgb(89, 89, 89);"><br/></span>
+                                </p>
+                                <p style="margin-top:0;margin-bottom:0;padding:0 0 0 0 ;line-height:28px"><span
+                                            style="font-family: 微软雅黑; font-size: 14px; color: rgb(89, 89, 89);">(4) <span
+                                                style="font-size:14px;font-family:&#39;微软雅黑&#39;,sans-serif">若拍卖失败，将返还所消耗拍币的100%作为购物币，可用于差价购买当期商品，赠币除外。</span></span>
+                                </p>
+                                <p style="margin-top:0;margin-bottom:0;padding:0 0 0 0 ;line-height:28px"><span
+                                            style="font-family: 微软雅黑; font-size: 14px; color: rgb(89, 89, 89);"><br/></span>
+                                </p>
+                                <p style="margin-top:0;margin-bottom:0;padding:0 0 0 0 ;line-height:28px"><span
+                                            style="font-family: 微软雅黑; font-size: 14px; color: rgb(89, 89, 89);">(5) 平台严禁违规操作，最终解释权归微拍行所有。</span>
+                                </p>
+                                <p>
+                                    <span style="font-family: 微软雅黑, &quot;Microsoft YaHei&quot;; font-size: 14px; color: rgb(89, 89, 89);"><br/></span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -515,10 +556,10 @@
             </div>
             <!--底部-->
             <div class="botcell">
-                <a class="botcellz" onclick="code()" style="border-right:1px solid #dfdfdf;">
-                    <i class="icon iconfont icon-service"></i>
-                    <p>客服</p>
-                </a>
+                {{--<a class="botcellz" onclick="code()" style="border-right:1px solid #dfdfdf;">--}}
+                {{--<i class="icon iconfont icon-service"></i>--}}
+                {{--<p>客服</p>--}}
+                {{--</a>--}}
                 <a class="botcellz collent" onclick="addcollection()" style="border-right:1px solid #dfdfdf;">
                     <i class="icon iconfont icon-like"></i>
                     <p id="sctxt">收藏</p>
@@ -573,7 +614,7 @@
         <div class="weui_dialog" id="customerdia" style="display: none;">
             <p class="dialog-title">长按识别二维码</p>
             <div class="img-box">
-                <img src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/Or4IhjKBRKbmk1RkkIAvXrBe44HMIK.jpg"
+                <img src=""
                      style="max-width:100%">
             </div>
             <span class="vux-close">
@@ -601,20 +642,20 @@
 
     <script type="text/html" id="lists">
         @verbatim
-        {{# if(d.list[0]){ }}
+        {{# if(d.data[0]){ }}
         <div style="color: #EF1544;"><i class="icon iconfont icon-mobile"></i><span
-                    class="infoname">{{d.list[0].nickname}}</span><span class="infostatus">领先</span><span
-                    class="infoaddress">{{d.list[0].address}}</span><span class="infoprice">￥{{d.list[0].price}}</span>
+                    class="infoname">{{d.data[0].nickname}}</span><span class="infostatus">领先</span><span
+                    class="infoaddress">{{d.data[0].area}}</span><span class="infoprice">￥{{d.data[0].bid_price}}</span>
         </div>
-        {{# if(d.list[1]){ }}
-        <div><i class="icon iconfont icon-mobile"></i><span class="infoname">{{d.list[1].nickname}}</span><span
-                    class="infostatus">出局</span><span class="infoaddress">{{d.list[1].address}}</span><span
-                    class="infoprice">￥{{d.list[1].price}}</span></div>
+        {{# if(d.data[1]){ }}
+        <div><i class="icon iconfont icon-mobile"></i><span class="infoname">{{d.data[1].nickname}}</span><span
+                    class="infostatus">出局</span><span class="infoaddress">{{d.data[1].area}}</span><span
+                    class="infoprice">￥{{d.data[1].bid_price}}</span></div>
         {{# } }}
-        {{# if(d.list[2]){ }}
-        <div><i class="icon iconfont icon-mobile"></i><span class="infoname">{{d.list[2].nickname}}</span><span
-                    class="infostatus">出局</span><span class="infoaddress">{{d.list[2].address}}</span><span
-                    class="infoprice">￥{{d.list[2].price}}</span></div>
+        {{# if(d.data[2]){ }}
+        <div><i class="icon iconfont icon-mobile"></i><span class="infoname">{{d.data[2].nickname}}</span><span
+                    class="infostatus">出局</span><span class="infoaddress">{{d.data[2].area}}</span><span
+                    class="infoprice">￥{{d.data[2].bid_price}}</span></div>
         {{# } }}
         {{# }else{ }}
         <div style="text-align: center;color: #EF1544;">暂无人出价</div>
@@ -660,7 +701,7 @@
         }
 
         function getinfo() {
-            $.post("/h5/bid/newest-bid", {}, function (data) {
+            $.post("/h5/bid/newest-bid", {periods: "{{ $detail['id'] }}"}, function (data) {
                 console.log(data);
                 if (data.f == "1") {
                     $('#endflag').val(1);
@@ -674,7 +715,7 @@
                         }
                         $('#prtxt2').text(data.prtxt);
                         $('#finalname').text(data.finalname);
-                        $('#auctimes').text(data.auctimes);
+                        $('#auctimes').text(data.f);
                         $('#sytime').attr('sytime', data.countdown);
                         var gettpl = document.getElementById('lists').innerHTML;
                         laytpl(gettpl).render(data, function (html) {

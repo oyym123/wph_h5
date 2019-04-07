@@ -88,9 +88,17 @@ class BidController extends WebController
         if ($this->offset >= 1) {
             self::showMsg('最多显示100条！', 0);
         }
-        return view('h5.bid.record',$bid->bidRecord($this->request->period_id));
+        return view('h5.bid.record', ['data' => $bid->bidRecord($this->request->period_id)]);
     }
 
+
+    public function latestDeal()
+    {
+        $bid = new Bid();
+        $bid->limit = $this->limit;
+        $bid->offset = $this->offset;
+        return view('h5.product.past-deals', ['data' => $bid->bidRecord($this->request->product_id)]);
+    }
 
     /**
      * @SWG\Post(path="/api/bid/newest-bid",

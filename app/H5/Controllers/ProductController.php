@@ -200,7 +200,9 @@ class ProductController extends WebController
         $model = new Period();
         $model->limit = $this->limit;
         $model->offset = $this->offset;
-        self::showMsg($model->dealEnd(['product_id' => $this->request->product_id]));
+        return view('h5.product.past-deals', [
+            'data' =>$model->dealEnd(['product_id' => $this->request->product_id])
+        ]);
     }
 
     /**

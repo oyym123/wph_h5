@@ -42,6 +42,7 @@ Route::group(['middleware' => 'h5'], function () {
     Route::get('product/jd-product', 'ProductController@jdProduct');
     Route::get('product/type', 'ProductController@type');
     Route::get('product/detail', 'ProductController@detail');
+    Route::get('bid/latest-deal', 'BidController@latestDeal');
 
     Route::get('product/bid-rules', 'ProductController@bidRules');
     Route::get('product/past-deals', 'ProductController@pastDeals');

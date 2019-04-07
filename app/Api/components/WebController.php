@@ -140,7 +140,8 @@ class WebController extends Controller
         }
 
         //   if ((isset($_GET['debug']) && $_GET['debug'] == '1') || strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') == true) {
-        if ((isset($_GET['debug']) && $_GET['debug'] == '1') || self::isWindows()) {
+        if ((isset($_GET['debug']) && $_GET['debug'] == '1')) {
+     //   if ((isset($_GET['debug']) && $_GET['debug'] == '1') || self::isWindows()) {
             echo "<pre>";
             print_r($_REQUEST);
             print_r($item);

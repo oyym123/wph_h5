@@ -12,7 +12,7 @@ class WebController extends Controller
 {
     public $enableCsrfValidation = false;
     public $offset = 0;
-    public $limit = 20;
+    public $limit = 6;
     public $pages = 0;
     public $userId = 6775;
     public $userIdent = 0;

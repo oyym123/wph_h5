@@ -75,12 +75,13 @@
     <script src="{{ asset('js/h5/laytpl.js') }}"></script>
     <script src="{{ asset('js/h5/common.js') }}"></script>
     <script src="{{ asset('js/h5/weixinJs.js') }}"></script>
+
     {{--<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>--}}
 </head>
 
 <body style="background-color: #f8f8f8;font-size: smaller">
 <div class="page-group">
-    <div class="page page-current page-inited" id="page-index">
+    <div class="page page-current page-inited" id="page-index" >
         <nav class="bar bar-tab bar-footer" style="z-index: 99;">
             <a class="tab-item external "
                href="/h5/home">
@@ -88,7 +89,7 @@
                 <span class="tab-label">首页</span>
             </a>
             <a class="tab-item external active"
-               href="/h5/latest-deal">
+               href="/h5/latest-deal" >
                 <span class="icon iconfont icon-hot"></span>
                 <span class="tab-label">最新成交</span>
             </a>
