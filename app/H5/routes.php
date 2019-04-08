@@ -68,6 +68,7 @@ Route::group(['middleware' => 'h5'], function () {
     Route::get('pay/recharge-center', 'PayController@rechargeCenter'); //充值中心
     Route::post('pay/recharge', 'PayController@recharge'); //充值
     Route::post('pay/pay', 'PayController@pay'); //立即购买
+    Route::get('new-pay/weixin-pay', 'NewPayController@weixinPay'); //立即购买
 
 
     /** 用户中心 */

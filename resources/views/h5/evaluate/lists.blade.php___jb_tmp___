@@ -46,6 +46,9 @@
                             <h3 class="hidelong">{{$v['product_title']}}</h3>
                             <div class="desc">{{ $v['content'] }}</div>
                             <div class="imgs">
+
+
+                                 
                                 @foreach($v['imgs'] as $img)
                                     <img src="{{ $img }}?imageView2/1/w/150/h/150">
                                 @endforeach

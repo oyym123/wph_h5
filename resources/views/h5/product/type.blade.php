@@ -135,8 +135,8 @@
     // 连接服务端
     function connect() {
         // 创建websocket
-//     	ws = new WebSocket("ws://114.215.91.124:8282");
-        ws = new WebSocket("wss://websocket.weliam.cn:8282");
+     	ws = new WebSocket("wss://api.95wx.cn/wss");
+       // ws = new WebSocket("wss://websocket.weliam.cn:8282");
         // 当有消息时根据消息类型显示不同信息
         ws.onmessage = onmessage;
         ws.onclose = function() {
