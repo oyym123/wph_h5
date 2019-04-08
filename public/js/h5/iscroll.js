@@ -86,7 +86,7 @@ var m = Math,
 			i;
 
 		that.wrapper = typeof el == 'object' ? el : doc.getElementById(el);
-		that.wrapper.style.overflow = 'hidden';
+		//that.wrapper.style.overflow = 'hidden';
 		that.scroller = that.wrapper.children[0];
 
 		// Default options

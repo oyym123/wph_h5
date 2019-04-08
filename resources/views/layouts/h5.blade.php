@@ -83,23 +83,33 @@
 <div class="page-group">
     <div class="page page-current page-inited" id="page-index" >
         <nav class="bar bar-tab bar-footer" style="z-index: 99;">
-            <a class="tab-item external "
-               href="/h5/home">
+            @if(isset($display_module))
+            <a class="tab-item external active" href="/h5/home">
+                @else
+                    <a class="tab-item external " href="/h5/home">
+                @endif
                 <span class="icon iconfont icon-home_light"></span>
                 <span class="tab-label">首页</span>
             </a>
-            <a class="tab-item external active"
-               href="/h5/latest-deal" >
+                    @if(isset($latest_active))
+            <a class="tab-item external active" href="/h5/latest-deal" >
+                @else
+                    <a class="tab-item external " href="/h5/latest-deal" >
+                        @endif
                 <span class="icon iconfont icon-hot"></span>
                 <span class="tab-label">最新成交</span>
             </a>
-            <a class="tab-item external "
-               href="/h5/product/type">
+                    @if(isset($product_type_active))
+            <a class="tab-item external active" href="/h5/product/type">
+                @else
+                    <a class="tab-item external " href="/h5/product/type">
+                @endif
                 <span class="icon iconfont icon-similar"></span>
                 <span class="tab-label">分类</span>
             </a>
-            <a class="tab-item external "
-               href="/h5/user/center">
+                @if(isset($user_center_active))
+                        <a class="tab-item external active" href="/h5/user/center">
+                    @else<a class="tab-item external " href="/h5/user/center">@endif
                 <span class="icon iconfont icon-my_light"></span>
                 <span class="tab-label">我的</span>
             </a>
