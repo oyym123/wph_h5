@@ -31,8 +31,8 @@ class WxNotifyController extends Controller
         //$xml = $request->post();
         //$xml = $xml[1];
         // 这句file_put_contents是用来查看服务器返回的XML数据 测试完可以删除了
-//        $path = PHP_OS == 'WINNT' ? 'G:/logs/wph.log' : '/www/logs/wph.log';
-//        Helper::writeLog($xml, $path);
+        $path = PHP_OS == 'WINNT' ? 'G:/logs/wph.log' : '/www/logs/wph.log';
+        Helper::writeLog($xml, $path);
 
         //将服务器返回的XML数据转化为数组
         $data = Helper::xmlToArray($xml);

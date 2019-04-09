@@ -43,8 +43,8 @@ class NewPayController
     public function weixinPay()
     {
         $order = [
-            'out_trade_no' => '201809181221218231037835',
-            'body' => '测试订单265',
+            'out_trade_no' => '201809211329074876567690',
+            'body' => '测试订单284',
             'total_fee' => '1',
         ];
         $result = Pay::wechat(config('pay.wechat'))->wap($order);
