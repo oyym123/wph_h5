@@ -420,14 +420,6 @@
     }
 
 
-            ws.onclose = function () {
-                console.log("连接关闭，定时重连");
-                connect();
-            };
-            ws.onerror = function () {
-                console.log("出现错误");
-            };
-        }
 
         // 连接建立时发送登录信息
         function onopens(client_id) {

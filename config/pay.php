@@ -20,9 +20,9 @@ return [
         // optional，默认 warning；日志路径为：sys_get_temp_dir().'/logs/yansongda.pay.log'
         'log' => [
             'file' => storage_path('logs/alipay.log'),
-        //  'level' => 'debug'
-        //  'type' => 'single', // optional, 可选 daily.
-        //  'max_file' => 30,
+            //  'level' => 'debug'
+            //  'type' => 'single', // optional, 可选 daily.
+            //  'max_file' => 30,
         ],
 
         // optional，设置此参数，将进入沙箱模式
@@ -31,10 +31,10 @@ return [
 
     'wechat' => [
         // 公众号 APPID
-        'app_id' => env('WECHAT_APP_ID', ''),
+        'app_id' => env('WECHAT_APPID', ''),
 
         // 小程序 APPID
-        'miniapp_id' => env('WECHAT_MINIAPP_ID', ''),
+        'miniapp_id' => env('WECHAT_APPID', ''),
 
         // APP 引用的 appid
         'appid' => env('WECHAT_APPID', ''),
@@ -43,7 +43,7 @@ return [
         'mch_id' => env('WECHAT_MCH_ID', ''),
 
         // 微信支付异步通知地址
-        'notify_url' => '',
+        'notify_url' => '1321',
 
         // 微信支付签名秘钥
         'key' => env('WECHAT_KEY', ''),
@@ -57,14 +57,17 @@ return [
         // optional，默认 warning；日志路径为：sys_get_temp_dir().'/logs/yansongda.pay.log'
         'log' => [
             'file' => storage_path('logs/wechat.log'),
-        //  'level' => 'debug'
-        //  'type' => 'single', // optional, 可选 daily.
-        //  'max_file' => 30,
+            'level' => 'debug',
+            'type' => 'single', // optional, 可选 daily.
+            'max_file' => 30,
         ],
-
+        'http' => [
+            'timeout' =>5.0,
+            'connect_timeout'=>5.0
+        ],
         // optional
         // 'dev' 时为沙箱模式
         // 'hk' 时为东南亚节点
-        // 'mode' => 'dev',
+        'mode' => 'normal',
     ],
 ];

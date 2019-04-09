@@ -26,3 +26,15 @@
 
 2019-04-08 14:04:06 > yansongda.pay.INFO > Wechat PreOrder Method Has Called ["",{"appid":"wxb44c2f38e9fb041b","mch_id":"1509936521","nonce_str":"wjyFW8IZIhLJdIVh","notify_url":"http://wph.com/notify.php","spbill_create_ip":"127.0.0.1","out_trade_no":1554703446,"body":"subject-测试","total_fee":"1","openid":"onkVf1FjWS5SBIixxxxxxxxx","trade_type":"MWEB","sign":"6B95A7939CBBA395656AE86B34D1D41D"}] 
 
+2019-04-09 12:00:09 > yansongda.pay.INFO > Wechat Wap Has Started ["https://api.mch.weixin.qq.com/",{"appid":"wxb44c2f38e9fb041b","mch_id":"1509936521","nonce_str":"bTjpWn5Rl3KOjck0","notify_url":"http://wph.com/notify.php","spbill_create_ip":"127.0.0.1","out_trade_no":1554782409,"body":"subject-测试","total_fee":"1","openid":"onkVf1FjWS5SBIixxxxxxxxx","trade_type":"MWEB"}] 
+
+2019-04-09 12:00:09 > yansongda.pay.INFO > Wechat PreOrder Method Has Called ["",{"appid":"wxb44c2f38e9fb041b","mch_id":"1509936521","nonce_str":"bTjpWn5Rl3KOjck0","notify_url":"http://wph.com/notify.php","spbill_create_ip":"127.0.0.1","out_trade_no":1554782409,"body":"subject-测试","total_fee":"1","openid":"onkVf1FjWS5SBIixxxxxxxxx","trade_type":"MWEB","sign":"599FA5E878D442BA14CF3A650B916E4B"}] 
+
+2019-04-09 13:40:41 > yansongda.pay.INFO > Wechat Wap Has Started ["https://api.mch.weixin.qq.com/",{"appid":"wxb44c2f38e9fb041b","mch_id":"1509936521","nonce_str":"HhvAcr8fSCoD7k0M","notify_url":"http://wph.com/notify.php","spbill_create_ip":"127.0.0.1","out_trade_no":1554788441,"body":"subject-测试","total_fee":"1","openid":"onkVf1FjWS5SBIixxxxxxxxx","trade_type":"MWEB"}] 
+
+2019-04-09 13:40:41 > yansongda.pay.INFO > Wechat PreOrder Method Has Called ["",{"appid":"wxb44c2f38e9fb041b","mch_id":"1509936521","nonce_str":"HhvAcr8fSCoD7k0M","notify_url":"http://wph.com/notify.php","spbill_create_ip":"127.0.0.1","out_trade_no":1554788441,"body":"subject-测试","total_fee":"1","openid":"onkVf1FjWS5SBIixxxxxxxxx","trade_type":"MWEB","sign":"5FAB43A28CB2DA23437E9D766CB954B0"}] 
+
+2019-04-09 13:45:02 > yansongda.pay.INFO > Wechat Wap Has Started ["https://api.mch.weixin.qq.com/",{"appid":"wxb44c2f38e9fb041b","mch_id":"1509936521","nonce_str":"Dy4VDVxcU3028zNE","notify_url":"http://wph.com/notify.php","spbill_create_ip":"127.0.0.1","out_trade_no":1554788702,"body":"subject-测试","total_fee":"1","openid":"onkVf1FjWS5SBIixxxxxxxxx","trade_type":"MWEB"}] 
+
+2019-04-09 13:45:02 > yansongda.pay.INFO > Wechat PreOrder Method Has Called ["",{"appid":"wxb44c2f38e9fb041b","mch_id":"1509936521","nonce_str":"Dy4VDVxcU3028zNE","notify_url":"http://wph.com/notify.php","spbill_create_ip":"127.0.0.1","out_trade_no":1554788702,"body":"subject-测试","total_fee":"1","openid":"onkVf1FjWS5SBIixxxxxxxxx","trade_type":"MWEB","sign":"FF74A06FD7C359B5C126F4F3C4F64106"}] 
+
