@@ -14,7 +14,6 @@ use Yansongda\Pay\Log;
 class NewPayController
 {
 
-
     public function index()
     {
         $order = [
@@ -23,21 +22,14 @@ class NewPayController
             'body' => 'test body - 测试',
             'openid' => 'onkVf1FjWS5SBIixxxxxxx',
         ];
-
         $pay = Pay::wechat($this->config)->mp($order);
-
-        // $pay->appId
-        // $pay->timeStamp
-        // $pay->nonceStr
-        // $pay->package
-        // $pay->signType
     }
 
     public function notify()
     {
-        $pay = Pay::wechat($this->config);
+        $pay = Pay::wechat(config('pay.wechat'));
 
-        try{
+        try {
             $data = $pay->verify(); // 是的，验签就这么简单！
 
             Log::debug('Wechat notify', $data->all());
@@ -50,13 +42,10 @@ class NewPayController
 
     public function weixinPay()
     {
-//        echo '<pre>';
-//        print_r(config('pay.wechat'));exit;
         $order = [
-            'out_trade_no' => time(),
-            'body' => 'subject-测试',
+            'out_trade_no' => '201809181221218231037835',
+            'body' => '测试订单265',
             'total_fee' => '1',
-            //'openid' => 'odJ8f5U3_HfROOLOEPM7ZPmQRnA8',
         ];
         $result = Pay::wechat(config('pay.wechat'))->wap($order);
         return $result;

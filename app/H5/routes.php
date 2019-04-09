@@ -2,6 +2,7 @@
 /**
  * H5数据接口路由
  */
+
 use App\Models\Auctioneer;
 use Illuminate\Support\Facades\Route;
 
@@ -175,8 +176,8 @@ Route::group(['middleware' => 'h5'], function () {
     Route::any('sms/send', 'SmsController@send');
     /** 文章 会员视频 */
     Route::any('article', 'ArticleController@index');
-	
-	/** 获取阿拉丁分享链接 */
-	Route::get('getshareurl', 'ShareUrlController@index');
+
+    /** 获取阿拉丁分享链接 */
+    Route::get('getshareurl', 'ShareUrlController@index');
 });
 
