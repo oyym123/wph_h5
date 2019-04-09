@@ -80,6 +80,10 @@
         "optimize-autoloader": true
     },
     "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        },
         "hooks": {
             "type": "composer",
             "url": "https://larapack.io"
