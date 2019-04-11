@@ -173,7 +173,7 @@ Route::group(['middleware' => 'h5'], function () {
     /** 积分兑换 */
     Route::any('point/exchange', 'PointController@exchange');
     /** 发送短信验证码 */
-    Route::any('sms/send', 'SmsController@send');
+    Route::get('sms/send', 'SmsController@send');
     /** 文章 会员视频 */
     Route::any('article', 'ArticleController@index');
 
