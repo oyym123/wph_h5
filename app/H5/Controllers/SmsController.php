@@ -8,14 +8,14 @@ use App\Models\TaoBaoOpenApi;
 class SmsController extends WebController
 {
     /**
-     * @SWG\Get(path="/h5/sms/send",
+     * @SWG\Post(path="/h5/sms/send",
      *     tags = {"短信"} ,
      *     summary = "发送注册短信",
      *     description="Author: OYYM && Date: 2019/4/11 11:28",
-     *   @SWG\Parameter(name="scenes", in="query", default="1", description="短信发送场景 1 = 注册  2 = ...",
+     *   @SWG\Parameter(name="scenes", in="formData", default="1", description="短信发送场景 1 = 注册  2 = ...",
      *     type="string",
      *   ),
-     *   @SWG\Parameter(name="phone", in="query", default="", description="电话号码",
+     *   @SWG\Parameter(name="mobile", in="formData", default="", description="电话号码",
      *     type="string",
      *   ),
      *   @SWG\Response(
@@ -27,8 +27,8 @@ class SmsController extends WebController
     public function send()
     {
         $res = [
-            'phone' => $this->request->get('phone'),
-            'scenes' => $this->request->get('scenes')
+            'mobile' => $this->request->post('mobile'),
+            'scenes' => $this->request->post('scenes')
         ];
         $model = new TaoBaoOpenApi();
         if ($model->sms($res)['status'] == 1) {

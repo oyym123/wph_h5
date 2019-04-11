@@ -100,6 +100,43 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     * 检验验证码是否可用
+     * user_id
+     * type
+     * sms_code
+     * mobile
+     */
+    public static function smsCheck($params)
+    {
+        $where = [];
+        if (isset($params['user_id']) && !empty($params['user_id'])) {
+            $where['user_id'] = $params['user_id'];
+        }
+
+        $sms = DB::table('sms')
+            ->where($where)
+            ->where('type', $params['type'])
+            ->where('mobile', $params['mobile'])
+            ->where('status', 1)
+            ->orderBy('id', 'desc')->first(); // 获取最新的验证码信息
+
+        if (!$sms) {
+            return ['请先获取短信验证码', -1];
+        }
+
+        if ($sms->key != $params['sms_code']) {
+            return ['验证码错误', -1];
+        }
+
+        if ((time() - $sms->created_at) > 900) { //短信验证码有效期15分钟
+            return ['验证码已失效', -1];
+        }
+
+        DB::table('sms')->where('id', $sms->id)->update(['status' => 2]);
+        return ['验证成功!', 1];
+    }
+
 
     /** 绑定手机 */
     public function bindMobile($params, $userId)
@@ -132,7 +169,6 @@ class User extends Authenticatable
             return [$e->getMessage(), -1];
         }
     }
-
 
 
     /** 获取用户信息表 */

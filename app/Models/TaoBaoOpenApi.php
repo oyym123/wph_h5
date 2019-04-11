@@ -26,12 +26,12 @@ class TaoBaoOpenApi extends Common
         $code = mt_rand(1000, 9999);
         $smsInsert['type'] = $request['scenes'];
         $smsInsert['status'] = 1;
-        $smsInsert['mobile'] = $request['phone'];
+        $smsInsert['mobile'] = $request['mobile'];
         $smsInsert['key'] = $code;
         $smsInsert['created_at'] = time();
         if ($request['scenes'] == 1) { //场景1 注册
             $query = [
-                'PhoneNumbers' => $request['phone'],
+                'PhoneNumbers' => $request['mobile'],
                 'TemplateCode' => config('aliyun.sms_register_tem_code'),
                 'SignName' => config('aliyun.sms_sign_name'),
                 'TemplateParam' => json_encode(['code' => $code])

@@ -57,6 +57,65 @@ class UserController extends WebController
         ]);
     }
 
+    public function register()
+    {
+        $request = $this->request;
+        if ($this->request->isMethod('post')) {
+            //验证码检测
+            list($msg, $status) = \App\Models\User::smsCheck([
+                'type' => 1,
+                'mobile' => $this->request->post('mobile'),
+                'sms_code' => $this->request->post('code'),
+            ]);
+
+            $token = md5(time());
+            $data = [
+                'session_key' => $token,
+                'open_id' => '',
+                'nickname' => $this->request->post('mobile') ?: '佚名',
+                'name' => $this->request->post('mobile') ?: '佚名',
+                'avatar' => 'default_user_photo10.png',
+                'is_real' => USER::TYPE_REAL_PERSON,
+                'token' => $token,
+            ];
+
+            $address = Helper::ipToAddress($request->getClientIp());
+            list($province, $city) = City::simplifyCity($address['region'], $address['city']);
+            $data['ip'] = $address['ip'];
+            $data['country'] = $address['country'];
+            $data['province'] = $province ?: '北京';
+            $data['city'] = $city ?: '';
+            $data['email'] = rand(10000, 99999) . '@163.com';
+            $data['gift_currency'] = config('bid.user_gift_currency');
+            $data['spid'] = $request->spid ?: '';
+            $model = (new User())->saveData($data);
+            DB::table('users')->where('id', $model->id)->update(['invite_code' => (119087 + $model->id)]);
+
+            if ($request->invite_code && empty($model->be_invited_code)) {
+                if ((new Invite())->checkoutCode($request->invite_code, $model->id)) {
+                    DB::table('users')->where('id', $model->id)->update([
+                        'invite_code' => $model->invite_code,
+                        'be_invited_code' => $request->invite_code
+                    ]);
+                    (new Invite())->saveData($model->id, $request->invite_code);
+                }
+            }
+
+            if ($status < 0) {
+                self::showMsg($msg, -1);
+            } else {
+                self::showMsg('注册成功!');
+            }
+        } else {
+            return view('h5.user.register');
+        }
+    }
+
+    public function login()
+    {
+        return view('h5.user.login');
+    }
+
     /**
      * @param Request $request
      * @SWG\Get(path="/api/user/info",
