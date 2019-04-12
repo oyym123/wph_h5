@@ -167,6 +167,71 @@ class UserController extends WebController
         }
     }
 
+    /** H5 用户注册 */
+    public function register()
+    {
+        //分成
+        $request = $this->request;
+
+        $res = $this->weixin($request->code);
+        if (!empty($res)) {
+            $result = json_decode($res, true);
+            $model = DB::table('users')->where(['open_id' => $result['openid'], 'is_real' => User::TYPE_REAL_PERSON])->first();
+            $token = md5(md5($result['openid'] . $result['session_key']));
+
+            $avatar = QiniuHelper::fetchImg($request->avatar)[0]['key'];
+            $data = [
+                'session_key' => $result['session_key'],
+                'open_id' => $result['openid'],
+                'nickname' => $request->nickname ?: '佚名',
+                'name' => $request->nickname ?: '佚名',
+                'avatar' => $avatar ?: 'default_user_photo10.png',
+                'is_real' => USER::TYPE_REAL_PERSON,
+                'token' => $token,
+            ];
+
+            if ($model) {
+                Redis::hdel('token', $model->token);
+                DB::table('users')->where('id', $model->id)->update($data);
+            } else {
+                $address = Helper::ipToAddress($request->getClientIp());
+                list($province, $city) = City::simplifyCity($address['region'], $address['city']);
+                $data['ip'] = $address['ip'];
+                $data['country'] = $address['country'];
+                $data['province'] = $province ?: '北京';
+                $data['city'] = $city ?: '';
+                $data['invite_code'] = md5(md5(time() . rand(1, 10000)));
+                $data['email'] = rand(10000, 99999) . '@163.com';
+                $data['gift_currency'] = config('bid.user_gift_currency');
+                $data['spid'] = $request->spid ?: '';
+                $model = (new User())->saveData($data);
+
+
+                if ($request->invite_code && empty($model->be_invited_code)) {
+                    if ((new Invite())->checkoutCode($request->invite_code, $model->id)) {
+                        DB::table('users')->where('id', $model->id)->update([
+                            'invite_code' => $model->invite_code,
+                            'be_invited_code' => $request->invite_code
+                        ]);
+                        (new Invite())->saveData($model->id, $request->invite_code);
+                    }
+                }
+
+            }
+
+            Redis::hset('token', $token, $model->id);
+            self::showMsg(['token' => $token]);
+        } else {
+            self::showMsg(['token' => '']);
+        }
+    }
+
+    /** 用户H5登入 */
+    public function login()
+    {
+
+    }
+
     /**
      * @param Request $request
      * @SWG\Get(path="/api/user/info",
