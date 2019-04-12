@@ -1,4 +1,5 @@
 <?php
+
 namespace App\H5\components;
 
 use App\Helpers\Helper;
@@ -6,6 +7,7 @@ use App\Models\Common;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Redis;
 
 class WebController extends Controller
@@ -14,7 +16,7 @@ class WebController extends Controller
     public $offset = 0;
     public $limit = 8;
     public $pages = 0;
-    public $userId = 6775;
+    public $userId = 0;
     public $userIdent = 0;
     public $request;
     public $token;
@@ -29,10 +31,11 @@ class WebController extends Controller
         if ($this->limit > 100) {
             $this->limit = 100;
         }
+
         // $request->psize && $this->psize = $request->psize;
-        $this->token = empty($_SERVER['HTTP_TOKEN']) ? '' : $_SERVER['HTTP_TOKEN'];
-        $this->token && $this->userId = Redis::hget('token', $this->token);
-        if ($this->userId) {
+        if ($request->session()->has('user_info')) { //获取用户信息
+            $user = json_decode(session('user_info'));
+            $this->userId = $user->id;
             $this->userIdent = User::find($this->userId);
             //判断账号是否可用
             if ($this->userIdent->status == User::STATUS_DISABLE) {
@@ -92,10 +95,8 @@ class WebController extends Controller
 
     public function needLogin()
     {
-        if ($this->token) {
-            self::showMsg('登录已过期', 1);
-        }
-        self::showMsg('需要登录', 1);
+        header("location:" . '/h5/user/login-view');
+        exit;
     }
 
     /** 身份验证 */
@@ -140,7 +141,7 @@ class WebController extends Controller
         }
 
         //   if ((isset($_GET['debug']) && $_GET['debug'] == '1') || strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') == true) {
-       // if ((isset($_GET['debug']) && $_GET['debug'] == '1') || self::isWindows()) {
+        // if ((isset($_GET['debug']) && $_GET['debug'] == '1') || self::isWindows()) {
         if ((isset($_GET['debug']) && $_GET['debug'] == '1')) {
             echo "<pre>";
             print_r($_REQUEST);
@@ -215,28 +216,6 @@ class WebController extends Controller
     {
         return config('qiniu.domain') . $img;
     }
-
-    /** 获取微信授权 */
-    public function weixin($code)
-    {
-        //声明CODE，获取小程序传过来的CODE
-        $appid = env('WEIXIN_APP_ID');
-        $secret = env('WEIXIN_SECRET');
-        // if ($code == 1) { //测试
-        //   $res = '{"session_key":"O+rLUsjqo2GsMX9G9Mt9pw==","openid":"odJ8f5U3_HfROOLOEPM7ZPmQRn2A843"}';
-        //} else {
-        //api接口
-        $api = "https://api.weixin.qq.com/sns/jscode2session?appid={$appid}&secret={$secret}&js_code={$code}&grant_type=authorization_code";
-        $res = Helper::get($api);
-        //}
-        if (strpos($res, 'openid') !== false) {
-            return $res;
-        } else {
-            return '';
-        }
-    }
-
-
 
 }
 

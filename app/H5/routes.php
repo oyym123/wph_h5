@@ -73,8 +73,11 @@ Route::group(['middleware' => 'h5'], function () {
 
 
     /** 用户中心 */
-    Route::get('user/login', 'UserController@login');//用户登入
-    Route::get('user/register', 'UserController@register');//用户登入
+    Route::get('user/login-view', 'UserController@loginView');//用户登入视图
+    Route::post('user/login', 'UserController@login');//用户登入提交
+    Route::get('user/register-view', 'UserController@registerView');//用户登入视图
+    Route::post('user/register', 'UserController@register');//用户登入提交
+    Route::post('user/check_sms', 'UserController@checkSms');//短信验证
     Route::get('user/batch-register', 'UserController@batchRegister');
     Route::get('user/user-agreement', 'UserController@userAgreement'); //用户收货地址
     Route::get('user/default-address', 'UserController@defaultAddress'); //用户收货地址
@@ -175,7 +178,7 @@ Route::group(['middleware' => 'h5'], function () {
     /** 积分兑换 */
     Route::any('point/exchange', 'PointController@exchange');
     /** 发送短信验证码 */
-    Route::get('sms/send', 'SmsController@send');
+    Route::post('sms/send', 'SmsController@send');
     /** 文章 会员视频 */
     Route::any('article', 'ArticleController@index');
 

@@ -8,7 +8,7 @@
                     <span style="color: #999999;" class="icon icon-left"></span>
                 </a>
                 <h1 class="title">登录</h1>
-                <a href="register" style="color: #EF1544;" class="button button-link button-nav pull-right create-actions">注册</a>
+                <a href="register-view" style="color: #EF1544;" class="button button-link button-nav pull-right create-actions">注册</a>
             </header>
             <div class="content native-scroll">
                 <div class="weui-cells__title">请输入登录信息</div>
@@ -46,7 +46,7 @@
                     </div>
                     <div style="height: 40px;">
 	            <span class="weui-agree" style="float: right;">
-	        		<a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=register&amp;codetype=forget" class="external">忘记密码？</a>
+	        		<a href="register-view" class="external">忘记密码？</a>
 	            </span>
                     </div>
                     <div class="thirdparty" style="display: none;">
@@ -105,16 +105,16 @@
                 }
                 $.ajax({
                     type: "POST",
-                    url: "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=signin",
+                    url: "login",
                     data:{pwd:contacts,mobile:mobile},
                     dataType: 'json',
                     beforeSend: function(XMLHttpRequest) {},
                     success: function(data) {
-                        if(data.status==1){
+                        if(data.code >= 0){
                             $.toast('登录成功');
-                            location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=index";
+                            location.href = "/h5/user/center";
                         }else{
-                            $.toast(data.msg);
+                            $.toast(data.message);
                         }
                     },
                     error: function() {

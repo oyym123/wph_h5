@@ -39,46 +39,67 @@ class UserController extends WebController
         self::showMsg($data);
     }
 
-    /** 注册 */
-    public function registerView(Request $request)
-    {
-//        list($info, $status) = $this->userInfo();
-//        if ($status) {
-//            return redirect()->action('UserController@center');
+//    /** 注册 */
+//    public function registerView(Request $request)
+//    {
+////        list($info, $status) = $this->userInfo();
+////        if ($status) {
+////            return redirect()->action('UserController@center');
+////        }
+//        $invite = DB::table('invite')->where('user_id', session('user_id'))->first();
+//        if (!empty($invite)) {
+//            $inviteUserInfo = DB::table('user_info')->where('user_id', $invite->level_1)->first();
 //        }
-        $invite = DB::table('invite')->where('user_id', session('user_id'))->first();
-        if (!empty($invite)) {
-            $inviteUserInfo = DB::table('user_info')->where('user_id', $invite->level_1)->first();
-        }
-        return view('api.user.register', [
-            'data' => session('_old_input'),
-            'invite_user_mobile' => empty($inviteUserInfo->bind_mobile) ? '' : $inviteUserInfo->bind_mobile,
-            'codeError' => $request->input('codeError')
-        ]);
+//        return view('api.user.register', [
+//            'data' => session('_old_input'),
+//            'invite_user_mobile' => empty($inviteUserInfo->bind_mobile) ? '' : $inviteUserInfo->bind_mobile,
+//            'codeError' => $request->input('codeError')
+//        ]);
+//    }
+
+    //注册视图
+    public function registerView()
+    {
+        return view('h5.user.register');
     }
 
+    //提交注册信息
     public function register()
     {
         $request = $this->request;
-        if ($this->request->isMethod('post')) {
-            //验证码检测
+        $token = md5(time());
+        $data = [
+            'session_key' => $token,
+            'open_id' => '',
+            'nickname' => $this->request->post('mobile') ?: '佚名',
+            'name' => $this->request->post('mobile') ?: '佚名',
+            'avatar' => 'default_user_photo10.png',
+            'is_real' => USER::TYPE_REAL_PERSON,
+            'token' => $token,
+        ];
+
+        $user = DB::table('users')->where([
+            'mobile' => $request->mobile . '11',
+        ])->first();  //查询是否已经存在手机号，若有则是忘记密码进行重置操作
+
+        //密码规则
+        if (mb_strlen($request->pwd) < 6) {
+            self::showMsg('密码最少6位', -1);
+        }
+
+        if (!empty($user)) { //重置密码
             list($msg, $status) = \App\Models\User::smsCheck([
                 'type' => 1,
                 'mobile' => $this->request->post('mobile'),
                 'sms_code' => $this->request->post('code'),
             ]);
 
-            $token = md5(time());
-            $data = [
-                'session_key' => $token,
-                'open_id' => '',
-                'nickname' => $this->request->post('mobile') ?: '佚名',
-                'name' => $this->request->post('mobile') ?: '佚名',
-                'avatar' => 'default_user_photo10.png',
-                'is_real' => USER::TYPE_REAL_PERSON,
-                'token' => $token,
-            ];
-
+            if ($status < 0) {
+                self::showMsg($msg, -1);
+            }
+            DB::table('users')->where('id', $user->id)->update(['password' => md5($request->pwd)]);
+            self::showMsg('密码重置成功!');
+        } else { //进行注册
             $address = Helper::ipToAddress($request->getClientIp());
             list($province, $city) = City::simplifyCity($address['region'], $address['city']);
             $data['ip'] = $address['ip'];
@@ -88,9 +109,10 @@ class UserController extends WebController
             $data['email'] = rand(10000, 99999) . '@163.com';
             $data['gift_currency'] = config('bid.user_gift_currency');
             $data['spid'] = $request->spid ?: '';
+            $data['password'] = md5($request->pwd);
             $model = (new User())->saveData($data);
+            //保存邀请码【随机生成唯一码 119087 + 用户id】
             DB::table('users')->where('id', $model->id)->update(['invite_code' => (119087 + $model->id)]);
-
             if ($request->invite_code && empty($model->be_invited_code)) {
                 if ((new Invite())->checkoutCode($request->invite_code, $model->id)) {
                     DB::table('users')->where('id', $model->id)->update([
@@ -100,20 +122,48 @@ class UserController extends WebController
                     (new Invite())->saveData($model->id, $request->invite_code);
                 }
             }
-
-            if ($status < 0) {
-                self::showMsg($msg, -1);
-            } else {
-                self::showMsg('注册成功!');
-            }
-        } else {
-            return view('h5.user.register');
+            self::showMsg('注册成功!');
         }
     }
 
-    public function login()
+    //检测短信验证码
+    public function checkSms()
+    {
+        list($msg, $status) = \App\Models\User::smsCheck([
+            'type' => 1,
+            'mobile' => $this->request->post('mobile'),
+            'sms_code' => $this->request->post('code'),
+        ]);
+
+        if ($status < 0) {
+            self::showMsg($msg, -1);
+        } else {
+            self::showMsg('ok');
+        }
+    }
+
+    //登入视图
+    public function loginView()
     {
         return view('h5.user.login');
+    }
+
+    //提交登入信息
+    public function login()
+    {
+        $request = $this->request;
+        $user = DB::table('users')->where([
+            'mobile' => $request->mobile,
+            'password' => md5($request->pwd)
+        ])->first();
+
+        if ($user) {
+            session()->put('user_info', json_encode($user));
+            session()->save(); //如果后面执行了exit等终止操作 则需要次方法强制保存
+            self::showMsg('登入成功!');
+        } else {
+            self::showMsg('账号或密码错误!', -1);
+        }
     }
 
     /**
@@ -143,7 +193,6 @@ class UserController extends WebController
     {
         //分成
         $request = $this->request;
-
         $res = $this->weixin($request->code);
         if (!empty($res)) {
             $result = json_decode($res, true);
@@ -177,7 +226,6 @@ class UserController extends WebController
                 $data['spid'] = $request->spid ?: '';
                 $model = (new User())->saveData($data);
 
-
                 if ($request->invite_code && empty($model->be_invited_code)) {
                     if ((new Invite())->checkoutCode($request->invite_code, $model->id)) {
                         DB::table('users')->where('id', $model->id)->update([
@@ -187,7 +235,6 @@ class UserController extends WebController
                         (new Invite())->saveData($model->id, $request->invite_code);
                     }
                 }
-
             }
 
             Redis::hset('token', $token, $model->id);

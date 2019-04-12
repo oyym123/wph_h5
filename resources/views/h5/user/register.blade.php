@@ -9,7 +9,7 @@
                     <span style="color: #999999;" class="icon icon-left"></span>
                 </a>
                 <h1 class="title">注册</h1>
-                <a href="login" style="color: #EF1544;" class="button button-link button-nav pull-right create-actions">登录</a>
+                <a href="login-view" style="color: #EF1544;" class="button button-link button-nav pull-right create-actions">登录</a>
             </header>
             <div class="content native-scroll" id="con1">
                 <div class="weui-cells__title">请输入注册信息</div>
@@ -127,12 +127,14 @@
                     return false;
                 }
                 var mobile = $("#mobile").val();
-                $.post("https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=registering",{mobile:mobile,pwd:pwd1},function(d){
-                    if(d.result == 1){
-                        $.toast("注册成功");
-                        location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=index";
-                    }else if(d.result == 2){
-                        $.toast("注册失败，请重试");
+                var new_inviteid = $("#inviteid").val();
+                var contacts = $("#contacts").val();
+                $.post("register",{mobile:mobile,pwd:pwd1,code:contacts,invite_code:new_inviteid},function(d){
+                    if(d.code >= 0){
+                        $.toast(d.message);
+                        location.href = "/h5/user/center";
+                    }else if(d.code < 0){
+                        $.toast(d.message);
                     }else{
                         $.toast("未知错误");
                     }
@@ -153,8 +155,8 @@
                         return false;
                     }
                     var new_inviteid = $("#inviteid").val();
-                    $.post("register",{mobile:mobile,code:contacts,new_inviteid:new_inviteid},function(d){
-                        if(d.code == 1){
+                    $.post("check_sms",{mobile:mobile,code:contacts,new_inviteid:new_inviteid},function(d){
+                        if(d.code >= 0){
                             $('#con1').hide();
                             $('#con2').show();
                         }else if(d.code < 0){
