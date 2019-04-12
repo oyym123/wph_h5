@@ -112,11 +112,12 @@ class UserController extends WebController
             $data['password'] = md5($request->pwd);
             $model = (new User())->saveData($data);
             //保存邀请码【随机生成唯一码 119087 + 用户id】
-            DB::table('users')->where('id', $model->id)->update(['invite_code' => (119087 + $model->id)]);
+            $invite_code = 119087 + $model->id;
+            DB::table('users')->where('id', $model->id)->update(['invite_code' => $invite_code]);
             if ($request->invite_code && empty($model->be_invited_code)) {
                 if ((new Invite())->checkoutCode($request->invite_code, $model->id)) {
                     DB::table('users')->where('id', $model->id)->update([
-                        'invite_code' => $model->invite_code,
+                        'invite_code' => $invite_code,
                         'be_invited_code' => $request->invite_code
                     ]);
                     (new Invite())->saveData($model->id, $request->invite_code);
