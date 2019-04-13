@@ -15,6 +15,7 @@ use App\Models\Invite;
 use App\Models\Order;
 use App\Models\Pay;
 use App\Models\Period;
+use App\Models\Upload;
 use App\Models\UserAddress;
 use App\Models\Withdraw;
 use Illuminate\Support\Facades\DB;
@@ -22,40 +23,22 @@ use App\Http\Requests\RegisterUserPost;
 use App\User;
 use App\H5\components\WebController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redis;
 use Ramsey\Uuid\Uuid;
 
 class UserController extends WebController
 {
-
-    public function index()
+    //初始化
+    public function __construct(Request $request)
     {
-        $data = [
-            'title' => '注册成功',
-            'desc' => '您已成功注册成为微拍行会员!',
-            'btn' => '观看视频',
-            'url' => '../article'
-        ];
-        self::showMsg($data);
+        parent::__construct($request);
+        $nologin = ['registerView', 'loginView', 'login', 'register'];
+        //在该数组里的方法名，都不需要身份验证
+        if (!in_array($this->getMName(), $nologin)) {
+            $this->auth();
+        }
     }
-
-//    /** 注册 */
-//    public function registerView(Request $request)
-//    {
-////        list($info, $status) = $this->userInfo();
-////        if ($status) {
-////            return redirect()->action('UserController@center');
-////        }
-//        $invite = DB::table('invite')->where('user_id', session('user_id'))->first();
-//        if (!empty($invite)) {
-//            $inviteUserInfo = DB::table('user_info')->where('user_id', $invite->level_1)->first();
-//        }
-//        return view('api.user.register', [
-//            'data' => session('_old_input'),
-//            'invite_user_mobile' => empty($inviteUserInfo->bind_mobile) ? '' : $inviteUserInfo->bind_mobile,
-//            'codeError' => $request->input('codeError')
-//        ]);
-//    }
 
     //注册视图
     public function registerView()
@@ -76,10 +59,11 @@ class UserController extends WebController
             'avatar' => 'default_user_photo10.png',
             'is_real' => USER::TYPE_REAL_PERSON,
             'token' => $token,
+            'mobile' => $this->request->post('mobile'),
         ];
 
         $user = DB::table('users')->where([
-            'mobile' => $request->mobile . '11',
+            'mobile' => $this->request->post('mobile')
         ])->first();  //查询是否已经存在手机号，若有则是忘记密码进行重置操作
 
         //密码规则
@@ -123,6 +107,7 @@ class UserController extends WebController
                     (new Invite())->saveData($model->id, $request->invite_code);
                 }
             }
+            session()->put('user_info', json_encode(DB::table('users')->where('id', $model->id)->first()));
             self::showMsg('注册成功!');
         }
     }
@@ -167,146 +152,35 @@ class UserController extends WebController
         }
     }
 
-    /**
-     * @param Request $request
-     * @SWG\Get(path="/api/user/info",
-     *   tags={"用户中心"},
-     *   summary="",
-     *   description="Author: OYYM",
-     *   @SWG\Parameter(name="code", in="query", default="1", description="code", required=true,
-     *     type="string",
-     *   ),
-     *   @SWG\Parameter(name="nickname", in="query", default="佚名", description="用户昵称", required=true,
-     *     type="string",
-     *   ),
-     *   @SWG\Parameter(name="avatar", in="query", default="default_user_photo10.png", description="头像地址", required=true,
-     *     type="string",
-     *   ),
-     *   @SWG\Parameter(name="invite_code", in="query", default="f4eed21cc611d4234466d08b5176fcf8", description="邀请码",
-     *     type="string",
-     *   ),
-     *   @SWG\Response(
-     *       response=200,description="successful operation"
-     *   )
-     * )
-     */
-    public function info()
+    /** 修改用户信息视图 */
+    public function updateView()
     {
-        //分成
-        $request = $this->request;
-        $res = $this->weixin($request->code);
-        if (!empty($res)) {
-            $result = json_decode($res, true);
-            $model = DB::table('users')->where(['open_id' => $result['openid'], 'is_real' => User::TYPE_REAL_PERSON])->first();
-            $token = md5(md5($result['openid'] . $result['session_key']));
-
-            $avatar = QiniuHelper::fetchImg($request->avatar)[0]['key'];
-            $data = [
-                'session_key' => $result['session_key'],
-                'open_id' => $result['openid'],
-                'nickname' => $request->nickname ?: '佚名',
-                'name' => $request->nickname ?: '佚名',
-                'avatar' => $avatar ?: 'default_user_photo10.png',
-                'is_real' => USER::TYPE_REAL_PERSON,
-                'token' => $token,
-            ];
-
-            if ($model) {
-                Redis::hdel('token', $model->token);
-                DB::table('users')->where('id', $model->id)->update($data);
-            } else {
-                $address = Helper::ipToAddress($request->getClientIp());
-                list($province, $city) = City::simplifyCity($address['region'], $address['city']);
-                $data['ip'] = $address['ip'];
-                $data['country'] = $address['country'];
-                $data['province'] = $province ?: '北京';
-                $data['city'] = $city ?: '';
-                $data['invite_code'] = md5(md5(time() . rand(1, 10000)));
-                $data['email'] = rand(10000, 99999) . '@163.com';
-                $data['gift_currency'] = config('bid.user_gift_currency');
-                $data['spid'] = $request->spid ?: '';
-                $model = (new User())->saveData($data);
-
-                if ($request->invite_code && empty($model->be_invited_code)) {
-                    if ((new Invite())->checkoutCode($request->invite_code, $model->id)) {
-                        DB::table('users')->where('id', $model->id)->update([
-                            'invite_code' => $model->invite_code,
-                            'be_invited_code' => $request->invite_code
-                        ]);
-                        (new Invite())->saveData($model->id, $request->invite_code);
-                    }
-                }
-            }
-
-            Redis::hset('token', $token, $model->id);
-            self::showMsg(['token' => $token]);
-        } else {
-            self::showMsg(['token' => '']);
-        }
-    }
-
-    /**
-     * 批量注册用户
-     * http://wph.com/api/user/batch-register
-     */
-    public function batchRegister()
-    {
-        $model = new User();
-        for ($i = 0; $i < 30; $i++) {
-            $model->rebotRegister();
-        }
+        return view('h5.user.update');
     }
 
     /** 修改用户信息 */
     public function update()
     {
-        list($info, $status) = $this->userInfo();
-        foreach ($info as $key => $item) {
-            $data[$key] = $item;
-        }
-        $user = DB::table('users')->where('id', $info->user_id)->first();
-        $data['email'] = $user->email;
-        return view('api.user.update', ['data' => $data]);
-    }
-
-    /** 修改用户信息表单提交 */
-    public function updatePost(Request $request)
-    {
-        $this->weixinWebOauth(); // 需要网页授权登录
-        // file_put_contents('/tmp/test.log', '授权登录成功' . PHP_EOL, FILE_APPEND);
-        $user = new User();
-        list($info, $status) = $this->userInfo();
-        $openId = session('wechat_user')['id'];
-        if ($user->userUpdate($request->input(), session('user_id'))) {
-            foreach ($info as $key => $item) {
-                $data[$key] = $item;
-            }
-            $user = DB::table('users')->where('id', $info->user_id)->first();
-            $data['email'] = $user->email;
-            return view('api.user.update', ['status' => 1, 'data' => $data]);
+        $request = $this->request;
+        $data['nickname'] = $request->nickname;
+        $img = Upload::oneImg($this->request->img);
+        $data['avatar'] = $img ?: $this->userIdent->avatar;
+        $user = DB::table('users')->where('id', $this->userId)->update($data);
+        if ($img || empty($request->nickname)) {
+            return redirect('/h5/user/my-info');
+        } else {
+            self::showMsg('修改成功!');
         }
     }
 
-    /** 绑定手机号 */
-    public function binddingMobile()
+    /** 基本信息界面 */
+    public function myInfo()
     {
-        list($info, $status) = $this->userInfo();
+        $user = $this->userIdent;
         $data = [
-            'bind_mobile' => $info->bind_mobile
-
+            'avatar' => $user->getAvatar(),
         ];
-        return view('api.user.binding_mobile', ['oldPut' => session('_old_input'), 'data' => $data]);
-    }
-
-    /** 绑定手机号提交表单 */
-    public function binddingMobilePost(BindMobilePost $request)
-    {
-        $user = new User();
-        list($msg, $status) = $user->bindMobile($request->input(), session('user_id'));
-        if ($status < 0) {
-            return redirect()->action('UserController@binddingMobile', ['data' => $request->input(), 'codeError' => $msg]);
-        }
-        return view('api.user.bindmobile_success');
+        return view('h5.user.my-info', $data);
     }
 
     /**
@@ -335,14 +209,13 @@ class UserController extends WebController
      */
     public function center()
     {
-        $this->auth();
         $user = $this->userIdent;
         $data = array(
             'avatar' => $user->getAvatar(),
             'nickname' => $user->nickname,
             'created_at' => $user->created_at,
             'status' => $user->status,
-            'user_id' => substr($user->email, 0, strrpos($user->email, '@')) . $user->id,
+            'user_id' => substr($user->email, 0, strrpos($user->email, '@')),
             'register_type' => User::REGISTER_TYPE_WEI_XIN,
             'bid_currency' => $this->userIdent->bid_currency,
             'gift_currency' => $this->userIdent->gift_currency,
@@ -351,6 +224,29 @@ class UserController extends WebController
             'user_center_active' => 1
         );
         return view('h5.user.center', $data);
+    }
+
+    /** 退出登入  */
+    public function loginOut()
+    {
+        session()->forget('user_info');
+        self::showMsg('退出成功!');
+    }
+
+    /**
+     * @SWG\Get(path="/api/user/setup-list",
+     *     tags = {"用户中心"} ,
+     *     summary = "设置列表",
+     *     description="Author: OYYM && Date: 2019/4/13 13:44",
+     *     @SWG\Response(
+     *         response = 200,
+     *         description = "success"
+     *     )
+     * )
+     */
+    public function setupList()
+    {
+        return view('h5.user.setup');
     }
 
     /**
@@ -383,7 +279,7 @@ class UserController extends WebController
      */
     public function shoppingCurrency()
     {
-        $this->auth();
+
         $income = new Income();
         $res = $income->shoppingCurrency($this->userId) + ['shipping_currency' => $this->userIdent->shopping_currency];
         self::showMsg($res);
@@ -404,7 +300,7 @@ class UserController extends WebController
      */
     public function property()
     {
-        $this->auth();
+
         $data = [
             'balance_desc' => [
                 'id' => 1,
@@ -448,7 +344,7 @@ class UserController extends WebController
      */
     public function propertyIncome()
     {
-        $this->auth();
+
         $income = new Income();
         $income->limit = $this->limit;
         $income->offset = $this->offset;
@@ -476,11 +372,17 @@ class UserController extends WebController
      */
     public function propertyExpend()
     {
-        $this->auth();
+
         $expend = new Expend();
         $expend->limit = $this->limit;
         $expend->offset = $this->offset;
         self::showMsg($expend->detail($this->userId));
+    }
+
+    /** 地址视图 */
+    public function addressView()
+    {
+        return view('h5.user.address');
     }
 
     /**
@@ -525,29 +427,29 @@ class UserController extends WebController
      */
     public function address()
     {
-        $this->auth();
         $request = $this->request;
+//        print_r($request->post());exit;
         $data = [
             'user_id' => $this->userId,
-            'is_default' => $request->is_default,
-            'user_name' => $request->user_name,
-            'telephone' => $request->telephone,
+            'is_default' => $request->is_default ?: 0,
+            'user_name' => $request->addressname,
+            'telephone' => $request->mobile,
             'postal' => $request->postal,
-            'detail_address' => $request->detail_address,
-            'str_address' => $request->province . '||' . $request->city . '||' . $request->area,
+            'detail_address' => $request->addressdata,
+            'str_address' => str_replace(' ', '||', $request->citys),
         ];
         if ($request->address_id) {
             $data['id'] = $request->address_id;
             if ((new UserAddress())->updateData($data)) {
                 self::showMsg('保存成功！');
             } else {
-                self::showMsg('保存失败！', 2);
+                self::showMsg('保存失败！', -1);
             }
         } else {
             if ((new UserAddress())->saveData($data)) {
                 self::showMsg('保存成功！');
             } else {
-                self::showMsg('保存失败！', 2);
+                self::showMsg('保存失败！', -1);
             }
         }
     }
@@ -568,7 +470,6 @@ class UserController extends WebController
      */
     public function defaultAddress()
     {
-        $this->auth();
         $address = UserAddress::defaultAddress($this->userId);
         $addressInfo = [
             'username' => $address->user_name,
@@ -593,7 +494,7 @@ class UserController extends WebController
      */
     public function evaluate()
     {
-        $this->auth();
+
         self::showMsg((new Evaluate())->getList(['user_id' => $this->userId]));
     }
 
@@ -634,7 +535,7 @@ class UserController extends WebController
      */
     public function performance()
     {
-        $this->auth();
+
         $result = (new Income())->performance($this->userId, $this->userIdent->invite_currency);
         $data = [
             'total_amount' => $result['total_amount'],
@@ -667,7 +568,7 @@ class UserController extends WebController
      */
     public function performanceIncome()
     {
-        $this->auth();
+
         self::showMsg((new Income())->detail($this->userId, ['type' => Income::TYPE_INVITE_CURRENCY]));
     }
 
@@ -692,7 +593,7 @@ class UserController extends WebController
      */
     public function performanceWithdraw()
     {
-        $this->auth();
+
         $result = (new Withdraw())->detail($this->userId);
         self::showMsg($result);
     }
@@ -724,7 +625,7 @@ class UserController extends WebController
      */
     public function setWithdrawAccount()
     {
-        $this->auth();
+
         $request = $this->request;
 
         if (!empty($this->userIdent->cashout_password)) {
@@ -776,7 +677,7 @@ class UserController extends WebController
      */
     public function withdraw()
     {
-        $this->auth();
+
         $request = $this->request;
         if (empty($this->userIdent->cashout_account)) {
             self::showMsg('请您先设置提现账号!', 4);

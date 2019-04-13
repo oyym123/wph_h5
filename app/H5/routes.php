@@ -73,6 +73,11 @@ Route::group(['middleware' => 'h5'], function () {
 
 
     /** 用户中心 */
+    Route::get('user/update-view', 'UserController@updateView');//修改信息视图
+    Route::post('user/update', 'UserController@update');//修改信息
+    Route::get('user/my-info', 'UserController@myInfo');//基本信息
+    Route::post('user/login-out', 'UserController@loginOut');//退出登入
+    Route::get('user/setup-list', 'UserController@setupList');//设置
     Route::get('user/login-view', 'UserController@loginView');//用户登入视图
     Route::post('user/login', 'UserController@login');//用户登入提交
     Route::get('user/register-view', 'UserController@registerView');//用户登入视图
@@ -81,7 +86,9 @@ Route::group(['middleware' => 'h5'], function () {
     Route::get('user/batch-register', 'UserController@batchRegister');
     Route::get('user/user-agreement', 'UserController@userAgreement'); //用户收货地址
     Route::get('user/default-address', 'UserController@defaultAddress'); //用户收货地址
+    Route::get('user/address-view', 'UserController@addressView'); //用户收货地址视图
     Route::post('user/address', 'UserController@address'); //用户收货地址
+
     Route::post('user/withdraw', 'UserController@withdraw'); //提现
     Route::post('user/set-withdraw-account', 'UserController@setWithdrawAccount'); //我的绩效
     Route::get('user/performance', 'UserController@performance'); //我的绩效
@@ -160,7 +167,7 @@ Route::group(['middleware' => 'h5'], function () {
     Route::post('user/update-post', 'UserController@updatePost');//用户注册提交表单
     //Route::get('user/register-success', 'UserController@registerSuccess');//视图
 
-    Route::any('user/update', 'UserController@update'); //用户修改（个人中心）
+    //Route::any('user/update', 'UserController@update'); //用户修改（个人中心）
     Route::any('user/binding-mobile', 'UserController@binddingMobile'); //绑定手机号（个人中心）
     Route::post('user/binding-mobile-post', 'UserController@binddingMobilePost'); //绑定手机号（个人中心）
     Route::any('wechat', 'WechatController@server');

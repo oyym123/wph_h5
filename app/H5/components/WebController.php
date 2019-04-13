@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Route;
 
 class WebController extends Controller
 {
@@ -27,7 +28,7 @@ class WebController extends Controller
         $request && $this->request = $request;
         $request->pages && $this->pages = $request->pages;
         $request->limit && $this->limit = $request->limit;
-        $this->offset = $this->pages * $this->limit;
+        $this->offset =  11;
         if ($this->limit > 100) {
             $this->limit = 100;
         }
@@ -35,6 +36,7 @@ class WebController extends Controller
         // $request->psize && $this->psize = $request->psize;
         if ($request->session()->has('user_info')) { //获取用户信息
             $user = json_decode(session('user_info'));
+//            print_r($user);exit;
             $this->userId = $user->id;
             $this->userIdent = User::find($this->userId);
             //判断账号是否可用
@@ -154,7 +156,6 @@ class WebController extends Controller
             // 送出信息
             echo "{$item}";
         }
-        exit;
     }
 
     public static function int2String($arr)
@@ -215,6 +216,20 @@ class WebController extends Controller
     public function getImage($img)
     {
         return config('qiniu.domain') . $img;
+    }
+
+    public function getCurrentAction()
+    {
+        $action = Route::current()->getActionName();
+
+        list($class, $method) = explode('@', $action);
+        return ['controller' => $class, 'method' => $method];
+    }
+
+    /** 获取方法名称 */
+    public function getMName()
+    {
+        return $this->getCurrentAction()['method'];
     }
 
 }

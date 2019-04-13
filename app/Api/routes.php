@@ -157,7 +157,7 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('user/update-post', 'UserController@updatePost');//用户注册提交表单
     //Route::get('user/register-success', 'UserController@registerSuccess');//视图
 
-    Route::any('user/update', 'UserController@update'); //用户修改（个人中心）
+   // Route::any('user/update', 'UserController@update'); //用户修改（个人中心）
     Route::any('user/binding-mobile', 'UserController@binddingMobile'); //绑定手机号（个人中心）
     Route::post('user/binding-mobile-post', 'UserController@binddingMobilePost'); //绑定手机号（个人中心）
     Route::any('wechat', 'WechatController@server');

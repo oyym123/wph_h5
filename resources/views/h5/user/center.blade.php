@@ -3,23 +3,21 @@
     首页
 @stop
 @section('title_head')
-    微排行
+    用户中心
 @stop
 @section('content')
 		<div class="content native-scroll">
             <div class="my">
-                <div class="my_head" onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=myinfo'">
+                <div class="my_head" onclick="location.href='my-info'">
                     <div class="my_head_pic">
-                        <img id="uinLogo" class="my_head_img" width="130" height="130" alt="" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/touxiang.png" style="background-color: white;">
+                        <img id="uinLogo" class="my_head_img" width="130" height="130" alt="" src="{{ $avatar}}?imageView2/3/w/130/h/130/" style="background-color: white;">
                     </div>
                     <div class="my_head_info">
-                        <h4 id="nickname" class="my_head_name ">131****7904</h4>
-                        <span class="bind_phone">ID:127028</span>
+                        <h4 id="nickname" class="my_head_name ">{{ $nickname }}</h4>
+                        <span class="bind_phone">ID: {{ $user_id }}</span>
                     </div>
                 </div>
-                <span class="setup"><i style="font-size: 23px;" onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=setuplist'" class="icon iconfont icon-settings"></i></span>
-                <span class="news" onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=news&amp;ac=news&amp;do=news'"><i style="font-size: 23px;" class="icon iconfont icon-comment"></i><span class="newnum"><div class="" style="display: none;">
-		   		0		   	</div></span></span>
+                <span class="setup"><i style="font-size: 23px;" onclick="location.href='setup-list'" class="icon iconfont icon-settings"></i></span>
                 <span class="details"><i style="font-size: 23px;" class="icon iconfont icon-right"></i></span>
             </div>
             <div class="list-block" style="margin: 0.6rem 0;">
@@ -37,19 +35,19 @@
                             <div class="row order-row">
                                 <div class="col-33 col-row" onclick="location.href='/h5/user/property'">
                                     <div class="icondiv">
-                                        <span class="property">0</span>
+                                        <span class="property">{{ $bid_currency }}</span>
                                     </div>
                                     <div class="txt">拍币&gt;</div>
                                 </div>
                                 <div class="col-33 col-row" onclick="location.href='/h5/user/property'">
                                     <div class="icondiv">
-                                        <span class="property">195</span>
+                                        <span class="property">{{$gift_currency}}</span>
                                     </div>
                                     <div class="txt">赠币&gt;</div>
                                 </div>
                                 <div class="col-33 col-row" >
                                     <div class="icondiv">
-                                        <span class="property">10</span>
+                                        <span class="property">{{ $shopping_currency }}</span>
                                     </div>
                                     <div class="txt">购物币</div>
                                 </div>
@@ -188,7 +186,7 @@
     .my_head_img{width:65px;height:65px;border:solid 2px #fff;border-radius:67px;margin-left: 30px;margin-top: 10px;}
     .my_head_info{color:white;position: absolute;top: 43px;left: 110px;}
     .my_head_name{padding:7.5px 0 5.5px;font-size:17px;line-height:1.2;color: white;}
-    .setup{color: white;position: absolute;top: .5rem;right: 2.5rem;}
+    .setup{color: white;position: absolute;top: .5rem;right: 1rem;}
     .news{color: white;position: absolute;top: .5rem;right: .8rem;}
     .details{color: white;position: absolute;top: 3rem;right: .8rem;}
     .newnum{line-height: 16px;padding: 0 3px;margin-left: 1px;border-radius: 10px;font-size: 10px;color: #f40101;background-color: white;position: absolute;left: .5rem;}
