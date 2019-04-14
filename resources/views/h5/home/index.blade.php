@@ -70,7 +70,7 @@
                                 style="transform: translate3d(0px, 0px, 0px); position: absolute; margin: 0px; padding: 0px; top: 0px;">
                                 @foreach ($last_deal as $k => $v)
                                     <li style="margin: 0px; padding: 0px; height: 51px;">
-                                        <a class="hidelong" href="">
+                                        <a class="hidelong" href="/h5/product/detail?period_id={{$v['id']}}">
                                             恭喜<b>{{ $v['nickname'] }}</b>
                                             以<em>￥{{ $v['bid_price'] }}</em>
                                             拍到{{ $v['title'] }}
@@ -85,7 +85,7 @@
                     <div class="list-block">
                         <div class="row no-gutter">
                             @foreach ($last_deal as $k => $v)
-                                <div class="col-33" onclick="location.href=''">
+                                <div class="col-33" onclick="location.href='/h5/product/detail?period_id={{$v['id']}}'">
                                     <div class="lately">
                                         @if(!empty($v['end_time']))
                                             <span class="endimg">
@@ -106,8 +106,7 @@
                         </div>
                     </div>
 
-
-                    <div class="mod_guide" style="display: none;">
+                    <div class="mod_guide" @if(!empty(session('user_info'))) style="display: none;" @endif >
                         <div class="r_red">
                             <a class="icon-close-x" id="J-close"></a>
                             <div class="ct_wrap">
@@ -115,11 +114,11 @@
                                 </div>
                                 <div class="txt" style="margin-top: 67%;">
                                     新人福利<br>
-                                    <em>200</em>元
+                                    <em>5</em>元
                                 </div>
                             </div>
                             <a class="sub_btn"
-                               href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=signin">立即领取</a>
+                               href="/h5/user/login-view">立即领取</a>
                         </div>
                     </div>
 
@@ -127,9 +126,9 @@
                     <div class="list-block goods-list">
 
                         <div class="buttons-tab">
-                            <a href="#goodslist" class="tab-link button active" onclick="get_goods(1)">热拍商品</a>
-                            <a href="#selfing" class="tab-link button" onclick="get_goods(2)">我正在拍</a>
-                            <a href="#collection" class="tab-link button " onclick="get_goods(3)">我的收藏</a>
+                            <a href="#goodslist" class="tab-link button active" onclick="get_goods(6)">正在热拍</a>
+                            <a href="#selfing" class="tab-link button" onclick="get_goods(7)">拍品推荐</a>
+                            <a href="#collection" class="tab-link button " onclick="get_goods(2)">我在拍</a>
                         </div>
 
                         <div class="tabs">
@@ -147,14 +146,14 @@
                             <div id="selfing" class="tab">
                                 <div class="" id="listing">
                                     <div class="nodata-default">
-                                        <a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=category">去逛逛</a>
+                                        <a href="/h5/product/type">去逛逛</a>
                                     </div>
                                 </div>
                             </div>
                             <div id="collection" class="tab">
                                 <div class="" id="listcol">
                                     <div class="nodata-default">
-                                        <a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=category">去逛逛</a>
+                                        <a href="/h5/product/type">去逛逛</a>
                                     </div>
                                 </div>
                             </div>
@@ -166,7 +165,7 @@
 
         </div>
 
-     </div>
+    </div>
 
     </div>
 
@@ -177,16 +176,7 @@
         <div class="gooddiv">
             <div class="collection">
                 <input type="hidden" name="cl" class="cl" value=""/>
-                <span id="{{d.data[i].product_id}}" onclick="cancelcollection(this)"
-                      class="scbutton ed cancelcollection"
-                      {{# if(d.data[i].is_favorite == 0){ }} style="display: none;" {{# } }}>
-    已收藏
-    </span>
-                <span id="{{d.data[i].product_id}}" class="scbutton addcollection" onclick="addcollection(this)"
-                      {{# if(d.data[i].is_favorite == 1){ }} style="display: none;" {{# } }}>
-    <i class="icon iconfont icon-add"></i>
-    收藏
-    </span>
+
             </div>
             <div onclick="togoods({{d.data[i].id}})">
     <span class="goodimg" id="logo{{d.data[i].img_cover}}">
@@ -322,16 +312,9 @@
         }
     </script>
 
-
     <script type="text/javascript">
-
-        $('#J-close').click(function () {
-            $('.mod_guide').hide();
-            $.post("https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=dashboard&ac=home&do=setclose", {}, function (d) {
-            }, "json");
-        })
         $(function () {
-            get_goods(1);
+            get_goods(6);
             $('#J-deallistWrapper').vTicker();
             var tt = setInterval("begin()", 9000);
             if ($(window).height() > 700) {
@@ -343,64 +326,37 @@
         }
         function get_goods(type) {
             $.get("home/get-period", {
-                id: 0,
                 type: type
             }, function (d) {
                 if (d.data.length != '') {
                     console.log(d);
                     var gettpl = document.getElementById('goodslists').innerHTML;
                     laytpl(gettpl).render(d, function (html) {
+
                         $("#listgoods").empty();
-                        if (type == 3) {
+                        if (type == 2) {
                             $("#collection").empty()
                             $("#collection").append(html);
                             $(".cl").val(1);
-                        } else if (type == 2) {
+                            if (d.length > 0) {
+                                $("#listcol").hide();
+                            }
+                        } else if (type == 7) {
+                            $("#selfing").empty();
                             $("#selfing").append(html);
                             $(".cl").val('');
+                            if (d.length > 0) {
+                                $("#listing").hide();
+                            }
                         } else {
                             $(".cl").val('');
-
                             $("#listgoods").append(html);
                         }
                     });
                 }
             }, "json");
         }
-        function addcollection(obj) {
-            var id = $(obj).attr('id');
-            location.href = "/h5/collection/collect?product_id=" + id
-        }
-        function cancelcollection(obj) {
-            var id = $(obj).attr('id');
-            $.get(
-                "/h5/collection/collect",
-                {product_id: id},
-                function (d) {
-                    var a = $(".cl").val();
-                    console.log(a);
-                    if (a == 1) {
-                        if (d['data'] != null) {
-                            var gettpl = document.getElementById('goodslists').innerHTML;
-                            laytpl(gettpl).render(d, function (html) {
-                                $("#collection").empty();
-                                $("#collection").append(html);
-                                $(".cl").val(1);
-                            });
-                        } else {
-                            $("#collection").empty();
-                            var html = ''
-                            html += '<div class="nodata-default">' +
-                                '<a href="https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=goods&ac=goods&do=category">' + '去逛逛' + '</a>' +
-                                '</div>';
-                            $("#collection").append(html);
-                        }
-                    } else {
-                        $(obj).hide();
-                        $(obj).parent('div').find('span.addcollection').show();
-                    }
-                }, "json");
-        }
+
         var businessflag = "1";
         function begin() {
             getinfo();

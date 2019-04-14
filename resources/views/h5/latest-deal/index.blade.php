@@ -15,7 +15,7 @@
                         style="transform: translate3d(0px, 0px, 0px); position: absolute; margin: 0px; padding: 0px;">
                         @foreach ($last_deal as $k => $v)
                             <li style="margin: 0px; padding: 0px; height: 40px;"
-                            ><a class="hidelong" href="">
+                            ><a class="hidelong" href="/h5/product/detail?period_id={{$v['id']}}'">
                                     恭喜<b>{{ $v['nickname'] }}</b>以<em>￥{{ $v['bid_price'] }}</em>
                                     拍到{{ $v['title'] }}
                                     <img src="{{ $v['img_cover'] }}"></a>
@@ -33,7 +33,7 @@
                 <!-- 最近成交列表加载 -->
                 @foreach ($list as $k => $v)
                     <div class="ui-block deal_list"
-                         onclick="location.href=''">
+                         onclick="location.href='/h5/product/detail?period_id={{$v['id']}}'">
                         <span class="time_line">{{ $v['end_time'] }}</span> <span class="cover ui-mark-1 ui-traded">
                                 <img src="{{ $v['img_cover'] }}">
                             </span>
@@ -46,7 +46,7 @@
                         <span class="save_price">
                                  <em>{{ $v['save_price'] }}%</em>
                                  节省
-                                 <a href="javascript:;" class="bid_btn"></a>
+                                 <a onclick="nextPeriod({{$v['product_id']}})"  class="bid_btn"></a>
                              </span>
                     </div>
                 @endforeach
@@ -72,7 +72,7 @@
         <span class="deal_price">成交价：<em>￥{{d[i].bid_price}}</em></span>
         </span>
             <span class="save_price"><em>{{d[i].save_price}}</em>节省
-                <a href="/h5/period/next-period?product_id={{d[i].product_id}}" class="bid_btn"></a></span>
+                <a href="javascript:;" onclick="nextPeriod({{d[i].product_id}})"  class="bid_btn"></a></span>
         </div>
         {{# } }}
         @endverbatim
@@ -123,6 +123,15 @@
             $('#J-deallistWrapper').vTicker();
             $.init();
         });
+        //前往最新的一期
+        function nextPeriod(product_id){
+            $.get("/h5/period/next-period", {product_id: product_id}, function (d) {
+                if(d.code == 0){
+                    d = d.data;
+                    location.href='/h5/product/detail?period_id='+d.period_id
+                }
+            }, "json");
+        }
     </script>
     @parent
 @stop

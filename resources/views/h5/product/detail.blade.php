@@ -47,18 +47,15 @@
                     <div class="banner swiper-container-horizontal swiper-container-android" id="ban_adv">
                         <div class="swiper-wrapper"
                              style="transform: translate3d(-1800px, 0px, 0px); transition-duration: 0ms;">
-
-
                             @foreach ($detail['imgs'] as $k => $v)
-                                <div class="swiper-slide"
-                                     data-swiper-slide-index="{{ $k }}" style="width: 360px;height:50%"><img
-                                            src="{{ $v }}">
+                                <div class="swiper-slide" data-swiper-slide-index="{{ $k }}"
+                                     style="width: 360px;height:45%">
+                                     <span @if($detail['period_status'] == 1) class="endimg" @endif>
+                                    <img src="{{ $v }}">
+                                     </span>
                                 </div>
                             @endforeach
-
                         </div>
-
-
                         <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"><span
                                     class="swiper-pagination-bullet"></span><span
                                     class="swiper-pagination-bullet"></span><span
@@ -224,7 +221,8 @@
                             </span>
                             |
                             <span style="position:relative;left: 2.5rem"> 收藏
-                                <span style="color:#000;">  {{ $detail['collection_users_count'] }}</span> 人 </span>
+                                <span id="collect_num"
+                                      style="color:#000;">  {{ $detail['collection_users_count'] }}</span> 人 </span>
                         </div>
                     </div>
 
@@ -451,63 +449,6 @@
                         <div id="selfing" class="tab">
 
 
-                            <div class="wrap">
-                                <div class="mui-content mui-scroll-wrapper" id="mainContainer" data-pullrefresh="1">
-                                    <div class="mui-pull-top-pocket">
-                                        <div class="mui-pull">
-                                            <div class="mui-pull-loading mui-icon mui-icon-pulldown"></div>
-                                            <div class="mui-pull-caption">下拉可以刷新</div>
-                                        </div>
-                                    </div>
-                                    <div class="mui-scroll"
-                                         style="transform: translate3d(0px, -8px, 0px) translateZ(0px); transition-duration: 0ms;">
-                                        <header class="ui-navigation"><a class="icon-back mui-action-back"></a>晒单<a href="share_my.html"
-                                                                                                                    class="icon-toshare"></a>
-                                        </header>
-                                        <div class="share_list" id="J-shareList">
-                                            <div class="share_li">
-                                                <div class="cover"><img
-                                                            src="https://qnimg.gogobids.com/avatar/b1b0aeb05bae50bb015bae5498c23e58?imageView2/1/w/90/h/90">
-                                                </div>
-                                                <div class="title"><span class="name">好运来哟</span><span class="time">2019-03-29 00:17:21</span></div>
-                                                <div class="share_info" data-id="50511"><h3 class="hidelong">泰福高 3层304不锈钢保温饭盒1.5L 颜色随机</h3>
-                                                    <div class="desc">非常满意 设计完美合理 非常方便</div>
-                                                    <div class="imgs"><img
-                                                                src="https://qnimg.gogobids.com/FoSZbaYAweNts9nn39QzJx6t8BEp?imageView2/1/w/150/h/150"><img
-                                                                src="https://qnimg.gogobids.com/FjcyYl4VEJu-E-7sKw8OQN8LsFid?imageView2/1/w/150/h/150">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="share_li">
-                                                <div class="cover"><img
-                                                            src="https://qnimg.gogobids.com/avatar/b1b0aeb05b5c15fa015b5c1e800b09bf?imageView2/1/w/90/h/90">
-                                                </div>
-                                                <div class="title"><span class="name">睡神</span><span class="time">2019-03-29 00:14:02</span></div>
-                                                <div class="share_info" data-id="50496"><h3 class="hidelong">飞利浦 电动剃须刀 S5082/61</h3>
-                                                    <div class="desc">宝贝很满意，是正品，物流神速赞一个</div>
-                                                    <div class="imgs"><img
-                                                                src="https://qnimg.gogobids.com/Fv4dMhRS_Q9xWIVDGzbqckrpwa1o?imageView2/1/w/150/h/150"><img
-                                                                src="https://qnimg.gogobids.com/FjVAxu-RO8Pjr8xi8xfQOVd519Ek?imageView2/1/w/150/h/150">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="mui-pull-bottom-pocket mui-block mui-visibility">
-                                            <div class="mui-pull">
-                                                <div class="mui-pull-loading mui-icon mui-spinner mui-hidden"></div>
-                                                <div class="mui-pull-caption mui-pull-caption-down"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mui-scrollbar mui-scrollbar-vertical" style="transition-duration: 500ms; opacity: 0;">
-                                        <div class="mui-scrollbar-indicator"
-                                             style="transition-duration: 0ms; display: block; height: 273px; transform: translate3d(0px, 1px, 0px) translateZ(0px);"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-
                         </div>
                         <div id="collection" class="tab">
                             <div class="" id="listcol" style="padding: 1rem;">
@@ -560,12 +501,14 @@
                 {{--<i class="icon iconfont icon-service"></i>--}}
                 {{--<p>客服</p>--}}
                 {{--</a>--}}
+
                 <a class="botcellz collent" onclick="addcollection()" style="border-right:1px solid #dfdfdf;">
                     <i class="icon iconfont icon-like"></i>
                     <p id="sctxt">收藏</p>
                 </a>
+
                 <a class="botcellz canclcollent" onclick="cancelcollection()"
-                   style="border-right:1px solid #dfdfdf; display: none; ">
+                   style="border-right:1px solid #dfdfdf;  display: none; ">
                     <i class="icon iconfont icon-likefill" style="color: #EF1544;"></i>
                     <p>已收藏</p>
                 </a>
@@ -597,28 +540,15 @@
 
                     <div class="botcelly offer">
                         <p id="offertext" style="position: relative;top: 6px;">出价</p>
-                        <p style="font-size: 12px;position: relative;top: -2px;">1拍币/次</p>
+                        <p style="font-size: 12px;position: relative;top: -2px;">{{ $detail['bid_step'] }}拍币/次</p>
                         <input id="surtimes" type="hidden" value="0">
                     </div>
                 </div>
                 <div class="auced" style="display: none;"
-                     onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=goods&amp;ac=goods&amp;do=detail&amp;id=17'">
+                     onclick="nextPeriod({{ $detail['product_id'] }})">
                     <div>前往下期</div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="diy-layer external">
-        <div class="weui_mask" id="customermask" style="display: none;">
-        </div>
-        <div class="weui_dialog" id="customerdia" style="display: none;">
-            <p class="dialog-title">长按识别二维码</p>
-            <div class="img-box">
-                <img src=""
-                     style="max-width:100%">
-            </div>
-            <span class="vux-close">
-	 </span>
         </div>
     </div>
     <script type="text/html" id="lateauc">
@@ -642,20 +572,20 @@
 
     <script type="text/html" id="lists">
         @verbatim
-        {{# if(d.data[0]){ }}
+        {{# if(d[0]){ }}
         <div style="color: #EF1544;"><i class="icon iconfont icon-mobile"></i><span
-                    class="infoname">{{d.data[0].nickname}}</span><span class="infostatus">领先</span><span
-                    class="infoaddress">{{d.data[0].area}}</span><span class="infoprice">￥{{d.data[0].bid_price}}</span>
+                    class="infoname">{{d[0].nickname}}</span><span class="infostatus">领先</span><span
+                    class="infoaddress">{{d[0].area}}</span><span class="infoprice">￥{{d[0].bid_price}}</span>
         </div>
-        {{# if(d.data[1]){ }}
-        <div><i class="icon iconfont icon-mobile"></i><span class="infoname">{{d.data[1].nickname}}</span><span
-                    class="infostatus">出局</span><span class="infoaddress">{{d.data[1].area}}</span><span
-                    class="infoprice">￥{{d.data[1].bid_price}}</span></div>
+        {{# if(d[1]){ }}
+        <div><i class="icon iconfont icon-mobile"></i><span class="infoname">{{d[1].nickname}}</span><span
+                    class="infostatus">出局</span><span class="infoaddress">{{d[1].area}}</span><span
+                    class="infoprice">￥{{d[1].bid_price}}</span></div>
         {{# } }}
-        {{# if(d.data[2]){ }}
-        <div><i class="icon iconfont icon-mobile"></i><span class="infoname">{{d.data[2].nickname}}</span><span
-                    class="infostatus">出局</span><span class="infoaddress">{{d.data[2].area}}</span><span
-                    class="infoprice">￥{{d.data[2].bid_price}}</span></div>
+        {{# if(d[2]){ }}
+        <div><i class="icon iconfont icon-mobile"></i><span class="infoname">{{d[2].nickname}}</span><span
+                    class="infostatus">出局</span><span class="infoaddress">{{d[2].area}}</span><span
+                    class="infoprice">￥{{d[2].bid_price}}</span></div>
         {{# } }}
         {{# }else{ }}
         <div style="text-align: center;color: #EF1544;">暂无人出价</div>
@@ -663,8 +593,43 @@
         @endverbatim
     </script>
     <script>
+        connect();
+        // 连接服务端
+        function connect() {
+            // 创建websocket
+            @if(PHP_OS == 'WINNT') //本地测试专用
+                ws = new WebSocket("ws://127.0.0.1:8081");
+            @else //线上环境
+                ws = new WebSocket("ws://"+ {{ $_SERVER['HTTP_HOST'] }} +":8081");
+            @endif
+
+            // 当有消息时根据消息类型显示不同信息
+            ws.onmessage =  function(event) {
+              //  console.log(event.data);
+            };
+
+            ws.onclose = function() {
+                console.log("连接关闭，定时重连");
+              //  connect();
+            };
+            ws.onerror = function() {
+                console.log("出现错误");
+            };
+        }
+
+        //前往最新的一期
+        function nextPeriod(product_id) {
+            $.get("/h5/period/next-period", {product_id: product_id}, function (d) {
+                if (d.code == 0) {
+                    d = d.data;
+                    location.href = '/h5/product/detail?period_id=' + d.period_id
+                }
+            }, "json");
+        }
+
         var noticeflag = 1;
         var finalmid = 8;
+
         function begin() {
             var begintime = $("#sytime").attr('sytime');
             var txt = '';
@@ -701,52 +666,53 @@
         }
 
         function getinfo() {
-            $.post("/h5/bid/newest-bid", {periods: "{{ $detail['id'] }}"}, function (data) {
-                console.log(data);
-                if (data.f == "1") {
-                    $('#endflag').val(1);
-                } else if (data.f == "0") {
-                    if (finalmid != data.finalmid) {
-                        finalmid = data.finalmid;
-                        if (data.c) {
-                            $('#prtxt1').text(data.c);
-                        } else {
-                            $('#prtxt1').text('0.00');
-                        }
-                        $('#prtxt2').text(data.prtxt);
-                        $('#finalname').text(data.finalname);
-                        $('#auctimes').text(data.f);
-                        $('#sytime').attr('sytime', data.countdown);
-                        var gettpl = document.getElementById('lists').innerHTML;
-                        laytpl(gettpl).render(data, function (html) {
-                            $("#infolist").empty();
-                            $("#infolist").append(html);
-                        });
-                        if (data.auctimes > 0) {
-                            $('.havelist').show();
-                            $('.nolist').hide();
-                        }
-                        if (data.finalmid == "") {
-                            if (noticeflag) {
-                                noticeflag = 0;
-                                $.toast('自动出价成功');
-                                var surtimes = $('#surtimes').val();
-                                var newsurtimes = surtimes - 1;
-                                $('#surtimes').val(newsurtimes);
-                                $('#surtime').text(newsurtimes);
-                                if (newsurtimes < 1) {
-                                    $('.offer').css('background-color', '#ed414a');
-                                    $('#offertext').text('出价');
-                                    $('.selnum').show();
-                                    $('.noselnum').hide();
+                // 当有消息时根据消息类型显示不同信息
+                ws.onmessage =  function(event) {
+                  var  data = JSON.parse(event.data)
+                    if(data.period_id == "{{ $detail['id'] }}"){
+                        if (data.content[0].status == "1") {
+                            $('#endflag').val(1);
+                        } else if (data.content[0].status == "0") {
+                                if (data.content[0].bid_price) {
+                                    $('#prtxt1').text(data.content[0].bid_price);
+                                } else {
+                                    $('#prtxt1').text('0.00');
+                                }
+//                                $('#prtxt2').text(data.prtxt);
+//                                $('#finalname').text(data.finalname);
+                                $('#auctimes').text(data.f);
+                                $('#sytime').attr('sytime',data.content[0].countdown);
+                                var gettpl = document.getElementById('lists').innerHTML;
+                                laytpl(gettpl).render(data.content, function (html) {
+                                    $("#infolist").empty();
+                                    $("#infolist").append(html);
+                                });
+//                                if (data.auctimes > 0) {
+//                                    $('.havelist').show();
+//                                    $('.nolist').hide();
+//                                }
+                                if (1) {
+                                    if (1) {
+                                        noticeflag = 0;
+                                        $.toast('自动出价成功');
+                                        var surtimes = $('#surtimes').val();
+                                        var newsurtimes = surtimes - 1;
+                                        $('#surtimes').val(newsurtimes);
+                                        $('#surtime').text(newsurtimes);
+                                        if (1) {
+                                            $('.offer').css('background-color', '#ed414a');
+                                            $('#offertext').text('出价');
+                                            $('.selnum').show();
+                                            $('.noselnum').hide();
+                                        }
+                                    }
+                                } else {
+                                    noticeflag = 1;
                                 }
                             }
-                        } else {
-                            noticeflag = 1;
                         }
-                    }
-                }
-            }, "json");
+
+                };
         }
 
         $(function () {
@@ -762,16 +728,17 @@
                     if (offtimes.length == 0 || goodsid.length == 0 || perid.length == 0) {
                         $.alert('页面错误，请刷新重试');
                     } else {
-                        $.post("https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=order&ac=auction&do=offer", {
-                            offtimes: offtimes,
-                            goodsid: goodsid,
-                            perid: perid,
+                        $.post("/h5/bid/bidding", {
+                            times: offtimes,
+                            product_id: goodsid,
+                            period_id: perid,
                         }, function (d) {
-                            if (d.result == 1) {
+                            d = d.data
+                            if (d.status == 10 || d.status == 20 ) {
                                 $.toast("出价成功");
                                 noticeflag = 0;
-                                $('#auccoin').text(d.auc);
-                                $('#givecoin').text(d.give);
+                                $('#auccoin').text(d.used_real_bids);
+                                $('#givecoin').text(d.used_gift_bids);
                                 if (d.newsurtime) {
                                     $('#surtimes').val(d.newsurtime);
                                     $('#surtime').text(d.newsurtime);
@@ -782,11 +749,11 @@
                                 }
                             } else if (d.result == 3) {
                                 location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=signin";
-                            } else if (d.result == 2) {
-                                $.toast(d.msg);
-                            } else if (d.result == 4) {
-                                $.alert(d.msg, function () {
-                                    location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=recharge";
+                            } else if (d.result == 40) {
+                                $.toast(d.message);
+                            } else if (d.status == 30) {
+                                $.alert('您的余额不足', function () {
+                                    location.href = "/h5/pay/recharge-center";
                                 });
                             } else {
                                 $.toast("未知错误");
@@ -875,34 +842,41 @@
             }, "json");
         }
 
+        @if($detail['is_favorite'] == 1)
+            $('.collent').hide();
+        $('.canclcollent').show();
+        @endif
+
         function addcollection(e) {
             var id = "{{ $detail['product_id'] }}";
             $.ajax({
                 cache: true,
-                type: "POST",
-                url: "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=collection",
+                type: "GET",
+                url: "/h5/collection/collect",
                 data: {
-                    'id': id,
+                    'product_id': id,
                 },
                 success: function (data) {
                     $('.collent').hide();
                     $('.canclcollent').show();
+                    $('#collect_num').text(($('#collect_num').text()) * 1 + 1)
                 }
             });
         }
 
         function cancelcollection() {
-            var id = "17";
+            var id = "{{ $detail['product_id'] }}";
             $.ajax({
                 cache: true,
-                type: "POST",
-                url: "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=cancelcollection",
+                type: "GET",
+                url: "/h5/collection/collect",
                 data: {
-                    'id': id,
+                    'product_id': id,
                 },
                 success: function (data) {
                     $('.collent').show();
                     $('.canclcollent').hide();
+                    $('#collect_num').text(($('#collect_num').text()) * 1 - 1)
                 }
             });
         }
@@ -1094,48 +1068,6 @@
             display: inline-block;
         }
     </style>
-    <script>
-        wx.ready(function () {
-            var shareData = {
-                title: "Apple iPhone X 64GB 颜色随机",
-                desc: "[粉丝昵称]倾力推荐，赶快来领取！",
-                link: "",
-                imgUrl: "http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/kF2nPnXnYxmWk2kMgxr1RFwM923rR4.png",
-            };
-            //分享朋友
-            wx.onMenuShareAppMessage({
-                title: shareData.title,
-                desc: shareData.desc,
-                link: shareData.link,
-                imgUrl: shareData.imgUrl,
-                trigger: function (res) {
-                },
-                success: function (res) {
-                    shareover();
-                },
-                cancel: function (res) {
-                },
-                fail: function (res) {
-                    alert(JSON.stringify(res));
-                }
-            });
-            //朋友圈
-            wx.onMenuShareTimeline({
-                title: shareData.title,
-                link: shareData.link,
-                imgUrl: shareData.imgUrl,
-                trigger: function (res) {
-                },
-                success: function (res) {
-                    shareover();
-                },
-                cancel: function (res) {
-                },
-                fail: function (res) {
-                    alert(JSON.stringify(res));
-                }
-            });
-        });
-    </script>
+
     @parent
 @stop

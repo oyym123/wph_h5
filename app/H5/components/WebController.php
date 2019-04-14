@@ -15,7 +15,7 @@ class WebController extends Controller
 {
     public $enableCsrfValidation = false;
     public $offset = 0;
-    public $limit = 8;
+    public $limit = 10;
     public $pages = 0;
     public $userId = 0;
     public $userIdent = 0;
@@ -28,7 +28,7 @@ class WebController extends Controller
         $request && $this->request = $request;
         $request->pages && $this->pages = $request->pages;
         $request->limit && $this->limit = $request->limit;
-        $this->offset =  11;
+        $this->offset = $this->pages * $this->limit;
         if ($this->limit > 100) {
             $this->limit = 100;
         }

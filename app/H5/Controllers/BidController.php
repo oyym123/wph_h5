@@ -37,6 +37,7 @@ class BidController extends WebController
     public function bidding()
     {
         $this->auth();
+
         if ($this->request->times == 1 || empty($this->request->times)) {
             $bid = new Bid();
             $bid->userIdent = $this->userIdent;
@@ -158,5 +159,36 @@ class BidController extends WebController
     {
         //长链接
         $ws = new BidSocket("127.0.0.1", "8081");
+    }
+
+
+    /** 计划任务视图 */
+    public function scheduledTasks()
+    {
+        return view('/h5/bid/crontab');
+    }
+
+    /** 计划任务执行 */
+    public function crontabStart()
+    {
+        $request = $this->request;
+        switch ($request->type) {
+            case 1: //机器人竞价
+                $bid = new \App\Models\Bid();
+               echo  $bid->robotBid();
+                break;
+            case 2: //十元竞价
+                $bid = new \App\Models\Bid();
+               echo  $bid->robotBid(5);
+                break;
+            case 3: //自动竞价
+                $bid = new \App\Models\AutoBid();
+                echo  $bid->bid();
+                break;
+            case 4: //检测结果
+                $bid = new \App\Models\Bid();
+                echo  $bid->checkoutBid();
+                break;
+        }
     }
 }

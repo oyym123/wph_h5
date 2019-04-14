@@ -33,7 +33,7 @@ class UserController extends WebController
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $nologin = ['registerView', 'loginView', 'login', 'register'];
+        $nologin = ['registerView', 'loginView', 'login', 'register', 'checkSms'];
         //在该数组里的方法名，都不需要身份验证
         if (!in_array($this->getMName(), $nologin)) {
             $this->auth();
@@ -162,7 +162,7 @@ class UserController extends WebController
     public function update()
     {
         $request = $this->request;
-        $data['nickname'] = $request->nickname;
+        $data['nickname'] = $request->nickname ?: $this->userIdent->nickname;
         $img = Upload::oneImg($this->request->img);
         $data['avatar'] = $img ?: $this->userIdent->avatar;
         $user = DB::table('users')->where('id', $this->userId)->update($data);

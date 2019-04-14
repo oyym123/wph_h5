@@ -125,14 +125,19 @@ class Bid extends Common
                 $redis->setex('period@countdown' . $period->id, $product->countdown_length, $data['bid_price']);
             }
             $data['id'] = DB::table('bid')->insertGetId($data);
+            $data['user_id'] = $this->userIdent->id;
             $this->setLastPersonId($redis, $data);
             $data['province'] = $this->userIdent->province;
             $data['city'] = $this->userIdent->city;
             $this->setThreePersonId($redis, $data);
             //加入竞拍队列，进入数据库Bid表,暂时不启用redis队列
             //dispatch(new BidTask($redis, $data));
+            $expend = (new Expend())->periodExpend($period->id, $this->userId);
             $res = [
-                'status' => 10,
+                'status' => 10, //提交竞拍信息成功
+                'used_real_bids' => $expend['bid_currency'],
+                'used_gift_bids' => $expend['gift_currency'],
+                'used_money' => number_format($expend['bid_currency'], 2),
             ];
             $this->socket($period->id);
             return $res;
@@ -417,6 +422,7 @@ class Bid extends Common
                 $this->delCache('period@allInProgress' . Period::STATUS_IN_PROGRESS);
                 //redis缓存也改变
                 $data['id'] = $bid->id;
+                $data['user_id'] = $robotPeriod->user_id;
                 $this->setLastPersonId($redis, $data);
                 $data['province'] = $robotPeriod->province;
                 $data['city'] = $robotPeriod->city;
@@ -424,6 +430,7 @@ class Bid extends Common
             } else {
                 $redis->setex('period@countdown' . $period->id, $product->countdown_length, $data['bid_price']);
                 $data['id'] = DB::table('bid')->insertGetId($data);
+                $data['user_id'] = $robotPeriod->user_id;
                 $this->setLastPersonId($redis, $data);
 
                 $data['province'] = $robotPeriod->province;
@@ -434,9 +441,9 @@ class Bid extends Common
             }
             //当有用户访问的时候才进行广播
             $flag = $redis->hget('visit@PeriodRecord', $period->id);
-            if ($flag >= 1) {
+            //if ($flag >= 1) {
                 $this->socket($period->id);
-            }
+            //}
         }
     }
 
@@ -461,6 +468,7 @@ class Bid extends Common
                             'area' => $bid['province'] . $bid['city'],
                             'countdown' => ($x = $redis->ttl('period@countdown' . $bid['period_id'])) > 0 ? $x : 0,
                             'bid_type' => $key == 0 ? self::TYPE_LEAD : self::TYPE_OUT, //0 =出局 1=领先
+                            'user_id' => $bid['user_id']
                         ];
                     }
                 }
@@ -479,6 +487,7 @@ class Bid extends Common
                         'area' => $user->province . $user->city,
                         'countdown' => ($x = $redis->ttl('period@countdown' . $bid->period_id)) > 0 ? $x : 0,
                         'bid_type' => $key == 0 ? self::TYPE_LEAD : self::TYPE_OUT, //0 =出局 1=领先
+                        'user_id' => $bid['user_id']
                     ];
                 }
             }
@@ -495,6 +504,7 @@ class Bid extends Common
                     'countdown' => '',
                     'area' => $user->province . $user->city,
                     'bid_type' => $key == 0 ? self::TYPE_LEAD : self::TYPE_OUT, //0 =出局 1=领先
+                    'user_id' => $bid['user_id']
                 ];
             }
         }
@@ -584,8 +594,11 @@ class Bid extends Common
     public function socket($periodId)
     {
         set_time_limit(0);
-        exec("/usr/bin/node /usr/local/node/client.js $periodId");
-        //shell_exec("node G:node/client.js $periodId");
+        if (PHP_OS == 'WINNT') { //本地测试使用
+            shell_exec("node G:node/client.js $periodId");
+        }else{
+            exec("/usr/bin/node /usr/local/node/client.js $periodId");
+        }
     }
 
     /** 清除数据，防止数据过大影响查询 */

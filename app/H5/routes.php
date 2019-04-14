@@ -57,6 +57,8 @@ Route::group(['middleware' => 'h5'], function () {
     Route::get('period/next-period', 'PeriodController@nextPeriod');
 
     /** 竞拍 */
+    Route::get('bid/scheduled-tasks', 'BidController@scheduledTasks'); //本地测试计划任务
+    Route::post('bid/crontab-start', 'BidController@crontabStart'); //本地测试计划任务
     Route::post('bid/bidding', 'BidController@bidding');
     Route::get('bid/record', 'BidController@record');
     Route::post('bid/auto', 'BidController@auto');
