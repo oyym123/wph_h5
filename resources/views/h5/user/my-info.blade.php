@@ -15,7 +15,6 @@
                     <span style="color: #999999;" class="icon icon-left"></span>
                 </a>
                 <h1 class="title">基本信息</h1>
-
             </header>
             <style>
                 .file-box {
