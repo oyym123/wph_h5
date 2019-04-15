@@ -230,49 +230,6 @@
         location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=order&ac=userorder&do=payorder&id="+orderid;
     }
 </script>
-<script>
-    wx.ready(function () {
-        var shareData = {
-            title: "iPhoneX仅需一折即可到手，快来抢购！！！",
-            desc: "131****7904倾力推荐，赶快来领取！",
-            link: "",
-            imgUrl: "http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/JkV20zARKqBd2buaDDmVbu7VdJ8cdc.png",
-        };
-        //分享朋友
-        wx.onMenuShareAppMessage({
-            title: shareData.title,
-            desc: shareData.desc,
-            link: shareData.link,
-            imgUrl:shareData.imgUrl,
-            trigger: function (res) {
-            },
-            success: function (res) {
-                shareover();
-            },
-            cancel: function (res) {
-            },
-            fail: function (res) {
-                alert(JSON.stringify(res));
-            }
-        });
-        //朋友圈
-        wx.onMenuShareTimeline({
-            title: shareData.title,
-            link: shareData.link,
-            imgUrl:shareData.imgUrl,
-            trigger: function (res) {
-            },
-            success: function (res) {
-                shareover();
-            },
-            cancel: function (res) {
-            },
-            fail: function (res) {
-                alert(JSON.stringify(res));
-            }
-        });
-    });
-</script>
 
         @parent
         @stop
