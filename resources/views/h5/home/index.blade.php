@@ -225,6 +225,11 @@
         @endverbatim
     </script>
     <script>
+        $('#J-close').click(function () {
+            $('.mod_guide').hide();
+
+        })
+
         pages = 0;
         $(function () {
             var myscroll = new iScroll("wrapper", {

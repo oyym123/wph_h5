@@ -88,7 +88,16 @@ class AutoBid extends Common
                 'period_id' => $request->period_id,
             ];
             (new Expend())->bidPay($expend);
-            return ['status' => 20];
+
+            $expend = (new Expend())->periodExpend($period->id, $this->userId);
+            $res = [
+                'status' => 20, //提交自动竞拍信息成功
+                'used_real_bids' => $expend['bid_currency'],
+                'used_gift_bids' => $expend['gift_currency'],
+                'used_money' => number_format($expend['bid_currency'], 2),
+                'total_times' => $request->times
+            ];
+            return $res;
         }
     }
 
@@ -103,12 +112,10 @@ class AutoBid extends Common
 
         foreach ($autoBids as $item) {
             if ($bid->getLastBidInfo($redis, $item->period_id, 'user_id') != $item->user_id) { //当最后一个竞拍人的id不是自己的时候，才可以自动竞拍
-               
-				$bid->userIdent = User::find($item->user_id);
-				 
+                $bid->userIdent = User::find($item->user_id);
                 $bid->userId = $item->user_id;
                 $bid->amount_type = $item->amount_type;
-                $res = $bid->personBid($item->period_id, 1);
+                $res = $bid->personBid($item->period_id, 1, $item);
                 if ($res['status'] == 10) { //竞拍失败，减少次数
                     if ($item->remain_times == 1) {//表示剩最后一次的时候，转换状态
                         DB::table('auto_bid')->where(['id' => $item->id])->update(['status' => self::STATUS_OVER]);

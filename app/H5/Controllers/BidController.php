@@ -36,7 +36,10 @@ class BidController extends WebController
      */
     public function bidding()
     {
-        $this->auth();
+        if (empty($this->userId)) {
+            self::showMsg(['status' => 100]);//跳转登入页
+            exit;
+        }
 
         if ($this->request->times == 1 || empty($this->request->times)) {
             $bid = new Bid();
@@ -175,19 +178,19 @@ class BidController extends WebController
         switch ($request->type) {
             case 1: //机器人竞价
                 $bid = new \App\Models\Bid();
-               echo  $bid->robotBid();
+                echo $bid->robotBid();
                 break;
             case 2: //十元竞价
                 $bid = new \App\Models\Bid();
-               echo  $bid->robotBid(5);
+                echo $bid->robotBid(5);
                 break;
             case 3: //自动竞价
                 $bid = new \App\Models\AutoBid();
-                echo  $bid->bid();
+                echo $bid->bid();
                 break;
             case 4: //检测结果
                 $bid = new \App\Models\Bid();
-                echo  $bid->checkoutBid();
+                echo $bid->checkoutBid();
                 break;
         }
     }

@@ -42,7 +42,7 @@ class Bid extends Common
     protected $table = 'bid';
 
     /** 真人竞拍 */
-    public function personBid($periodId, $auto = 0)
+    public function personBid($periodId, $auto = 0, $autoObj)
     {
         $redis = app('redis')->connection('first');
         if ($auto == 0) { //表示没有自动竞拍，则记录支出,进行正常收费
@@ -64,7 +64,7 @@ class Bid extends Common
             $price = round($lastPrice + $product->bid_step, 2);
         } else {
             //$price = round($product->bid_step, 2);
-			$price = round($product->init_price + $product->bid_step, 2);
+            $price = round($product->init_price + $product->bid_step, 2);
         }
 
         DB::table('period')->where(['id' => $periodId])->update([
@@ -91,8 +91,6 @@ class Bid extends Common
         ];
 
         if ($auto == 0) { //表示没有自动竞拍，则记录支出,进行正常收费
-
-
             //判断消耗的金额类型
             if ($this->userIdent->gift_currency >= $data['pay_amount']) {
                 $data['pay_type'] = self::TYPE_GIFT_CURRENCY; //当有赠币时，优先使用
@@ -117,6 +115,11 @@ class Bid extends Common
                 'period_id' => $periodId,
             ];
             (new Expend())->bidPay($expend);
+            $remainTimes = 0;
+            $totalTimes = 0;
+        } else {
+            $remainTimes = $autoObj->remain_times;
+            $totalTimes = $autoObj->times;
         }
 
         if ($data['status'] == self::STATUS_FAIL) {
@@ -129,6 +132,8 @@ class Bid extends Common
             $this->setLastPersonId($redis, $data);
             $data['province'] = $this->userIdent->province;
             $data['city'] = $this->userIdent->city;
+            $data['remain_times'] = $remainTimes; //自动竞拍剩余次数
+            $data['total_times'] = $totalTimes; //自动竞拍总次数
             $this->setThreePersonId($redis, $data);
             //加入竞拍队列，进入数据库Bid表,暂时不启用redis队列
             //dispatch(new BidTask($redis, $data));
@@ -202,22 +207,22 @@ class Bid extends Common
                 $product = $products->getCacheProduct($period->product_id);
                 //当投标的价格小于售价时 , 则一直都不能竞拍成功
                 $lastBid = $this->getLastBidInfo($redis, $period->id);
-				/*
-				if($product->init_price >0){
+                /*
+                if($product->init_price >0){
                     $tem_rate = ($lastBid->bid_price - $product->init_price) / $product->init_price;
                 }else{
                     $tem_rate = $lastBid->bid_price / $product->sell_price;
                 }
-				*/
+                */
                 //($lastBid->bid_price / $product->sell_price)
                 $isSucc = false;
                 if ($lastBid->is_real == Period::REAL_PERSON_YES) {
-                    $productARR = [328,330,331,334,337,340,343,344,345];
-                    if(in_array($period->product_id, $productARR)){
+                    $productARR = [328, 330, 331, 334, 337, 340, 343, 344, 345];
+                    if (in_array($period->product_id, $productARR)) {
                         $z = $redis->ttl('realSuccess@userId' . $lastBid->user_id);
                         if ($z < 0) {//表示没有拍中过
                             $num = DB::table('bid')->where(['user_id' => $lastBid->user_id])->count();
-                            if($num>=3){
+                            if ($num >= 3) {
                                 //$redis->setex('realPersonBidEnd@periodId' . $period->id, 86400 * 10, $period->id);
                                 $redis->setex('realPersonBid@periodId' . $period->id, 86400 * 10, $period->id);
                                 $redis->setex('realSuccess@userId' . $lastBid->user_id, 86400 * 10, $lastBid->user_id);
@@ -226,13 +231,13 @@ class Bid extends Common
                         }
                     }
                 }
-				if ( ($lastBid->bid_price / $product->sell_price)> $period->robot_rate) {
-                //if ( (($lastBid->bid_price - $product->init_price) / $product->init_price)> $period->robot_rate) {
+                if (($lastBid->bid_price / $product->sell_price) > $period->robot_rate) {
+                    //if ( (($lastBid->bid_price - $product->init_price) / $product->init_price)> $period->robot_rate) {
                     if ($lastBid->is_real == Period::REAL_PERSON_NO) {//当为机器人时可以停止
                         $redis->setex('realPersonBid@periodId' . $period->id, 86400 * 10, $period->id);
                         $redis->setex('period@robotSuccess' . $period->id, 10000, 'success');
                     } else {
-                        if($isSucc === false){
+                        if ($isSucc === false) {
                             $redis->del('realPersonBid@periodId' . $period->id);
                             $redis->del('period@robotSuccess' . $period->id);
                         }
@@ -382,7 +387,7 @@ class Bid extends Common
                 $price = round($lastPrice + $product->bid_step, 2);
             } else {
                 //$price = round($product->bid_step, 2);
-				$price = round($product->init_price + $product->bid_step, 2);
+                $price = round($product->init_price + $product->bid_step, 2);
             }
             DB::table('period')->where(['id' => $period->id])->update(['bid_price' => $price]);//自增0.1
             $rate = $period->bid_price / $product->sell_price;
@@ -442,7 +447,7 @@ class Bid extends Common
             //当有用户访问的时候才进行广播
             $flag = $redis->hget('visit@PeriodRecord', $period->id);
             //if ($flag >= 1) {
-                $this->socket($period->id);
+            $this->socket($period->id);
             //}
         }
     }
@@ -468,7 +473,9 @@ class Bid extends Common
                             'area' => $bid['province'] . $bid['city'],
                             'countdown' => ($x = $redis->ttl('period@countdown' . $bid['period_id'])) > 0 ? $x : 0,
                             'bid_type' => $key == 0 ? self::TYPE_LEAD : self::TYPE_OUT, //0 =出局 1=领先
-                            'user_id' => $bid['user_id']
+                            'user_id' => $bid['user_id'],
+                            'remain_times' => isset($bid['remain_times']) ? $bid['remain_times'] : 0, //自动竞拍剩余次数
+                            'total_times' => isset($bid['total_times']) ? $bid['total_times'] : 0,   //自动竞拍总次数
                         ];
                     }
                 }
@@ -487,7 +494,9 @@ class Bid extends Common
                         'area' => $user->province . $user->city,
                         'countdown' => ($x = $redis->ttl('period@countdown' . $bid->period_id)) > 0 ? $x : 0,
                         'bid_type' => $key == 0 ? self::TYPE_LEAD : self::TYPE_OUT, //0 =出局 1=领先
-                        'user_id' => $bid['user_id']
+                        'user_id' => $bid['user_id'],
+                        'remain_times' => 0, //自动竞拍剩余次数
+                        'total_times' => 0,   //自动竞拍总次数
                     ];
                 }
             }
@@ -504,7 +513,9 @@ class Bid extends Common
                     'countdown' => '',
                     'area' => $user->province . $user->city,
                     'bid_type' => $key == 0 ? self::TYPE_LEAD : self::TYPE_OUT, //0 =出局 1=领先
-                    'user_id' => $bid['user_id']
+                    'user_id' => $bid['user_id'],
+                    'remain_times' => 0,  //自动竞拍剩余次数
+                    'total_times' => 0,   //自动竞拍总次数
                 ];
             }
         }
@@ -596,7 +607,7 @@ class Bid extends Common
         set_time_limit(0);
         if (PHP_OS == 'WINNT') { //本地测试使用
             shell_exec("node G:node/client.js $periodId");
-        }else{
+        } else {
             exec("/usr/bin/node /usr/local/node/client.js $periodId");
         }
     }

@@ -691,22 +691,23 @@
 //                                    $('.havelist').show();
 //                                    $('.nolist').hide();
 //                                }
-                                if (1) {
-                                    if (1) {
+                            //  自动出价剩余次数大于0，且是当前用户时，弹出出价成功消息
+                                if (data.content[0].remain_times > 1 &&
+                                    data.content[0].user_id == "{{ !empty(session('user_info'))?json_decode(session('user_info'))->id:'木有' }}") {
                                         noticeflag = 0;
                                         $.toast('自动出价成功');
                                         var surtimes = $('#surtimes').val();
-                                        var newsurtimes = surtimes - 1;
-                                        $('#surtimes').val(newsurtimes);
-                                        $('#surtime').text(newsurtimes);
-                                        if (1) {
-                                            $('.offer').css('background-color', '#ed414a');
-                                            $('#offertext').text('出价');
-                                            $('.selnum').show();
-                                            $('.noselnum').hide();
-                                        }
-                                    }
+                                        $('#surtimes').val(data.content[0].total_times);
+                                        $('#surtime').text(data.content[0].remain_times-1);
+
                                 } else {
+                                   if(data.content[0].remain_times == 1 &&
+                                       data.content[0].user_id == "{{ !empty(session('user_info'))?json_decode(session('user_info'))->id:'木有' }}"){
+                                       $('.offer').css('background-color', '#ed414a');
+                                       $('#offertext').text('出价');
+                                       $('.selnum').show();
+                                       $('.noselnum').hide();
+                                   }
                                     noticeflag = 1;
                                 }
                             }
@@ -739,19 +740,19 @@
                                 noticeflag = 0;
                                 $('#auccoin').text(d.used_real_bids);
                                 $('#givecoin').text(d.used_gift_bids);
-                                if (d.newsurtime) {
-                                    $('#surtimes').val(d.newsurtime);
-                                    $('#surtime').text(d.newsurtime);
+                                if (1) {
+                                    $('#surtimes').val(d.total_times);
+                                    $('#surtime').text(d.total_times);
                                     $('.offer').css('background-color', '#999999');
                                     $('#offertext').text('竞拍中');
                                     $('.selnum').hide();
                                     $('.noselnum').show();
                                 }
-                            } else if (d.result == 3) {
-                                location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=signin";
-                            } else if (d.result == 40) {
+                            } else if (d.status == 100) { //跳转到登入
+                                location.href = "/h5/user/login-view";
+                            } else if (d.status == 40) {  //表示自动竞拍出价成功
                                 $.toast(d.message);
-                            } else if (d.status == 30) {
+                            } else if (d.status == 30) {  //需要进行充值
                                 $.alert('您的余额不足', function () {
                                     location.href = "/h5/pay/recharge-center";
                                 });
