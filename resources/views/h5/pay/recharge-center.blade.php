@@ -54,44 +54,18 @@
                     </li>
                     <li>
                         <div style="padding: 0 .75rem 1rem;text-align: center;">
-                            <div class="row order-row" style="margin-top: 1rem;">
-                                @foreach($list as $v)
-                                    <div class="col-33">
-                                        <div class="icondiv focus" num="{{$v['id']}}">
-                                            <span class="property">{{$v['amount']}}</span>
+                            <div class="row order-row" style="margin-top: 0rem;">
+                                @foreach($list as $key=>$v)
+                                    <div class="col-33" style="margin-top: 1rem;">
+                                        <div  @if($key==1) class="icondiv focus" @else class="icondiv"   @endif num= "{{ $v['amount'] }}"
+                                              num2= "{{ $v['gift_amount'] }}" card_id="{{ $v['id'] }}">
+                                            <span class="property" >
+                                                {{$v['amount']}}拍币
+                                                      <p style="font-size: .3rem;top: 1rem;color: red">赠送{{$v['gift_amount']}}拍币</p>
+                                            </span>
                                         </div>
                                     </div>
                                 @endforeach
-
-                                <div class="col-33">
-                                    <div class="icondiv" num="100">
-                                        <span class="property">100</span>
-                                    </div>
-                                </div>
-                                <div class="col-33">
-                                    <div class="icondiv" num="200">
-                                        <span class="property">200</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row order-row" style="margin-top: 1rem;">
-                                <div class="col-33">
-                                    <div class="icondiv" num="300">
-                                        <span class="property">300</span>
-                                    </div>
-                                </div>
-                                <div class="col-33">
-                                    <div class="icondiv" num="500">
-                                        <span class="property">500</span>
-                                    </div>
-                                </div>
-{{--                                <div class="col-33">--}}
-{{--                                    <div class="											icondiv--}}
-{{--											" num="0">--}}
-{{--										<span class="property">--}}
-{{--											<input onchange="changenum(this)" value="" id="custom" style="height: 24px;color: #EF1544;" type="tel" placeholder="其他金额"></span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
                             </div>
                         </div>
                     </li>
@@ -107,9 +81,28 @@
 		                		<span id="fastauctioncoin">
 		                					                					                					                		</span>
 		                				                		拍币
-			</div>
-		</div>
-		</span>
+			         </div>
+
+		                </div>
+		            </span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="list-block" style="margin: 0.6rem 0;">
+                <ul>
+                    <li>
+						<span class=" item-content list-button-order">
+		              	<div class="item-inner">
+		                	<div class="item-title">充值金额</div>
+		                	<div class="item-after" style="color:#EF1544;">
+		                		<span id="fastauctioncoin2">
+                                </span>
+                                拍币
+			                </div>
+
+		                </div>
+		            </span>
                     </li>
                 </ul>
             </div>
@@ -181,10 +174,15 @@
         });
         $(this).addClass('focus');
         $('#custom').val('');
+
         var num = $(this).attr('num');
-        $('#fastauctioncoin').text(num);
+        var num2 = $(this).attr('num2');
+        var card_id = $(this).attr('card_id');
+
+        $('#fastauctioncoin').text(num*1+num2*1);
+        $('#fastauctioncoin2').text(num);
         $('#moneynum').text(num);
-        $('#payprice').val(num);
+        $('#payprice').val(card_id);
         if(num < 2) {
             $('.redtip').show();
             $('.paytype').hide();
@@ -195,7 +193,6 @@
         }
     });
     $('.coupon').click(function(e) {
-
         var kilometre = $(this).find('.kilometre').attr('id');
         $('#moneynum').text(kilometre);
         $('#payprice').val(kilometre);
@@ -212,7 +209,7 @@
                 $.toast('请输入充值金额');
                 return false;
             }
-            window.location.href = "/h5/pay/recharge" + '&id=' + price;
+            window.location.href = "/h5/pay/recharge" + '?id=' + price;
         }
     }
 </script>

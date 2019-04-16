@@ -71,7 +71,7 @@ Route::group(['middleware' => 'h5'], function () {
     /** 支付 */
     Route::post('pay/confirm', 'PayController@confirm'); //确认订单
     Route::get('pay/recharge-center', 'PayController@rechargeCenter'); //充值中心
-    Route::post('pay/recharge', 'PayController@recharge'); //充值
+    Route::get('pay/recharge', 'PayController@recharge'); //充值
     Route::post('pay/pay', 'PayController@pay'); //立即购买
     Route::get('new-pay/weixin-pay', 'NewPayController@weixinPay'); //立即购买
 

@@ -722,6 +722,14 @@
                 };
         }
 
+        if("{{ $proxy['remain_times'] }}" > 0){
+            $('#surtime').text({{ $proxy['remain_times'] }});
+            $('.offer').css('background-color', '#999999');
+            $('#offertext').text('竞拍中');
+            $('.selnum').hide();
+            $('.noselnum').show();
+        }
+
         $(function () {
             //计算剩余时间
             get_late();

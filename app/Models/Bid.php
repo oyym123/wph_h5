@@ -53,6 +53,7 @@ class Bid extends Common
                 ];
             }
         }
+
         $periods = new Period();
         $period = $periods->getPeriod(['id' => $periodId, 'status' => Period::STATUS_IN_PROGRESS]);
         $products = new Product();
@@ -245,7 +246,7 @@ class Bid extends Common
                 }
 
                 $y = $redis->ttl('realPersonBidEnd@periodId' . $bid->period_id);
-                if ($y > 0) { //当为真人时,竞拍开关
+                if ($y > 0) { //当为真人时,竞拍开关,设置10天
                     $redis->setex('realPersonBid@periodId' . $period->id, 86400 * 10, $period->id);
                 }
 

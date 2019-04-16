@@ -123,6 +123,7 @@ class AutoBid extends Common
                     DB::table('auto_bid')->where(['id' => $item->id])->decrement('remain_times', 1);
                 }
             }
+
         }
     }
 

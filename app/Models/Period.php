@@ -511,6 +511,7 @@ class Period extends Common
             return $model;
         }
         list($info, $status) = $this->returnRes('', self::CODE_NO_DATA);
-        self::showMsg($info, $status);
+       self::showMsg($info, $status);
+
     }
 }

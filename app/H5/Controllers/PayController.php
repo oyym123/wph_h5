@@ -161,7 +161,7 @@ class PayController extends WebController
     }
 
     /**
-     * @SWG\Post(path="/api/pay/recharge",
+     * @SWG\Get(path="/api/pay/recharge",
      *   tags={"支付"},
      *   summary="充值",
      *   description="Author: OYYM",
@@ -203,6 +203,7 @@ class PayController extends WebController
             'recharge_card_id' => $recharge->id,
         ];
         $res = [];
+       // print_r($orderInfo);exit;
         DB::beginTransaction();
         try {
             $order = $order->createOrder($orderInfo);
