@@ -593,6 +593,12 @@
         @endverbatim
     </script>
     <script>
+        window.onbeforeunload = function () { //检测是关闭了浏览器页面,关闭后访问的请求量减1，当访问量为0时，不发推送消息
+            $.get("/h5/product/cancel-visit", {period_id: "{{ $detail['id'] }}"}, function (d) {
+
+            }, "json");
+        };
+
         connect();
         // 连接服务端
         function connect() {

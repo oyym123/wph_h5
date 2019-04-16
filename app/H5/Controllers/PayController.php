@@ -10,6 +10,7 @@ namespace App\H5\Controllers;
 
 
 use App\H5\components\WebController;
+use App\Models\NewPay;
 use App\Models\Order;
 use App\Models\Pay;
 use App\Models\Period;
@@ -33,7 +34,7 @@ class PayController extends WebController
      */
     public function rechargeCenter()
     {
-        return view('h5.pay.recharge-center',(new RechargeCard())->lists());
+        return view('h5.pay.recharge-center', (new RechargeCard())->lists());
     }
 
 
@@ -155,7 +156,8 @@ class PayController extends WebController
             'sn' => $request->sn,
             'img_cover' => $product->getImgCover()
         ];
-        self::showMsg($res);
+
+        return view('h5.pay.confirm', $res);
     }
 
     /**
@@ -204,7 +206,7 @@ class PayController extends WebController
         DB::beginTransaction();
         try {
             $order = $order->createOrder($orderInfo);
-            $pay = new Pay();
+            $pay = new NewPay();
             $data = [
                 'details' => '充值',
                 'open_id' => $this->userIdent->open_id,
@@ -328,7 +330,7 @@ class PayController extends WebController
                 $status = Order::STATUS_WAIT_SHIP;//待发货
             } else {
                 if ($type == Order::TYPE_SHOP) {
-                //    $flag = 2;
+                    //    $flag = 2;
                 }
             }
             $orderInfo = [
@@ -373,9 +375,9 @@ class PayController extends WebController
                 }
                 $flag = 1;
             } else {
-                $pay = new Pay();
+                $pay = new NewPay();
                 $data = [
-                    'details' => mb_substr($product->title, 0 , 80),
+                    'details' => mb_substr($product->title, 0, 80),
                     'order_id' => $order->id,
                     'open_id' => $this->userIdent->open_id,
                     'sn' => $order->sn,

@@ -76,6 +76,11 @@ class EvaluateController extends WebController
         }
     }
 
+    public function submitView()
+    {
+        return view();
+    }
+
     /**
      * @SWG\Post(path="/api/evaluate/upload-img",
      *   tags={"晒单"},

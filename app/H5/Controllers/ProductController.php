@@ -151,7 +151,7 @@ class ProductController extends WebController
         $period->userId = $this->userId;
         $period->userEntity = $this->userIdent;
         $flag = $this->request->flag ?: 0;
-        return view('h5.product.detail',$period->getProductDetail($this->request->period_id, $flag));
+        return view('h5.product.detail', $period->getProductDetail($this->request->period_id, $flag));
     }
 
     /**
@@ -201,7 +201,7 @@ class ProductController extends WebController
         $model->limit = $this->limit;
         $model->offset = $this->offset;
         return view('h5.product.past-deals', [
-            'data' =>$model->dealEnd(['product_id' => $this->request->product_id])
+            'data' => $model->dealEnd(['product_id' => $this->request->product_id])
         ]);
     }
 
@@ -236,7 +236,7 @@ class ProductController extends WebController
      */
     public function type()
     {
-        return view('h5.product.type',['data'=>ProductType::getList(),'product_type_active'=>1]);
+        return view('h5.product.type', ['data' => ProductType::getList(), 'product_type_active' => 1]);
     }
 
     /**
@@ -286,6 +286,12 @@ class ProductController extends WebController
         self::showMsg($period->historyTrend($this->request->product_id));
     }
 
+
+    public function shopListView()
+    {
+        return view('/h5/product/shop-list');
+    }
+
     /**
      * @SWG\Get(path="/api/product/shop-list",
      *   tags={"产品"},
@@ -309,6 +315,12 @@ class ProductController extends WebController
         $product->offset = $this->offset;
         self::showMsg($product->shopList());
     }
+
+    public function shopDetailView()
+    {
+        return view('/h5/product/shop-detail');
+    }
+
 
     /**
      * @SWG\Get(path="/api/product/shop-detail",

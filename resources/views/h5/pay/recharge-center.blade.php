@@ -55,11 +55,14 @@
                     <li>
                         <div style="padding: 0 .75rem 1rem;text-align: center;">
                             <div class="row order-row" style="margin-top: 1rem;">
-                                <div class="col-33">
-                                    <div class="icondiv focus" num="50">
-                                        <span class="property">50</span>
+                                @foreach($list as $v)
+                                    <div class="col-33">
+                                        <div class="icondiv focus" num="{{$v['id']}}">
+                                            <span class="property">{{$v['amount']}}</span>
+                                        </div>
                                     </div>
-                                </div>
+                                @endforeach
+
                                 <div class="col-33">
                                     <div class="icondiv" num="100">
                                         <span class="property">100</span>
@@ -82,13 +85,13 @@
                                         <span class="property">500</span>
                                     </div>
                                 </div>
-                                <div class="col-33">
-                                    <div class="											icondiv
-											" num="0">
-										<span class="property">
-											<input onchange="changenum(this)" value="" id="custom" style="height: 24px;color: #EF1544;" type="tel" placeholder="其他金额"></span>
-                                    </div>
-                                </div>
+{{--                                <div class="col-33">--}}
+{{--                                    <div class="											icondiv--}}
+{{--											" num="0">--}}
+{{--										<span class="property">--}}
+{{--											<input onchange="changenum(this)" value="" id="custom" style="height: 24px;color: #EF1544;" type="tel" placeholder="其他金额"></span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
                             </div>
                         </div>
                     </li>
@@ -110,56 +113,6 @@
                     </li>
                 </ul>
             </div>
-            <!--<div class="list-block" style="margin: 0.6rem 0;margin-bottom: 0;">
-                      <ul>
-                        <li>
-                            <span class=" item-content list-button-order">
-                                  <div class="item-inner">
-                                    <div class="item-title" >选择充值方式</div>
-                                    <div class="item-after" style="color:#EF1544;">￥<span id="moneynum">50</span></div>
-                                    <input type="hidden" id="payprice" value="50" />
-                                    <input type="hidden" name="give" id="give" value="" />
-                                  </div>
-                            </span>
-                        </li>
-                        <li>
-                            <label for="alipay">
-                                <span class="item-content list-button-order">
-                                      <div class="item-inner">
-                                        <div class="item-title" >
-                                            <img class="payicon" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/zhifubao.png" />
-                                            <div style="display: inline-block;position: relative;top: -4px;">
-                                                <span>支付宝</span><span class="redtip">2元起</span><br />
-                                                <span class="smalltip">推荐安装支付宝用户使用(2元起)</span>
-                                            </div>
-                                        </div>
-                                        <div class="item-after">
-                                            <input class="paytype" type="radio" value="alipay" name="paytype" id="alipay" />
-                                        </div>
-                                      </div>
-                                </span>
-                            </label>
-                        </li>
-                        <li>
-                            <label for="wechat">
-                                <span class="item-content list-button-order">
-                                      <div class="item-inner">
-                                        <div class="item-title" >
-                                            <img class="payicon" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/weixin.png" />
-                                            <div style="display: inline-block;position: relative;top: -4px;">
-                                                <span>微信支付</span><span class="redtip">2元起</span><br />
-                                                <span class="smalltip">推荐安装微信用户使用(2元起)</span>
-                                            </div>
-                                        </div>
-                                        <div class="item-after">
-                                            <input class="paytype" type="radio" value="wechat" name="paytype" id="wechat" />
-                                        </div>
-                                      </div>
-                                </span>
-                            </label>
-                        </li>
-                      </ul>
-                    </div> -->
             <label for="weuiAgree" class="weui-agree" onclick="changecolor()">
                 <input id="weuiAgree" type="checkbox" checked="checked" style="width: 16px;height: 16px;" class="weui-agree__checkbox">
                 <span class="weui-agree__text" style="font-size: 16px;">
@@ -169,8 +122,7 @@
             </label>
             <div class="weui-btn-area" style="margin-top: .6rem;">
                 <a class="weui-btn weui-btn_primary external" id="showTooltips" style="background-color: #EF1544;" href="javascript:register()">确认充值</a>
-                <input type="hidden" id="payprice" value="
-									">
+                <input type="hidden" id="payprice" value="">
             </div>
         </div>
 
@@ -260,52 +212,10 @@
                 $.toast('请输入充值金额');
                 return false;
             }
-            window.location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=recharge&op=topay" + '&price=' + price;
+            window.location.href = "/h5/pay/recharge" + '&id=' + price;
         }
     }
 </script>
-<script>
-    wx.ready(function () {
-        var shareData = {
-            title: "iPhoneX仅需一折即可到手，快来抢购！！！",
-            desc: "131****7904倾力推荐，赶快来领取！",
-            link: "",
-            imgUrl: "http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/JkV20zARKqBd2buaDDmVbu7VdJ8cdc.png",
-        };
-        //分享朋友
-        wx.onMenuShareAppMessage({
-            title: shareData.title,
-            desc: shareData.desc,
-            link: shareData.link,
-            imgUrl:shareData.imgUrl,
-            trigger: function (res) {
-            },
-            success: function (res) {
-                shareover();
-            },
-            cancel: function (res) {
-            },
-            fail: function (res) {
-                alert(JSON.stringify(res));
-            }
-        });
-        //朋友圈
-        wx.onMenuShareTimeline({
-            title: shareData.title,
-            link: shareData.link,
-            imgUrl:shareData.imgUrl,
-            trigger: function (res) {
-            },
-            success: function (res) {
-                shareover();
-            },
-            cancel: function (res) {
-            },
-            fail: function (res) {
-                alert(JSON.stringify(res));
-            }
-        });
-    });
-</script>
+
 @parent
 @stop

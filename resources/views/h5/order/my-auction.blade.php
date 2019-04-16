@@ -7,10 +7,11 @@
 @stop
 @section('content')
         <div class="buttons-tab" style="top: 2.2rem;">
-            <a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=all" class="button active">全部</a>
-            <a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=1" class="button ">我在拍</a>
-            <a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=wpz" class="button ">我拍中</a>
-            <a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=cjg" class="button ">差价购</a>
+            <a href="/h5/order/my-auction?type=100" class="button active">全部</a>
+            <a href="/h5/order/my-auction?type=0" class="button ">我在拍</a>
+            <a href="/h5/order/my-auction?type=1" class="button ">我拍中</a>
+            <a href="/h5/order/my-auction?type=2" class="button ">差价购</a>
+
             <a href="javascript:;" class="button  open-popover" data-popover=".popover-order-status">更多 <i class="iconfont icon-unfold"></i></a>
         </div>
         <div class="content infinite-scroll" style="margin-top: 2.2rem;">
@@ -31,7 +32,7 @@
                     .main_ct{padding-bottom:0.5rem}
                     .main_ct.fixed{padding-top:2rem}
                     .bid_list .timeline{height:1.625rem;line-height:1.675rem;font-size:0.6rem;color:#999;position:relative;text-indent:0.5rem}
-                    .bid_list .timeline span{font-size:0.7000000000000001rem;color:#EF1544;position:absolute;right:0.5rem;top:0;display:inline-block}
+                    .bid_list .timeline span{font-size:0.7rem;color:#EF1544;position:absolute;right:0.5rem;top:0;display:inline-block}
                     .bid_list .cover{width:4.35rem;height:4.35rem;float:left;position:relative;overflow:hidden;padding: 0.2rem;}
                     .bid_list .cover img{width:100%;height:100%;}
                     .bid_list .bid_info{float:left;width:8.875rem;padding:0.3rem 0 0 0.4rem;line-height:1.25rem;font-size:0.6rem;color:#333;}
@@ -57,7 +58,6 @@
                     .bid_list.buy .bid_info .realpay{margin-top:0.125rem;padding-top:0.25rem;border-top:solid 1px #ccc}
                     .bid_list.buy .bid_info .realpay span{color:#EF1544;font-size:13px}
                 </style>
-                
             </div>
             <div class="weui-loadmore loading_more" style="display: none;">
                 <i class="weui-loading"></i>
@@ -74,12 +74,10 @@
     <div class="popover-inner">
         <div class="list-block">
             <ul>
-                <li><a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=dfk" class="list-button item-link">待付款</a></li>
-                <li><a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=3" class="list-button item-link">待发货</a></li>
-                <li><a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=4" class="list-button item-link">待签收</a></li>
-                <li><a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=5" class="list-button item-link">待晒单</a></li>
-                <li><a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=6" class="list-button item-link">已完成</a></li>
-                <li><a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=7" class="list-button item-link">已退款</a></li>
+                <li><a href="/h5/order/my-auction?type=3" class="list-button item-link">待付款</a></li>
+                <li><a href="/h5/order/my-auction?type=6" class="list-button item-link">待发货</a></li>
+                <li><a href="/h5/order/my-auction?type=4" class="list-button item-link">待签收</a></li>
+                <li><a href="/h5/order/my-auction?type=5" class="list-button item-link">待晒单</a></li>
                 <li><a href="javascript:;" class="list-button item-link close-popover">关闭</a></li>
             </ul>
         </div>
@@ -202,9 +200,10 @@
         $.init();
     });
 
-    function qsgood(id){
+    function qsgood(sn){
         $.confirm("确定要签收商品吗？",function(){
-            $.post("https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=order&ac=userorder&do=changestatus&type=qs",{id:id},function(d){
+            $.post("/h5/order/confirm-receipt",{sn:sn},function(d){
+                d = d.data
                 if (d.status){
                     $.toast('签收成功');
                     location.reload();
@@ -216,15 +215,15 @@
     }
 
     function toperiod(gid,pid){
-        location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=goods&ac=goods&do=detail&id="+gid+"&perid="+pid;
+        location.href = "/h5/product/detail?period_id="+pid;
     }
 
     function toshoworder(orderid){
-        location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=order&ac=userorder&do=showorder&id="+orderid;
+        location.href = ""+orderid;
     }
 
-    function payorder(orderid){
-        location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=order&ac=userorder&do=payorder&id="+orderid;
+    function payorder(pid,period_id){
+        location.href =  "/h5/pay/confirm?product_id="+pid+"&period_id="+period_id;
     }
 </script>
 

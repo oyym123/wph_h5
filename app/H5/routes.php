@@ -49,7 +49,9 @@ Route::group(['middleware' => 'h5'], function () {
     Route::get('product/past-deals', 'ProductController@pastDeals');
     Route::get('product/period', 'ProductController@period');
     Route::get('product/history-trend', 'ProductController@historyTrend');
+    Route::get('product/shop-list-view', 'ProductController@shopListView');//购物币专区视图
     Route::get('product/shop-list', 'ProductController@shopList');
+    Route::get('product/shop-detail-view', 'ProductController@shopDetailView');//购物币详情视图
     Route::get('product/shop-detail', 'ProductController@shopDetail');
     Route::get('product/history-trend', 'ProductController@historyTrend');
     Route::get('product/past-deal', 'ProductController@pastDeal');
