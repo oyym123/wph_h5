@@ -57,10 +57,7 @@
                     .bid_list.buy .bid_info .realpay{margin-top:0.125rem;padding-top:0.25rem;border-top:solid 1px #ccc}
                     .bid_list.buy .bid_info .realpay span{color:#EF1544;font-size:13px}
                 </style>
-
-
-
-
+                
             </div>
             <div class="weui-loadmore loading_more" style="display: none;">
                 <i class="weui-loading"></i>
