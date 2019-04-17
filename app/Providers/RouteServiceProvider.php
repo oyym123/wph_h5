@@ -100,7 +100,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapH5MRoutes()
     {
-        Route::middleware('h5')
+        Route::middleware('web')
             ->namespace('App\H5\Controllers')
             ->group(base_path('app/H5/routes.php'));
     }
