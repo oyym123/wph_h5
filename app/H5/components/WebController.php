@@ -25,6 +25,7 @@ class WebController extends Controller
 
     public function __construct(Request $request)
     {
+        ob_start();
         $request && $this->request = $request;
         $request->pages && $this->pages = $request->pages;
         $request->limit && $this->limit = $request->limit;
@@ -97,7 +98,8 @@ class WebController extends Controller
 
     public function needLogin()
     {
-        header("location:" . '/h5/user/login-view');
+//        header("location:" . '/h5/user/login-view');
+        echo "<script>window.location.href='/h5/user/login-view';</script> ";
         exit;
     }
 
