@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::any('server', 'ServerController@index'); // 这个要放到中间件的外面
 
-Route::get('/auctioneer', function () {
+Route::get('/auctioneer1', function () {
+    print_r(session()->all());exit;
     return new \App\Http\Resources\AuctioneerCollection(Auctioneer::paginate());
 });
 

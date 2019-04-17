@@ -100,7 +100,7 @@ return [
      *
      * 当 enable_mock 为 true 则会启用模拟微信授权，用于开发时使用，开发完成请删除或者改为 false 即可
      */
-    'enable_mock' => env('WECHAT_ENABLE_MOCK', true),
+    'enable_mock' => env('WECHAT_ENABLE_MOCK', false),
     'mock_user' => [
         'openid' => 'oEmcq1Yfbyugr07M1-2e5WLaykGo',
         // 以下字段为 scope 为 snsapi_userinfo 时需要
@@ -108,7 +108,7 @@ return [
         'sex' => '1',
         'province' => '北京',
         'city' => '北京',
-        'country' => '中国',
+        'country' => '中国12',
         'headimgurl' => 'http://wx.qlogo.cn/mmopen/C2rEUskXQiblFYMUl9O0G05Q6pKibg7V1WpHX6CIQaic824apriabJw4r6EWxziaSt5BATrlbx1GVzwW2qjUCqtYpDvIJLjKgP1ug/0',
     ],
 ];
