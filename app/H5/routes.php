@@ -14,7 +14,7 @@ Route::get('/auctioneer1', function () {
     return new \App\Http\Resources\AuctioneerCollection(Auctioneer::paginate());
 });
 
-Route::group(['prefix' => 'h5', 'middleware' => 'h5'], function () {
+Route::group(['prefix' => 'h5', 'middleware' => 'web'], function () {
     //新手指引banner链接
     Route::get('/newbie-guide', function () {
         return view('api.home.newbie_guide');
