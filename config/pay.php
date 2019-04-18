@@ -37,16 +37,16 @@ return [
         'miniapp_id' => env('WECHAT_APPID', ''),
 
         // APP 引用的 appid
-        'appid' => env('WECHAT_APPID', ''),
+        'appid' => env('WECHAT_APPID', 'wxb44c2f38e9fb041b'),
 
         // 微信支付分配的微信商户号
-        'mch_id' => env('WECHAT_MCH_ID', ''),
+        'mch_id' => env('WECHAT_MCH_ID', '1509936521'),
 
         // 微信支付异步通知地址
-        'notify_url' => $_SERVER["HTTP_HOST"] . '/api/wx-notify/notify',
+    //    'notify_url' => $_SERVER["HTTP_HOST"] . '/api/wx-notify/notify',
 
         // 微信支付签名秘钥
-        'key' => env('WECHAT_KEY', ''),
+        'key' => env('WECHAT_KEY', '3173259eA0d5E5d12e3a9b2c90N0Qdb0'),
 
         // 客户端证书路径，退款、红包等需要用到。请填写绝对路径，linux 请确保权限问题。pem 格式。
         'cert_client' => '',

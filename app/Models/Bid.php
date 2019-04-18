@@ -42,7 +42,7 @@ class Bid extends Common
     protected $table = 'bid';
 
     /** 真人竞拍 */
-    public function personBid($periodId, $auto = 0, $autoObj)
+    public function personBid($periodId, $auto = 0, $autoObj=[])
     {
         $redis = app('redis')->connection('first');
         if ($auto == 0) { //表示没有自动竞拍，则记录支出,进行正常收费
@@ -156,6 +156,16 @@ class Bid extends Common
         $redis->hset('bid@lastPersonId', $data['period_id'], json_encode($data));
     }
 
+
+    /** 修改缓存最后三条记录的竞拍状态 */
+    public function updateThreePersonId($redis, $period_id)
+    {
+        $res = $this->getThreePersonId($redis, $period_id);
+        $res[0]['status'] = 1;
+        $redis->hset('bid@threePersonId', $period_id, json_encode($res));
+    }
+
+
     /** 缓存最后三条记录 */
     public function setThreePersonId($redis, $data)
     {
@@ -264,6 +274,7 @@ class Bid extends Common
                     //redis缓存也改变
                     $bid->status = self::STATUS_SUCCESS;
                     $this->setLastPersonId($redis, json_decode(json_encode($bid), true));
+                    $this->updateThreePersonId($redis, $period->id);
                     //转换状态
                     DB::table('period')->where(['id' => $period->id])->update([
                         'status' => Period::STATUS_OVER,
@@ -278,7 +289,6 @@ class Bid extends Common
 
                     //同时清除期数缓存
                     $this->delCache('period@allInProgress' . Period::STATUS_IN_PROGRESS);
-
                     if ($period->real_person == User::TYPE_REAL_PERSON) { //有真人参与则结算
                         //购物币返还结算
                         Income::settlement($period->id, $bid->user_id);
@@ -289,8 +299,6 @@ class Bid extends Common
                         (new AutoBid())->back($period->id, $bid->user_id);
                         //生成一个订单
                         $order = new Order();
-
-
                         $orderInfo = [
                             'sn' => $order->createSn(),
                             'pay_type' => Pay::TYPE_WEI_XIN,
@@ -317,6 +325,11 @@ class Bid extends Common
                             'order_id' => $order->id,
                         ]);
                     }
+                    //当有用户访问的时候才进行广播
+                    $flag = $redis->hget('visit@PeriodRecord', $period->id);
+                    //if ($flag >= 1) {
+                    $this->socket($period->id);
+                    //}
                 }
             }
         }
@@ -434,17 +447,19 @@ class Bid extends Common
                 $data['city'] = $robotPeriod->city;
                 $this->setThreePersonId($redis, $data);
             } else {
+
                 $redis->setex('period@countdown' . $period->id, $product->countdown_length, $data['bid_price']);
                 $data['id'] = DB::table('bid')->insertGetId($data);
                 $data['user_id'] = $robotPeriod->user_id;
                 $this->setLastPersonId($redis, $data);
-
                 $data['province'] = $robotPeriod->province;
                 $data['city'] = $robotPeriod->city;
                 $this->setThreePersonId($redis, $data);
+
                 //加入竞拍队列，3秒之后进入数据库Bid表
                 //dispatch(new BidTask($data));
             }
+
             //当有用户访问的时候才进行广播
             $flag = $redis->hget('visit@PeriodRecord', $period->id);
             //if ($flag >= 1) {

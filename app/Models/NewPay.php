@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Yansongda\Pay\Log;
 use Yansongda\Pay\Pay;
+use Yansongda\Supports\Config;
 
 class NewPay
 {

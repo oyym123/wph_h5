@@ -51,7 +51,7 @@
                                     </div>
                                     <div class="txt">购物币</div>
                                 </div>
-                                {{--<div class="col-25 col-row" onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=mycredit'">--}}
+                                {{--<div class="col-25 col-row" onclick="location.href='/?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=mycredit'">--}}
                                     {{--<div class="icondiv">--}}
                                         {{--<span class="property">0</span>--}}
                                     {{--</div>--}}
@@ -76,37 +76,37 @@
                     <li>
                         <div style="padding: 0 .75rem;text-align: center;">
                             <div class="row order-row">
-                                <div class="col-20" onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=1'">
+                                <div class="col-20" onclick="location.href='/h5/order/my-auction?type=0'">
                                     <div class="icondiv">
-                                        <img style="height: 32px;" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/zzp.png">
+                                        <img style="height: 32px;" src="/images/h5/zzp.png">
                                     </div>
                                     <span class="title-num" id="num1"></span>
                                     <div class="txt">正在拍</div>
                                 </div>
-                                <div class="col-20" onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=wpz'">
+                                <div class="col-20" onclick="location.href='/h5/order/my-auction?type=1'">
                                     <div class="icondiv">
-                                        <img style="height: 32px;" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/wpz.png">
+                                        <img style="height: 32px;" src="/images/h5/wpz.png">
                                     </div>
                                     <span class="title-num" id="num2"></span>
                                     <div class="txt">我拍中</div>
                                 </div>
-                                <div class="col-20" onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=cjg'">
+                                <div class="col-20" onclick="location.href='/h5/order/my-auction?type=2'">
                                     <div class="icondiv">
-                                        <img style="height: 32px;" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/cjg.png">
+                                        <img style="height: 32px;" src="/images/h5/cjg.png">
                                     </div>
                                     <span class="title-num" id="num3"></span>
                                     <div class="txt">差价购</div>
                                 </div>
-                                <div class="col-20" onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=dfk'">
+                                <div class="col-20" onclick="location.href='/h5/order/my-auction?type=3'">
                                     <div class="icondiv">
-                                        <img style="height: 32px;" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/dfk.png">
+                                        <img style="height: 32px;" src="/images/h5/dfk.png">
                                     </div>
                                     <span class="title-num" id="num4"></span>
                                     <div class="txt">待付款</div>
                                 </div>
-                                <div class="col-20" onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=order&amp;ac=userorder&amp;do=orderlist&amp;status=5'">
+                                <div class="col-20" onclick="location.href='/h5/order/my-auction?type=5'">
                                     <div class="icondiv">
-                                        <img style="height: 32px;" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/sd.png">
+                                        <img style="height: 32px;" src="/images/h5/sd.png">
                                     </div>
                                     <span class="title-num" id="num5"></span>
                                     <div class="txt">待晒单</div>
@@ -119,67 +119,32 @@
             <div class="list-block usercenter" style="margin: 0.6rem 0;">
                 <ul>
                     <li>
-                        <a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=collection" class="item-link item-content">
-                            <div class="item-media"><img style="width: 24px;" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/shouchang.png"></div>
+                        <a href="/h5/user/collection-view?type=3" class="item-link item-content">
+                            <div class="item-media"><img style="width: 24px;" src="/images/h5/shouchang.png"></div>
                             <div class="item-inner" style="margin-left: .3rem;">
                                 <div class="item-title">收藏的商品</div>
                             </div>
                         </a>
                     </li>
                     <li>
-                        <a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=myshoworder" class="item-link item-content">
-                            <div class="item-media"><img style="height: 24px;" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/shaidan.png"></div>
+                        <a href="/h5/user/evaluate" class="item-link item-content">
+                            <div class="item-media"><img style="height: 24px;" src="/images/h5/shaidan.png"></div>
                             <div class="item-inner" style="margin-left: .3rem;">
                                 <div class="item-title">我的晒单</div>
                             </div>
                         </a>
                     </li>
-                    {{--<li>--}}
-                        {{--<a class="item-link item-content" onclick="code()">--}}
-                            {{--<div class="item-media"><img style="height: 24px;" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/kefu.png"></div>--}}
-                            {{--<div class="item-inner" style="margin-left: .3rem;">--}}
-                                {{--<div class="item-title">在线客服</div>--}}
-                            {{--</div>--}}
-                        {{--</a>--}}
-                        {{--<div class="diy-layer external">--}}
-                            {{--<div class="weui_mask" id="customermask" style="display: none;">--}}
-                            {{--</div><div class="weui_dialog" id="customerdia" style="display: none;">--}}
-                                {{--<p class="dialog-title">长按识别二维码</p><div class="img-box">--}}
-                                    {{--<img src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/Or4IhjKBRKbmk1RkkIAvXrBe44HMIK.jpg" style="max-width:100%">--}}
-                                {{--</div><span class="vux-close">--}}
-						 {{--</span>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                        {{--<a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=helper&amp;ac=about&amp;do=getall" class="item-link item-content">--}}
-                            {{--<div class="item-media"><img style="height: 24px;" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/jianyi.png"></div>--}}
-                            {{--<div class="item-inner" style="margin-left: .3rem;">--}}
-                                {{--<div class="item-title">帮助中心</div>--}}
-                            {{--</div>--}}
-                        {{--</a>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                        {{--<a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=invite&amp;ac=invitation&amp;do=index" class="item-link item-content">--}}
-                            {{--<div class="item-media"><img style="height: 24px;" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/invite.png"></div>--}}
-                            {{--<div class="item-inner" style="margin-left: .3rem;">--}}
-                                {{--<div class="item-title">邀请好友</div>--}}
-                            {{--</div>--}}
-                        {{--</a>--}}
-                    {{--</li>--}}
-                    <!--<li>
-        <a href="https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=vip&do=open" class="item-link item-content">
-            <div class="item-media"><img style="height: 24px;" src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/fenxiang.png" /></div>
-              <div class="item-inner" style="margin-left: .3rem;">
-                <div class="item-title">分享应用</div>
-            </div>
-        </a>
-    </li>-->
+                    <li>
+                        <a href="/?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=myshoworder" class="item-link item-content">
+                            <div class="item-media"><img style="height: 24px;" src="/images/h5/gouwubi.png"></div>
+                            <div class="item-inner" style="margin-left: .3rem;">
+                                <div class="item-title">购物币专区</div>
+                            </div>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
-
-
 <style>
     .my{position:relative;z-index:1;width:100%;height:130px;background-size:100% auto;background:linear-gradient(to bottom, #f40101 0%, #ff7e7e 100%);}
     .my_head_pic{padding:1.5rem 0 0}

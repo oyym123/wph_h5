@@ -1,88 +1,41 @@
 @extends('layouts.h5')
 @section('title')
-    拍卖师主页
+    手机专区
 @stop
 @section('title_head')
-    拍卖师主页
+    手机专区
 @stop
 @section('content')
-    <div class="content native-scroll">
-        <!--拍卖师详情-->
-        <div class="list-block usercenter" style="margin:0;">
-            <ul>
-                <li>
-                    <a href="javascript:;" class="item-content">
-                        <div class="item-media"><img style="height:2.3rem;width: 2.1rem;"
-                                                     src="{{$img}}">
-                        </div>
-                        <div class="item-inner" style="margin-left: .3rem;">
-                            <div class="item-title">
-                                <span class="aucname">{{ $name }}</span>
-                                <span class="aucdetail">{{ $tags }}</span><br>
-                                <span class="auccode">拍卖师编号:{{ $number }}</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <!--拍卖师标签-->
-        <div style="padding: .75rem;">
-            <div>
-                <i class="icon iconfont icon-roundcheck"></i>
-                <span style="display: inline-block;margin-left: 5px;position: relative;top: 1px;">持有{{ $certificate }}</span>
-            </div>
-            <div>
-                <i class="icon iconfont icon-roundcheck"></i>
-                <span style="display: inline-block;margin-left: 5px;position: relative;top: 1px;">担任{{ $year }}年以上拍卖师</span>
-            </div>
-            <div>
-                <i class="icon iconfont icon-roundcheck"></i>
-                <span style="display: inline-block;margin-left: 5px;position: relative;top: 1px;">现属机构：{{ $unit }}</span>
-            </div>
-        </div>
-        <!--拍卖师商品-->
-        <div class="aucgoodsdiv">
-            <div class="goodshead">
-                正在拍卖
-            </div>
-            <div>
-                <div id="goodslist" class="tab active">
-                    <div class="" id="listgoods" style="padding-left: 0;padding-right: 0;position: relative;">
-                        <div class="gooddiv">
-                        <div style="clear: both;"></div>
-                    </div>
+    <style>
+        .list-block {
+            /*display: none;*/
+            background-color: white;
+            margin-top: .0rem;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    </style>
+    <div class="list-block content native-scroll">
+        <div class="tabs">
+            <div id="goodslist" class="tab active">
+                <div class="" id="collection" style="padding-left: 0;padding-right: 0;position: relative;">
+                    <div class="nodata-default" style="height:100%;"><a href="/h5/product/type">去逛逛</a></div>
                 </div>
             </div>
         </div>
-
     </div>
-    <style>
-        .aucgoodsdiv {
-            background-color: white;
-        }
-
-        .goodshead {
-            font-size: 16px;
-            padding-top: .2rem;
-            padding-bottom: .2rem;
-            padding-left: .75rem;
-        }
-    </style>
-
-
+    <div id="listgoods"></div>
     <script type="text/html" id="goodslists">
         @verbatim
         {{# for(var i = 0, len = d.data.length; i< len; i++){ }}
         <div class="gooddiv">
             <div class="collection">
                 <input type="hidden" name="cl" class="cl" value=""/>
-
             </div>
             <div onclick="togoods({{d.data[i].id}})">
-    <span class="goodimg" id="logo{{d.data[i].img_cover}}">
-    <img class="goodlogo" src="{{ d.data[i].img_cover}}"/>
-    </span>
+                <span class="goodimg" id="logo{{d.data[i].img_cover}}">
+                <img class="goodlogo" src="{{ d.data[i].img_cover}}"/>
+                </span>
                 <p id="sy{{d.data[i].id}}" sytime='{{d.data[i].countdown}}' perid="{{d.data[i].id}}"
                    class="downtime"></p>
                 <input type="hidden" value="0" id="end{{d.data[i].id}}"/>
@@ -231,12 +184,12 @@
         function togoods(id) {
             location.href = "/h5/product/detail?period_id=" + id;
         }
-
+        $(".list-block").css("display", "block");
         $.get("/h5/home/get-period", {
-            type: 5
+            type: 6
         }, function (d) {
             if (d.data.length != '') {
-
+                $(".list-block").css("display", "none");
                 var gettpl = document.getElementById('goodslists').innerHTML;
                 laytpl(gettpl).render(d, function (html) {
                     $("#listgoods").empty();

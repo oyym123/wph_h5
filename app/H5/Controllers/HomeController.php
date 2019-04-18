@@ -90,7 +90,7 @@ class HomeController extends WebController
                     'id' => 0,
                     'title' => '手机专区',
                     'img' => config('qiniu.domain') . 'tuiguang2.png',
-                    'url' => 'invite.html',
+                    'url' => '/h5/product/phone-zone-view',
                 ],
                 [
                     'id' => 1,
@@ -103,7 +103,7 @@ class HomeController extends WebController
                     'id' => 2,
                     'title' => '限时秒杀',
                     'img' => config('qiniu.domain') . 'shiyuanzuanqv2018.png',
-                    'url' => 'goods_list.html',
+                    'url' => '/h5/product/ten-zone-view',
                 ], [
 
                     'id' => 3,
@@ -200,6 +200,7 @@ class HomeController extends WebController
         } elseif (!in_array($type, [1, 2, 3])) {
             //  $type = 1;
         }
+
 
         $period = new Period();
         $period->userId = $this->userId;

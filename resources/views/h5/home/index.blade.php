@@ -229,7 +229,6 @@
             $('.mod_guide').hide();
 
         })
-
         pages = 0;
         $(function () {
             var myscroll = new iScroll("wrapper", {
@@ -282,41 +281,55 @@
         });
     </script>
 
-
-
-
     <script type="text/javascript">
+        connect();
+        // 连接服务端
+        function connect() {
+            // 创建websocket
+            @if(PHP_OS == 'WINNT') //本地测试专用
+            ws = new WebSocket("ws://127.0.0.1:8081");
+            @else //线上环境
+            ws = new WebSocket("ws://"+ {{ $_SERVER['HTTP_HOST'] }} +":8081");
+            @endif
 
-        // 服务端发来消息时
-        function onmessage(e) {
-//      console.log(e.data);
-            var data = JSON.parse(e.data);
-            switch (data['type']) {
-                // 服务端ping客户端
-                case 'ping':
-                    ws.send('{"type":"pong"}');
-                    break;
-                // 服务端ping客户端
-                case 'init':
-                    onopens(data['client_id']);
-                    break;
-                // 出价信息
-                case 'offer':
-                    $('#sy' + data.perid).attr('sytime', data.countdown);
-                    $('#name' + data.perid).text(data.finalname);
-                    $('#bg' + data.perid).attr('class', 'goodmoney tipin');
+            // 当有消息时根据消息类型显示不同信息
+            ws.onmessage =  function(event) {
+                //  console.log(event.data);
+            };
+
+            ws.onclose = function() {
+                console.log("连接关闭，定时重连");
+                //  connect();
+            };
+            ws.onerror = function() {
+                console.log("出现错误");
+            };
+        }
+        ws.onmessage =  function(event) {
+            var  data = JSON.parse(event.data);
+            //   console.log(data);return false;
+            if(data.length !==0){
+                data = data['content'][0];
+                console.log(data);
+                if(data.status == 0){
+                    $('#sy' + data.period_id).attr('sytime', data.countdown);
+                    // $('#name' + data.period_id).text(data.nickname);
+                    $('#bg' + data.period_id).attr('class', 'goodmoney tipin');
                     var t = setTimeout(function () {
-                        $('#bg' + data.perid).attr('class', 'goodmoney tipout');
+                        $('#bg' + data.period_id).attr('class', 'goodmoney tipout');
                     }, 20);
-                    $('#money' + data.perid).text(data.prtxt);
-                    break;
-                case 'end':
-                    $('#end' + data.perid).val(1);
-                    break;
+                    $('#money' + data.period_id).text(data.bid_price);
+                }else{
+                    $('#perbutton' + data.period_id).text('本期结束');
+                    $('#perbutton' + data.period_id).css('background-color', '#999999');
+                    $('#sy' + data.period_id).attr('sytime', 0);
+                    $('#sy' + data.period_id).css('color', 'black');
+                    $('#bg' + data.period_id).css('color', 'black');
+                    $('#logo' + data.period_id).addClass('endimg');
+                }
             }
         }
     </script>
-
     <script type="text/javascript">
         $(function () {
             get_goods(6);
@@ -327,10 +340,10 @@
             }
         });
         function togoods(id) {
-            location.href = "product/detail?period_id=" + id;
+            location.href = "/h5/product/detail?period_id=" + id;
         }
         function get_goods(type) {
-            $.get("home/get-period", {
+            $.get("/h5/home/get-period", {
                 type: type
             }, function (d) {
                 if (d.data.length != '') {
@@ -359,81 +372,6 @@
                         }
                     });
                 }
-            }, "json");
-        }
-
-        var businessflag = "1";
-        function begin() {
-            getinfo();
-            $('.downtime').each(function () {
-                var begintime = $(this).attr('sytime');
-                var txt = '';
-                if (begintime > 0) {
-                    h = Math.floor(begintime / 3600);
-                    m = Math.floor((begintime % 3600) / 60);
-                    s = Math.floor((begintime % 3600) % 60);
-                    if (h < 10) {
-                        h = '0' + h;
-                    }
-                    if (m < 10) {
-                        m = '0' + m;
-                    }
-                    if (s < 10) {
-                        s = '0' + s;
-                    }
-                    txt = h + ":" + m + ":" + s;
-                    //  $(this).text(txt);
-                    begintime = begintime - 1;
-                    $(this).attr('sytime', begintime);
-                } else {
-                    var perid = $(this).attr('perid');
-                    var endflag = $('#end' + perid).val();
-                    if (endflag > 0) {
-                        if (businessflag == 0) {
-                            $('#perbutton' + perid).text('歇业中');
-                        } else {
-                            $('#perbutton' + perid).text('本期结束');
-                        }
-                        $('#perbutton' + perid).css('background-color', '#999999');
-                        $('#sy' + perid).attr('sytime', 0);
-                        // $('#sy' + perid).text('00:00:00');
-                        $('#sy' + perid).css('color', 'black');
-                        $('#bg' + perid).css('color', 'black');
-                        $('#logo' + perid).addClass('endimg');
-                    }
-                }
-            });
-        }
-
-        function getinfo() {
-            var arrs = new Array();
-            $("input[id^='period_ids']").each(function (i) {
-                arrs.push($(this).val());
-            });
-
-            $.post("bid/newest-bid", {
-                periods: arrs.join(",")
-            }, function (data) {
-                data = data.data;
-                //  console.log(data);
-                $.each(data, function (key, val) {
-                    if (val.f == '1') { //表示竞拍成功
-                        $('#end' + val.a).val(1);
-                    } else {
-                        var nowmid = $('#mid' + val.a).val();
-                        if (val.c !== nowmid) {
-                            $('#mid' + val.a).val(val.a);
-                            $('#sy' + val.a).attr('sytime', val.h)
-                            //$('#name' + val.a).text(val.d);
-                            $('#bg' + val.a).attr('class', 'goodmoney tipin');
-                            var t = setTimeout(function () {
-                                $('#bg' + val.a).attr('class', 'goodmoney tipout');
-                            }, 50);
-                            //console.log(val.a);
-                            $('#money' + val.a).text(val.c);
-                        }
-                    }
-                });
             }, "json");
         }
     </script>

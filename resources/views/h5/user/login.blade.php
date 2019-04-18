@@ -87,7 +87,7 @@
         }
 
         function wechatsign(){
-            location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=wechatsign";
+            location.href = "/?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=wechatsign";
         }
 
         function validate(){

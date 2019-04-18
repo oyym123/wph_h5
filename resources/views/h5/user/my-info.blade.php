@@ -77,7 +77,7 @@
                             </div>
                         </li>
                         {{--<li>--}}
-                        {{--<div class="item-link item-content" onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=boundphone'">--}}
+                        {{--<div class="item-link item-content" onclick="location.href='/?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=boundphone'">--}}
                         {{--<div class="item-inner">--}}
                         {{--<div class="item-title label">手机号</div>--}}
                         {{--<div class="item-after">未绑定</div>--}}

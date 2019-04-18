@@ -4,7 +4,6 @@
 @stop
 
 @section('content')
-
     <script src="{{ asset('js/h5/light7-city-picker.js') }}" type="text/javascript" charset="utf-8"></script>
     <div class="page-group">
         <div class="page page-current" id="page-index">
@@ -14,8 +13,6 @@
                     <span style="color: #999999;" class="icon icon-left"></span>
                 </a>
                 <h1 class="title">收货信息</h1>
-                <input type="hidden" value="" id="orderid">
-
                 <style>
                     * {
                         touch-action: none;
@@ -30,7 +27,8 @@
                                 <div class="item-inner">
                                     <div class="item-title label">收货人</div>
                                     <div class="item-input">
-                                        <input type="text" id="addressname" value="" placeholder="请输入收货人姓名">
+                                        <input type="text" id="addressname" value="{{$address_info['username']}}"
+                                               placeholder="请输入收货人姓名">
                                     </div>
                                 </div>
                             </div>
@@ -40,7 +38,7 @@
                                 <div class="item-inner">
                                     <div class="item-title label">手机号</div>
                                     <div class="item-input">
-                                        <input type="tel" id="mobile" value="" placeholder="用户物流通知">
+                                        <input type="tel" id="mobile" value="{{$address_info['telephone']}}" placeholder="用户物流通知">
                                     </div>
                                 </div>
                             </div>
@@ -62,28 +60,29 @@
                                 <div class="item-inner">
                                     <div class="item-title label">详细地址</div>
                                     <div class="item-input">
-                                        <input type="text" id="addressdata" value="" placeholder="请填写具体地址">
+                                        <input type="text" id="addressdata" value="{{ $address_info['address'] }}" placeholder="请填写具体地址">
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title label">其他备注</div>
-                                    <div class="item-input">
-                                        <input type="text" id="remarks" value="" placeholder="请填写备注">
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                        {{--<li>--}}
+                            {{--<div class="item-content">--}}
+                                {{--<div class="item-inner">--}}
+                                    {{--<div class="item-title label">其他备注</div>--}}
+                                    {{--<div class="item-input">--}}
+                                        {{--<input type="text" id="remarks" value="" placeholder="请填写备注">--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</li>--}}
 
                     </ul>
                 </div>
                 <br/>
                 <br/>
-                <button onclick="validate()" class="weui-btn weui-btn_primary">新增地址</button>
-
+                <button onclick="validate()" class="weui-btn weui-btn_primary"
+                        style="background-color: rgb(239, 21, 68)">新增地址
+                </button>
             </div>
         </div>
     </div>
@@ -94,7 +93,6 @@
 	    <h1 class="title">选择收货地址</h1>\
 	    </header>'
         });
-
         function validate() {
             var addressname = $("#addressname").val();
             var mobile = $("#mobile").val();
@@ -128,9 +126,11 @@
             }, function (d) {
                 if (d.code >= 0) {
                     $.toast("修改成功");
-                    var orderid = $('#orderid').val();
-                    if (orderid) {
-                        location.href = "https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=order&ac=userorder&do=payorder&id=" + orderid;
+                    var product_id = '{{ $order_info['product_id'] }}';
+                    if (product_id > 0) {
+                        var period_id = '{{ $order_info['period_id']}}';
+                        var sn = '{{ $order_info['sn'] }}';
+                        location.href = "/h5/pay/confirm?product_id=" + product_id + "&period_id=" + period_id + "&sn=" + sn;
                     } else {
                         location.href = "center";
                     }
@@ -152,7 +152,6 @@
             }
         }, false);
     </script>
-
     @parent
 @stop
 

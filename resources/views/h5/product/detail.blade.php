@@ -18,9 +18,6 @@
                    href="/h5/home"><i
                             class="icon iconfont icon-homefill"></i></a>
                 <h1 class="title">商品详情</h1>
-                <span class="news"
-                      onclick="location.href='https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=news&amp;ac=news&amp;do=news'"><i
-                            style="font-size: 23px;" class="icon iconfont icon-comment"></i></span>
             </header>
             <div class="content native-scroll infinite-scroll-bottom infinite-scroll" style="padding-bottom: 3rem;">
                 <!--拍卖师-->
@@ -419,7 +416,7 @@
                 <div class="list-block usercenter" style="margin-top:.5rem;">
                     <ul>
                         <li>
-                            <a href="https://demo.weliam.cn/app/index.php?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=store&amp;ac=merchant&amp;do=auctionhouse&amp;auchouseid=1"
+                            <a href="/?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=store&amp;ac=merchant&amp;do=auctionhouse&amp;auchouseid=1"
                                class="item-link item-content">
                                 <div class="item-media"><img style="height:2.3rem;width: 2.1rem;"
                                                              src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/UYHcYfe8o2EOV00uZ12oEyh81MVC2e.png">
@@ -527,7 +524,7 @@
                         <div class="selnum">
                             <span onclick="addnum(0)" style="margin-left: 5px;"><i class="icon iconfont icon-move"></i></span>
                             <span style="border: 0;width: 20px;"><input onclick="showtip()" onchange="changenum(this)"
-                                                                        id="aucnum" type="tel" value="5"> </span>
+                                                                        id="aucnum" type="tel" value="1"> </span>
                             <span onclick="addnum(1)"><i class="icon iconfont icon-add"></i></span>
                             <span style="border: 0;width: 15px;">次</span>
                         </div>
@@ -543,9 +540,10 @@
                         <p style="font-size: 12px;position: relative;top: -2px;">{{ $detail['bid_step'] }}拍币/次</p>
                         <input id="surtimes" type="hidden" value="0">
                     </div>
+
                 </div>
-                <div class="auced" style="display: none;"
-                     onclick="nextPeriod({{ $detail['product_id'] }})">
+
+                <div class="auced" style="display: none;" onclick="nextPeriod({{ $detail['product_id'] }})">
                     <div>前往下期</div>
                 </div>
             </div>
@@ -599,26 +597,31 @@
             }, "json");
         };
 
+        @if($detail['period_status']==1)
+          $('.auced').show();
+        $('.aucing').hide();
+        @endif
+
         connect();
         // 连接服务端
         function connect() {
             // 创建websocket
             @if(PHP_OS == 'WINNT') //本地测试专用
-                ws = new WebSocket("ws://127.0.0.1:8081");
+            ws = new WebSocket("ws://127.0.0.1:8081");
             @else //线上环境
-                ws = new WebSocket("ws://"+ {{ $_SERVER['HTTP_HOST'] }} +":8081");
+            ws = new WebSocket("wss://" + {{ $_SERVER['HTTP_HOST'] }} +":8081");
             @endif
 
             // 当有消息时根据消息类型显示不同信息
-            ws.onmessage =  function(event) {
-              //  console.log(event.data);
+            ws.onmessage = function (event) {
+                //  console.log(event.data);
             };
 
-            ws.onclose = function() {
+            ws.onclose = function () {
                 console.log("连接关闭，定时重连");
-              //  connect();
+                //  connect();
             };
-            ws.onerror = function() {
+            ws.onerror = function () {
                 console.log("出现错误");
             };
         }
@@ -672,57 +675,57 @@
         }
 
         function getinfo() {
-                // 当有消息时根据消息类型显示不同信息
-                ws.onmessage =  function(event) {
-                  var  data = JSON.parse(event.data)
-                    if(data.period_id == "{{ $detail['id'] }}"){
-                        if (data.content[0].status == "1") {
-                            $('#endflag').val(1);
-                        } else if (data.content[0].status == "0") {
-                                if (data.content[0].bid_price) {
-                                    $('#prtxt1').text(data.content[0].bid_price);
-                                } else {
-                                    $('#prtxt1').text('0.00');
-                                }
+            // 当有消息时根据消息类型显示不同信息
+            ws.onmessage = function (event) {
+                var data = JSON.parse(event.data)
+                if (data.period_id == "{{ $detail['id'] }}") {
+                    if (data.content[0].status == "1") {
+                        $('#endflag').val(1);
+                    } else if (data.content[0].status == "0") {
+                        if (data.content[0].bid_price) {
+                            $('#prtxt1').text(data.content[0].bid_price);
+                        } else {
+                            $('#prtxt1').text('0.00');
+                        }
 //                                $('#prtxt2').text(data.prtxt);
 //                                $('#finalname').text(data.finalname);
-                                $('#auctimes').text(data.f);
-                                $('#sytime').attr('sytime',data.content[0].countdown);
-                                var gettpl = document.getElementById('lists').innerHTML;
-                                laytpl(gettpl).render(data.content, function (html) {
-                                    $("#infolist").empty();
-                                    $("#infolist").append(html);
-                                });
+                        $('#auctimes').text(data.f);
+                        $('#sytime').attr('sytime', data.content[0].countdown);
+                        var gettpl = document.getElementById('lists').innerHTML;
+                        laytpl(gettpl).render(data.content, function (html) {
+                            $("#infolist").empty();
+                            $("#infolist").append(html);
+                        });
 //                                if (data.auctimes > 0) {
 //                                    $('.havelist').show();
 //                                    $('.nolist').hide();
 //                                }
-                            //  自动出价剩余次数大于0，且是当前用户时，弹出出价成功消息
-                                if (data.content[0].remain_times > 1 &&
-                                    data.content[0].user_id == "{{ !empty(session('user_info'))?json_decode(session('user_info'))->id:'木有' }}") {
-                                        noticeflag = 0;
-                                        $.toast('自动出价成功');
-                                        var surtimes = $('#surtimes').val();
-                                        $('#surtimes').val(data.content[0].total_times);
-                                        $('#surtime').text(data.content[0].remain_times-1);
+                        //  自动出价剩余次数大于0，且是当前用户时，弹出出价成功消息
+                        if (data.content[0].remain_times > 1 &&
+                            data.content[0].user_id == "{{ !empty(session('user_info'))?json_decode(session('user_info'))->id:'木有' }}") {
+                            noticeflag = 0;
+                            $.toast('自动出价成功');
+                            var surtimes = $('#surtimes').val();
+                            $('#surtimes').val(data.content[0].total_times);
+                            $('#surtime').text(data.content[0].remain_times - 1);
 
-                                } else {
-                                   if(data.content[0].remain_times == 1 &&
-                                       data.content[0].user_id == "{{ !empty(session('user_info'))?json_decode(session('user_info'))->id:'木有' }}"){
-                                       $('.offer').css('background-color', '#ed414a');
-                                       $('#offertext').text('出价');
-                                       $('.selnum').show();
-                                       $('.noselnum').hide();
-                                   }
-                                    noticeflag = 1;
-                                }
+                        } else {
+                            if (data.content[0].remain_times == 1 &&
+                                data.content[0].user_id == "{{ !empty(session('user_info'))?json_decode(session('user_info'))->id:'木有' }}") {
+                                $('#surtimes').val(0);
+                                $('.offer').css('background-color', '#ed414a');
+                                $('#offertext').text('出价');
+                                $('.selnum').show();
+                                $('.noselnum').hide();
+                                noticeflag = 0;
                             }
                         }
-
-                };
+                    }
+                }
+            };
         }
 
-        if("{{ $proxy['remain_times'] }}" > 0){
+        if ("{{ $proxy['remain_times'] }}" > 0) {
             $('#surtime').text({{ $proxy['remain_times'] }});
             $('.offer').css('background-color', '#999999');
             $('#offertext').text('竞拍中');
@@ -749,12 +752,14 @@
                             period_id: perid,
                         }, function (d) {
                             d = d.data
-                            if (d.status == 10 || d.status == 20 ) {
+                            if (d.status == 10 || d.status == 20) {
                                 $.toast("出价成功");
-                                noticeflag = 0;
+
                                 $('#auccoin').text(d.used_real_bids);
                                 $('#givecoin').text(d.used_gift_bids);
-                                if (1) {
+
+                                if (offtimes != 1) {
+                                    noticeflag = 0;
                                     $('#surtimes').val(d.total_times);
                                     $('#surtime').text(d.total_times);
                                     $('.offer').css('background-color', '#999999');
@@ -847,7 +852,7 @@
         });
 
         function get_late() {
-            $.post("https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=goods&ac=goods&do=getlate&goodsid=17", {}, function (d) {
+            $.post("/?i=37&c=entry&m=weliam_fastauction&p=goods&ac=goods&do=getlate&goodsid=17", {}, function (d) {
                 if (d.length != '') {
                     var gettpl = document.getElementById('lateauc').innerHTML;
                     laytpl(gettpl).render(d, function (html) {
@@ -1071,7 +1076,7 @@
         }
 
         .auced {
-            width: calc(70%);
+            width: calc(85%);
             background: #ed414a;
             text-align: center;
             color: #fff;

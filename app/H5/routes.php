@@ -40,6 +40,8 @@ Route::group(['prefix' => 'h5', 'middleware' => 'web'], function () {
     Route::get('latest-deal', 'LatestDealController@index');
 
     //产品
+    Route::get('product/phone-zone-view', 'ProductController@phoneZoneView');//10元专区视图
+    Route::get('product/ten-zone-view', 'ProductController@tenZoneView');//10元专区视图
     Route::get('product', 'ProductController@index');
     Route::get('product/cancel-visit', 'ProductController@cancelVisit');
     Route::get('product/jd-product', 'ProductController@jdProduct');
@@ -71,10 +73,10 @@ Route::group(['prefix' => 'h5', 'middleware' => 'web'], function () {
     Route::get('bid/bid-socket', 'BidController@bidSocket');
 
     /** 支付 */
-    Route::post('pay/confirm', 'PayController@confirm'); //确认订单
+    Route::get('pay/confirm', 'PayController@confirm'); //确认订单
     Route::get('pay/recharge-center', 'PayController@rechargeCenter'); //充值中心
     Route::get('pay/recharge', 'PayController@recharge'); //充值
-    Route::post('pay/pay', 'PayController@pay'); //立即购买
+    Route::get('pay/pay', 'PayController@pay'); //立即购买
     Route::get('new-pay/weixin-pay', 'NewPayController@weixinPay'); //立即购买
 
 
@@ -106,6 +108,8 @@ Route::group(['prefix' => 'h5', 'middleware' => 'web'], function () {
     Route::get('user/batch-register', 'UserController@batchRegister');//批量用户注册
     Route::get('user/shopping-currency', 'UserController@shoppingCurrency');//批量用户注册
     Route::get('user/evaluate', 'UserController@evaluate');//批量用户注册
+    Route::get('user/collection-view', 'UserController@collectionView');//收藏视图
+    Route::get('user/collection', 'UserController@collection');//收藏数据
     Route::get('/balance-desc', function () {  //收益详情
         return view('api.user.balance-desc');
     });

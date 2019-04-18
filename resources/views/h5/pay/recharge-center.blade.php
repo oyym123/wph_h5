@@ -153,7 +153,7 @@
         $('#fastauctioncoin').text(num);
         $('#moneynum').text(num);
         $('#payprice').val(num);
-        $.post("https://demo.weliam.cn/app/index.php?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=checkgive", {
+        $.post("/?i=37&c=entry&m=weliam_fastauction&p=member&ac=user&do=checkgive", {
             num: num
         }, function(d) {
             $('#givecoin').text(d.data);

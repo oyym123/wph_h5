@@ -39,7 +39,7 @@ class PayController extends WebController
 
 
     /**
-     * @SWG\Post(path="/api/pay/confirm",
+     * @SWG\Get(path="/api/pay/confirm",
      *   tags={"支付"},
      *   summary="确认订单",
      *   description="Author: OYYM",
@@ -154,7 +154,8 @@ class PayController extends WebController
             'product_id' => $product->id, //产品id
             'period_id' => $periodId,
             'sn' => $request->sn,
-            'img_cover' => $product->getImgCover()
+            'img_cover' => $product->getImgCover(),
+            'order_type' => $type
         ];
 
         return view('h5.pay.confirm', $res);
@@ -228,7 +229,7 @@ class PayController extends WebController
     }
 
     /**
-     * @SWG\Post(path="/api/pay/pay",
+     * @SWG\Get(path="/api/pay/pay",
      *   tags={"支付"},
      *   summary="立即购买",
      *   description="Author: OYYM",

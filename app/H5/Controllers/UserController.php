@@ -382,7 +382,46 @@ class UserController extends WebController
     /** 地址视图 */
     public function addressView()
     {
-        return view('h5.user.address');
+        $request = $this->request;
+
+        if (isset($request->product_id) && !empty($request->product_id)) { //表示是从订单支付那边传来的，保存之后再跳回去
+
+            $res = [
+                'period_id' => $request->period_id,
+                'product_id' => $request->product_id,
+                'sn' => $request->sn
+            ];
+        } else {
+            $res = [
+                'product_id' => 0,
+                'period_id' => 0,
+                'sn' => ''
+            ];
+        }
+
+        $addressInfo = [
+            'address_id' => 0,
+            'username' => '',
+            'telephone' => '',
+            'address' => '',
+        ];
+        if ($request->address_id) {
+            $address = UserAddress::where([
+                'is_default' => UserAddress::STATUS_IS_DEFAULT,
+                'user_id' => $this->userId
+            ])->first();
+            if ($address) {
+                $addressInfo = [
+                    'address_id' => $address->id,
+                    'username' => $address->user_name,
+                    'telephone' => $address->telephone,
+                    'address' => str_replace('||', ' ', $address->str_address) . $address->detail_address,
+
+                ];
+            }
+        }
+
+        return view('h5.user.address', ['order_info' => $res, 'address_info' => $addressInfo]);
     }
 
     /**
@@ -446,8 +485,9 @@ class UserController extends WebController
                 self::showMsg('保存失败！', -1);
             }
         } else {
+            $data['is_default'] = 1; //h5默认只有一个地址
             if ((new UserAddress())->saveData($data)) {
-                self::showMsg('保存成功！');
+                self::showMsg('成功');
             } else {
                 self::showMsg('保存失败！', -1);
             }
@@ -471,11 +511,19 @@ class UserController extends WebController
     public function defaultAddress()
     {
         $address = UserAddress::defaultAddress($this->userId);
-        $addressInfo = [
-            'username' => $address->user_name,
-            'telephone' => $address->telephone,
-            'address' => str_replace('||', ' ', $address->str_address) . $address->detail_address
-        ];
+        if ($address) {
+            $addressInfo = [
+                'username' => $address->user_name,
+                'telephone' => $address->telephone,
+                'address' => str_replace('||', ' ', $address->str_address) . $address->detail_address
+            ];
+        } else {
+            $addressInfo = [
+                'username' => '',
+                'telephone' => '',
+                'address' => ''
+            ];
+        }
         self::showMsg($addressInfo);
     }
 
@@ -494,8 +542,8 @@ class UserController extends WebController
      */
     public function evaluate()
     {
-
-        self::showMsg((new Evaluate())->getList(['user_id' => $this->userId]));
+        $data = (new Evaluate())->getList(['user_id' => $this->userId]);
+        return view('h5.user.evaluate', ['data' => $data]);
     }
 
     /**
@@ -711,4 +759,19 @@ class UserController extends WebController
         }
     }
 
+
+    public function collectionView()
+    {
+        return view('h5.user.collection');
+    }
+
+
+    public function collection()
+    {
+        $period = new Period();
+        $period->userId = $this->userId;
+        $period->limit = $this->limit;
+        $period->offset = $this->offset;
+        self::showMsg($period->getProductList(3));
+    }
 }

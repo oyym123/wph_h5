@@ -172,6 +172,7 @@ class Period extends Common
 
             $field = 'product_id';
             $ids = array_column($collectIds, 'product_id');
+
             if (empty($collectIds)) {
                 self::showMsg('没有数据', self::CODE_NO_DATA);
             }
@@ -213,6 +214,7 @@ class Period extends Common
         $collection = new Collection();
         $redis = app('redis')->connection('first');
         $bid = new Bid();
+
         foreach ($periods as $period) {
             $product = Product::find($period->product_id);
             if ($product) {

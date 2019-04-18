@@ -56,6 +56,14 @@ class ProductController extends WebController
     }
 
 
+    public function tenZoneView(){
+        return view('h5.product.ten-zone-view');
+    }
+
+    public function phoneZoneView(){
+        return view('h5.product.phone-zone');
+    }
+
     /**
      * @SWG\Get(path="/api/product/detail",
      *   tags={"产品"},
