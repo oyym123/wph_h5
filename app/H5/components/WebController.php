@@ -17,7 +17,7 @@ class WebController extends Controller
     public $offset = 0;
     public $limit = 20;
     public $pages = 0;
-    public $userId = 0;
+    public $userId = 7004;
     public $userIdent = 0;
     public $request;
     public $token;
@@ -35,10 +35,11 @@ class WebController extends Controller
         }
 
         // $request->psize && $this->psize = $request->psize;
-        if ($request->session()->has('user_info')) { //获取用户信息
-            $user = json_decode(session('user_info'));
+       // if ($request->session()->has('user_info')) { //获取用户信息
+        if (1) { //获取用户信息
+          //  $user = json_decode(session('user_info'));
 //            print_r($user);exit;
-            $this->userId = $user->id;
+          //  $this->userId = $user->id;
             $this->userIdent = User::find($this->userId);
             //判断账号是否可用
             if ($this->userIdent->status == User::STATUS_DISABLE) {
