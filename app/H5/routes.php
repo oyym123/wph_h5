@@ -15,7 +15,6 @@ Route::get('/auctioneer1', function () {
 
 Route::group([
     'prefix' => 'h5',
-    'namespace' => 'App\H5\Controllers',
     'middleware' => 'web',
 ], function (Router $router) {
 
