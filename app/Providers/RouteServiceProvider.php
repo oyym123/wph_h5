@@ -87,7 +87,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('h5')
             ->middleware('web')
             ->namespace('App\H5\Controllers')
-            ->group(base_path('app/H5/routes.php'));
+            ->group(base_path('routes/h5.php'));
     }
 
 
