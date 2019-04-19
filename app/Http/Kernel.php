@@ -14,13 +14,13 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
     ];
 
     /**
@@ -30,27 +30,26 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \Spatie\Pjax\Middleware\FilterIfPjax::class,
-//            \App\Http\Middleware\EncryptCookies::class,
+            \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
+            \Spatie\Pjax\Middleware\FilterIfPjax::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             // \App\Http\Middleware\VerifyCsrfToken::class, //关闭csrf防御
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
         'h5' => [
-            \Spatie\Pjax\Middleware\FilterIfPjax::class,
-//            \App\Http\Middleware\EncryptCookies::class,
+            \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
+            \Spatie\Pjax\Middleware\FilterIfPjax::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             // \App\Http\Middleware\VerifyCsrfToken::class, //关闭csrf防御
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-
         ],
         'admin_web' => [
             \App\Http\Middleware\EncryptCookies::class,

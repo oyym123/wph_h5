@@ -4,6 +4,7 @@
  */
 use Illuminate\Routing\Router;
 use App\Models\Auctioneer;
+
 Route::any('server', 'ServerController@index'); // 这个要放到中间件的外面
 
 Route::get('/auctioneer1', function () {
@@ -14,13 +15,14 @@ Route::get('/auctioneer1', function () {
 
 Route::group([
     'prefix' => 'h5',
-    'middleware' => 'web'
-], function (\Illuminate\Routing\Router $router) {
+    'namespace' => 'App\H5\Controllers',
+    'middleware' => 'web',
+], function (Router $router) {
 
     //新手指引banner链接
-        $router->get('/newbie-guide', function () {
-            return view('api.home.newbie_guide');
-        });
+    $router->get('/newbie-guide', function () {
+        return view('api.home.newbie_guide');
+    });
 
     $router->any('wx-notify/notify', 'WxNotifyController@notify'); // 微信回调
     $router->get('auctioneer', 'AuctioneerController@index');
