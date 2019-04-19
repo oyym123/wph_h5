@@ -158,11 +158,11 @@ class UserController extends WebController
         ])->first();
 
         if ($user) {
-            $user = \Cookie::make('user_info', json_encode($user), 30000);
-            return response(['code' => 1, 'message' => '登入成功'])->withCookie($user);
-//            session()->put('user_info', json_encode($user));
-//            session()->save(); //如果后面执行了exit等终止操作 则需要次方法强制保存
-            //self::showMsg('登入成功!');
+//            $user = \Cookie::make('user_info', json_encode($user), 30000);
+//            return response(['code' => 1, 'message' => '登入成功'])->withCookie($user);
+            session()->put('user_info', json_encode($user));
+            session()->save(); //如果后面执行了exit等终止操作 则需要次方法强制保存
+            self::showMsg('登入成功!');
         } else {
             self::showMsg('账号或密码错误!', -1);
         }

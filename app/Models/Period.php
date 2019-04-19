@@ -252,7 +252,12 @@ class Period extends Common
 
         $userCount = DB::table('bid')->select('user_id')->where(['period_id' => $period->id])->groupBy(['user_id'])->get();
         $this->limit = 6;
-        $proxy = [];
+        //h5新增
+        $proxy = [
+            'remain_times' => 0,
+            'total_times' => 0,
+            'percent' => 0,
+        ];
         if ($this->userId > 0) {
             $proxy = AutoBid::isAutoBid($this->userId, $period->id);
         }

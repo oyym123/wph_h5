@@ -702,7 +702,7 @@
 //                                }
                         //  自动出价剩余次数大于0，且是当前用户时，弹出出价成功消息
                         if (data.content[0].remain_times > 1 &&
-                            data.content[0].user_id == "{{ !empty(cookie('user_info'))?json_decode(session('user_info'))->id:'木有' }}") {
+                            data.content[0].user_id == "{{ !empty(session('user_info'))?json_decode(session('user_info'))->id:'木有' }}") {
                             noticeflag = 0;
                             $.toast('自动出价成功');
                             var surtimes = $('#surtimes').val();
@@ -711,7 +711,7 @@
 
                         } else {
                             if (data.content[0].remain_times == 1 &&
-                                data.content[0].user_id == "{{ !empty(cookie('user_info'))?json_decode(session('user_info'))->id:'木有' }}") {
+                                data.content[0].user_id == "{{ !empty(session('user_info'))?json_decode(session('user_info'))->id:'木有' }}") {
                                 $('#surtimes').val(0);
                                 $('.offer').css('background-color', '#ed414a');
                                 $('#offertext').text('出价');

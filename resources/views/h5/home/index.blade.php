@@ -106,7 +106,7 @@
                         </div>
                     </div>
 
-                    <div class="mod_guide" @if(!empty(cookie('user_info'))) style="display: none;" @endif >
+                    <div class="mod_guide" @if(!empty(session('user_info'))) style="display: none;" @endif >
                         <div class="r_red">
                             <a class="icon-close-x" id="J-close"></a>
                             <div class="ct_wrap">

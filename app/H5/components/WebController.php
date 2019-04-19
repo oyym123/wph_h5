@@ -34,13 +34,13 @@ class WebController extends Controller
         if ($this->limit > 100) {
             $this->limit = 100;
         }
-        $cook = $request->cookie();   //获取cookie
-        if (isset($cook['user_info']) && !empty($cook['user_info'])) {
-            // $request->psize && $this->psize = $request->psize;
-            //    if ($request->session()->has('user_info')) { //获取用户信息
-            //  $user = json_decode(session('user_info'));
-//            print_r($user);exit;
-            $user = json_decode($cook['user_info']);
+//        $cook = $request->cookie();   //获取cookie
+//        if (isset($cook['user_info']) && !empty($cook['user_info'])) {
+        // $request->psize && $this->psize = $request->psize;
+        if ($request->session()->has('user_info')) { //获取用户信息
+            $user = json_decode(session('user_info'));
+            // print_r($user);exit;
+            //$user = json_decode($cook['user_info']);
             $this->userId = $user->id;
             $this->userIdent = User::find($this->userId);
             //判断账号是否可用
