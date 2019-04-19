@@ -85,7 +85,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapH5Routes()
     {
         Route::prefix('h5')
-            ->middleware('web')
+            ->middleware('api')
             ->namespace('App\H5\Controllers')
             ->group(base_path('app/H5/routes.php'));
     }
@@ -100,7 +100,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapH5MRoutes()
     {
-        Route::middleware('web')
+        Route::middleware('api')
             ->namespace('App\H5\Controllers')
             ->group(base_path('app/H5/routes.php'));
     }
