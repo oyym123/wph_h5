@@ -25,7 +25,7 @@ class WeixinOauthCallbackController extends WebController
             $wechatUser = $user->toArray();
             session([
                 'wechat_user' => $wechatUser,
-//                'bind_mobile' => empty($userInfo->bind_mobile) ? '' : $userInfo->bind_mobile,
+                'bind_mobile' => '123',
 //                'user_id' => empty($userInfo->user_id) ? 0 : $userInfo->user_id,
             ]);
             session()->save();
