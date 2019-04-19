@@ -7,5 +7,7 @@
 @stop
 @section('content')
 
+
+
     @parent
 @stop

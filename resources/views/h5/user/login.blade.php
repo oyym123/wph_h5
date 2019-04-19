@@ -50,11 +50,11 @@
 	            </span>
                     </div>
                     <div class="thirdparty" style="display: none;">
-	        	<span class="weui-agree" style="text-align: center;color:#AAAAAA;">
-	        		<span class="external">第三方快速登录</span>
-	        		<p onclick="wechatsign()" style="margin-top: 5px;margin-bottom: 5px;"><img src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/weixin.png" style="width: 50px;"></p>
-	        		<p>微信</p>
-	            </span>
+	        	{{--<span class="weui-agree" style="text-align: center;color:#AAAAAA;">--}}
+	        		{{--<span class="external">第三方快速登录</span>--}}
+	        		{{--<p onclick="wechatsign()" style="margin-top: 5px;margin-bottom: 5px;"><img src="https://demo.weliam.cn/addons/weliam_fastauction/app/resource/images/weixin.png" style="width: 50px;"></p>--}}
+	        		{{--<p>微信</p>--}}
+	            {{--</span>--}}
                     </div>
                 </div>
             </div>
