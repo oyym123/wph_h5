@@ -100,9 +100,9 @@ return [
      *
      * 当 enable_mock 为 true 则会启用模拟微信授权，用于开发时使用，开发完成请删除或者改为 false 即可
      */
-    'enable_mock' => env('WECHAT_ENABLE_MOCK', false),
+    'enable_mock' => env('WECHAT_ENABLE_MOCK', true),
     'mock_user' => [
-        'openid' => 'oEmcq1Yfbyugr07M1-2e5WLaykGo',
+        'openid' => 'oEmcq1Yfbyugr07M1-2e5WLaykGo123456',
         // 以下字段为 scope 为 snsapi_userinfo 时需要
         'nickname' => 'overtrue',
         'sex' => '1',
