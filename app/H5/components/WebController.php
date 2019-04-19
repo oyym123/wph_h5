@@ -17,7 +17,8 @@ class WebController extends Controller
     public $offset = 0;
     public $limit = 20;
     public $pages = 0;
-    public $userId = 6776;
+    //  public $userId = 6776;
+    public $userId = 0;
     public $userIdent = 0;
     public $request;
     public $token;
@@ -33,13 +34,14 @@ class WebController extends Controller
         if ($this->limit > 100) {
             $this->limit = 100;
         }
-
-        // $request->psize && $this->psize = $request->psize;
-       // if ($request->session()->has('user_info')) { //获取用户信息
-        if (1) { //获取用户信息
-          //  $user = json_decode(session('user_info'));
+        $cook = $request->cookie();   //获取cookie
+        if (isset($cook['user_info']) && !empty($cook['user_info'])) {
+            // $request->psize && $this->psize = $request->psize;
+            //    if ($request->session()->has('user_info')) { //获取用户信息
+            //  $user = json_decode(session('user_info'));
 //            print_r($user);exit;
-          //  $this->userId = $user->id;
+            $user = json_decode($cook['user_info']);
+            $this->userId = $user->id;
             $this->userIdent = User::find($this->userId);
             //判断账号是否可用
             if ($this->userIdent->status == User::STATUS_DISABLE) {
@@ -115,9 +117,9 @@ class WebController extends Controller
     /**
      * 解析并送出JSON
      * 200101
-     * @param  array $res 资源数组，如果是一个字符串则当成错误信息输出
-     * @param  int $state 状态值，默认为0
-     * @param  int $msg 是否直接输出,1为返回值
+     * @param array $res 资源数组，如果是一个字符串则当成错误信息输出
+     * @param int $state 状态值，默认为0
+     * @param int $msg 是否直接输出,1为返回值
      * @return array
      **/
     public static function showMsg($res, $code = 0, $msg = '成功')

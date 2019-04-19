@@ -30,6 +30,7 @@ class UserController extends WebController
 
     public function index()
     {
+
         $data = [
             'title' => '注册成功',
             'desc' => '您已成功注册成为微拍行会员!',

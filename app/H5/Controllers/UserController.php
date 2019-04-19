@@ -18,6 +18,7 @@ use App\Models\Period;
 use App\Models\Upload;
 use App\Models\UserAddress;
 use App\Models\Withdraw;
+use http\Cookie;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\RegisterUserPost;
 use App\User;
@@ -43,6 +44,19 @@ class UserController extends WebController
     //注册视图
     public function registerView()
     {
+
+//        $user_info = array('name'=>'good','age'=>12);
+//        $user = Cookie::make('user',$user_info,30);
+//        return Response::make()->withCookie($user);
+
+//        \Cookie::queue(\Cookie::forget('forever'));
+        //  \setcookie('forever', '', -1, '/');    //删除cookie
+        //   $forever = \Cookie::get('forever');   //获取cookie
+        // $foreverCookie = \Cookie::forever('forever', 'Success');
+        // $tempCookie = \Cookie::make('temporary', 'Victory', 5);
+        //   return \Response::make()->withCookie($foreverCookie)->withCookie($tempCookie);
+        //  print_r(\Cookie::get('forever'));exit;
+
         return view('h5.user.register');
     }
 
@@ -144,9 +158,11 @@ class UserController extends WebController
         ])->first();
 
         if ($user) {
-            session()->put('user_info', json_encode($user));
-            session()->save(); //如果后面执行了exit等终止操作 则需要次方法强制保存
-            self::showMsg('登入成功!');
+            $user = \Cookie::make('user_info', json_encode($user), 30000);
+            return response(['code' => 1, 'message' => '登入成功'])->withCookie($user);
+//            session()->put('user_info', json_encode($user));
+//            session()->save(); //如果后面执行了exit等终止操作 则需要次方法强制保存
+            //self::showMsg('登入成功!');
         } else {
             self::showMsg('账号或密码错误!', -1);
         }
@@ -184,7 +200,6 @@ class UserController extends WebController
     }
 
     /**
-     * /**
      * @SWG\Get(path="/api/user/center",
      *   tags={"用户中心"},
      *   summary="用户中心",

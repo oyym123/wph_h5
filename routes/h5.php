@@ -2,17 +2,20 @@
 /**
  * H5数据接口路由
  */
-
+use Illuminate\Support\Facades\Session;
 use App\Models\Auctioneer;
 use Illuminate\Support\Facades\Route;
 
 Route::any('server', 'ServerController@index'); // 这个要放到中间件的外面
 
 Route::get('/auctioneer1', function () {
-    print_r(session()->all());
+//   session(['wechaty' => '312312312']);
+//session()->save();
+    print_r((new \Illuminate\Http\Request())->session());exit;
+  //  print_r(session()->all());
     exit;
-    return new \App\Http\Resources\AuctioneerCollection(Auctioneer::paginate());
-});
+    //return new \App\Http\Resources\AuctioneerCollection(Auctioneer::paginate());
+})->middleware('web');
 
 Route::group(['prefix' => 'h5', 'middleware' => 'web'], function () {
     //新手指引banner链接

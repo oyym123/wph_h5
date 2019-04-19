@@ -14,4 +14,14 @@ class EncryptCookies extends Middleware
     protected $except = [
         //
     ];
+
+    public function register()
+    {
+        $this->app->resolving(EncryptCookies::class, function ($object) {
+            // need check the ip in whitelist
+            $object->disableFor('token');
+        });
+    }
+
+
 }
