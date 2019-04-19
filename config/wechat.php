@@ -48,7 +48,7 @@ return [
         'enabled' => false,         // 是否开启路由
         'attributes' => [           // 路由 group 参数
             'prefix' => null,
-            'middleware' => null,
+            'middleware' => 'web',
             'as' => 'easywechat::',
         ],
         'open_platform_serve_url' => 'open-platform-serve', // 开放平台服务URL
