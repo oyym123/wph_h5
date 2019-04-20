@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 class WebController extends Controller
 {
+
     public $enableCsrfValidation = false;
     public $offset = 0;
     public $limit = 20;

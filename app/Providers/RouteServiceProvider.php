@@ -41,8 +41,6 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapH5Routes();
 
-        $this->mapH5MRoutes();
-
         //
     }
 
@@ -85,24 +83,14 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapH5Routes()
     {
         Route::prefix('h5')
-            ->middleware('web')
+            ->middleware('h5')
             ->namespace('App\H5\Controllers')
             ->group(base_path('app/H5/routes.php'));
+
     }
 
-
-    /**
-     * Define the "web" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     *
-     * @return void
-     */
-    protected function mapH5MRoutes()
-    {
-        Route::middleware('web')
-            ->namespace('App\H5\Controllers')
-            ->group(base_path('app/H5/routes.php'));
-    }
 
 }
+
+
+
