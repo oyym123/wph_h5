@@ -156,6 +156,7 @@
                     }
                     var new_inviteid = $("#inviteid").val();
                     $.post("check_sms",{mobile:mobile,code:contacts,new_inviteid:new_inviteid},function(d){
+                        console.log(d);
                         if(d.code >= 0){
                             $('#con1').hide();
                             $('#con2').show();
@@ -176,11 +177,11 @@
                     return false;
                 }
                 $.post("/h5/sms/send",{mobile:mobile,scenes:1},function(d){
-                    if(d.result == 1){
+                    if(d.code >= 0){
                         $.toast("验证码发送成功");
                         $('#getVerifyCode').removeClass('verifycode');
                         settime();
-                    }else if(d.result == 2){
+                    }else if(d.code< 2){
                         $.toast(d.msg);
                     }else{
                         $.toast("未知错误");

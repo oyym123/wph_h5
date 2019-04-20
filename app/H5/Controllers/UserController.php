@@ -45,19 +45,6 @@ class UserController extends WebController
     //注册视图
     public function registerView()
     {
-
-//        $user_info = array('name'=>'good','age'=>12);
-//        $user = Cookie::make('user',$user_info,30);
-//        return Response::make()->withCookie($user);
-
-//        \Cookie::queue(\Cookie::forget('forever'));
-        //  \setcookie('forever', '', -1, '/');    //删除cookie
-        //   $forever = \Cookie::get('forever');   //获取cookie
-        // $foreverCookie = \Cookie::forever('forever', 'Success');
-        // $tempCookie = \Cookie::make('temporary', 'Victory', 5);
-        //   return \Response::make()->withCookie($foreverCookie)->withCookie($tempCookie);
-        //  print_r(\Cookie::get('forever'));exit;
-
         return view('h5.user.register');
     }
 

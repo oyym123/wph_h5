@@ -624,7 +624,7 @@ class Bid extends Common
         if (PHP_OS == 'WINNT') { //本地测试使用
             shell_exec("node G:node/client.js $periodId");
         } else {
-            exec("/usr/bin/node /usr/local/node/client.js $periodId");
+            exec("/root/node-v9.3.0-linux-x64/bin/node /usr/local/node/client.js $periodId");
         }
     }
 
