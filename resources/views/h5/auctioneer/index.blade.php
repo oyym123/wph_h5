@@ -187,7 +187,7 @@
             @if(PHP_OS == 'WINNT') //本地测试专用
             ws = new WebSocket("ws://127.0.0.1:8081");
             @else //线上环境
-            ws = new WebSocket("wss://" + {{ $_SERVER['HTTP_HOST'] }} +":8081");
+            ws = new WebSocket("wss://{{ $_SERVER['HTTP_HOST'] }}/wss");
             @endif
 
             // 当有消息时根据消息类型显示不同信息
