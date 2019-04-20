@@ -86,10 +86,7 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('h5')
             ->namespace('App\H5\Controllers')
             ->group(base_path('app/H5/routes.php'));
-
     }
-
-
 }
 
 

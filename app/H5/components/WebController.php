@@ -35,21 +35,22 @@ class WebController extends Controller
         if ($this->limit > 100) {
             $this->limit = 100;
         }
-//        $cook = $request->cookie();   //获取cookie
-//        if (isset($cook['user_info']) && !empty($cook['user_info'])) {
-        // $request->psize && $this->psize = $request->psize;
-        if ($request->session()->has('user_info')) { //获取用户信息
-            $user = json_decode(session('user_info'));
-            // print_r($user);exit;
-            //$user = json_decode($cook['user_info']);
-            $this->userId = $user->id;
-            $this->userIdent = User::find($this->userId);
-            //判断账号是否可用
-            if ($this->userIdent->status == User::STATUS_DISABLE) {
-                list($info, $status) = (new Common())->returnRes('', Common::CODE_FREEZE_ACCOUNT);
-                self::showMsg($info, $status);
+
+        $this->middleware(function ($request, $next) {
+            if ($request->session()->has('user_info')) { //获取用户信息
+                $user = json_decode(session('user_info'));
+                // print_r($user);exit;
+                //$user = json_decode($cook['user_info']);
+                $this->userId = $user->id;
+                $this->userIdent = User::find($this->userId);
+                //判断账号是否可用
+                if ($this->userIdent->status == User::STATUS_DISABLE) {
+                    list($info, $status) = (new Common())->returnRes('', Common::CODE_FREEZE_ACCOUNT);
+                    self::showMsg($info, $status);
+                }
             }
-        }
+            return $next($request);
+        });
 //
 //        $allowIp = ['218.17.209.172', '127.0.0.1'];
 //        if (in_array(Helper::getIP(), $allowIp)) {

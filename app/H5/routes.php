@@ -14,7 +14,7 @@ Route::get('/auctioneer1', function () {
 });
 
 Route::group([
-    'middleware' => ['h5'],
+
 ], function (Router $router) {
 
     //新手指引banner链接
