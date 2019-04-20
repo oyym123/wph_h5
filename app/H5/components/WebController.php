@@ -41,8 +41,6 @@ class WebController extends Controller
             $this->limit = 100;
         }
 
-//
-//        $this->middleware(function ($request, $next) {
         if ($request->session()->has('user_info')) { //获取用户信息
 
             $user = json_decode(session('user_info'));
@@ -57,10 +55,7 @@ class WebController extends Controller
                 self::showMsg($info, $status);
             }
         }
-//        return $next($request);
-//           // return
-//        });
-//
+
 //        $allowIp = ['218.17.209.172', '127.0.0.1'];
 //        if (in_array(Helper::getIP(), $allowIp)) {
 //            $path = self::isWindows() ? 'G:/logs/wph.log' : '/www/logs/wph.log';
