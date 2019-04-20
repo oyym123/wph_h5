@@ -37,6 +37,7 @@ class UserController extends WebController
         $nologin = ['registerView', 'loginView', 'login', 'register', 'checkSms'];
         //在该数组里的方法名，都不需要身份验证
         if (!in_array($this->getMName(), $nologin)) {
+
             $this->auth();
         }
     }
@@ -162,7 +163,7 @@ class UserController extends WebController
 //            return response(['code' => 1, 'message' => '登入成功'])->withCookie($user);
             session()->put('user_info', json_encode($user));
             session()->save(); //如果后面执行了exit等终止操作 则需要次方法强制保存
-            self::showMsg('登入成功!');
+            self::showMsg(['session_info' => session()->getId()]);
         } else {
             self::showMsg('账号或密码错误!', -1);
         }

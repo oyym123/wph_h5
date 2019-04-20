@@ -74,6 +74,7 @@
             </div>
         </div>
     </div>
+            <script src="{{ asset('js/h5/jquery.cookie.js') }}"></script>
     <script>
         document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
             $('.thirdparty').show();
@@ -111,6 +112,7 @@
                     beforeSend: function(XMLHttpRequest) {},
                     success: function(data) {
                         if(data.code >= 0){
+                            $.cookie('laravel_session', data.session_info, { expires: 7, path: '/' });
                             $.toast('登录成功');
                             location.href = "/h5/user/center";
                         }else{
@@ -124,10 +126,5 @@
             }
         }
     </script>
-
-    </body></html>
-
-
-
     @parent
 @stop
