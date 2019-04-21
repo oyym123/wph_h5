@@ -43,7 +43,7 @@ return [
         'mch_id' => env('WECHAT_MCH_ID', '1509936521'),
 
         // 微信支付异步通知地址
-    //    'notify_url' => $_SERVER["HTTP_HOST"] . '/api/wx-notify/notify',
+        'notify_url' => $_SERVER["HTTP_HOST"] . '/api/wx-notify/notify',
 
         // 微信支付签名秘钥
         'key' => env('WECHAT_KEY', '3173259eA0d5E5d12e3a9b2c90N0Qdb0'),

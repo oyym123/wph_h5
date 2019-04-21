@@ -109,7 +109,7 @@ class User extends Authenticatable
      */
     public static function smsCheck($params)
     {
-        return ['验证成功!', 1];
+      //  return ['验证成功!', 1];
         $where = [];
         if (isset($params['user_id']) && !empty($params['user_id'])) {
             $where['user_id'] = $params['user_id'];

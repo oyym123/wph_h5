@@ -26,8 +26,6 @@ class SmsController extends WebController
      */
     public function send()
     {
-        self::showMsg('短信发送成功!');
-        exit;
         $res = [
             'mobile' => $this->request->post('mobile'),
             'scenes' => $this->request->post('scenes')
