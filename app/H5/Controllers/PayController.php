@@ -218,16 +218,16 @@ class PayController extends WebController
                 'user_id' => $order->buyer_id
             ];
             $res = $pay->WxPay($data);
-            echo $res;exit;//跳转微信H5支付
-            if ($res['state'] == 0) {
-                throw new \Exception($res['result_msg']);
-            }
+            echo $res;//跳转微信H5支付
+//            if ($res['state'] == 0) {
+//                throw new \Exception($res['result_msg']);
+//            }
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
             self::showMsg($e->getMessage(), 4); // 等待处理
         }
-        self::showMsg($res);
+      //  self::showMsg($res);
     }
 
     /**
@@ -389,7 +389,7 @@ class PayController extends WebController
                     'user_id' => $order->buyer_id
                 ];
                 $res = $pay->WxPay($data);
-                echo $res;exit;//跳转微信H5支付
+                echo $res;//跳转微信H5支付
                 if ($res['state'] == 0) {
                     throw new \Exception($res['result_msg']);
                 }
