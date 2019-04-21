@@ -217,6 +217,7 @@ class PayController extends WebController
                 'amount' => $order->pay_amount
             ];
             $res = $pay->WxPay($data);
+            exit;
             if ($res['state'] == 0) {
                 throw new \Exception($res['result_msg']);
             }
