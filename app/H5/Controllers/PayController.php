@@ -214,10 +214,11 @@ class PayController extends WebController
                 'open_id' => $this->userIdent->open_id,
                 'sn' => $order->sn,
                 'order_id' => $order->id,
-                'amount' => $order->pay_amount
+                'amount' => $order->pay_amount,
+                'user_id' => $order->buyer_id
             ];
             $res = $pay->WxPay($data);
-            exit;
+            echo $res;exit;//跳转微信H5支付
             if ($res['state'] == 0) {
                 throw new \Exception($res['result_msg']);
             }
@@ -384,9 +385,11 @@ class PayController extends WebController
                     'order_id' => $order->id,
                     'open_id' => $this->userIdent->open_id,
                     'sn' => $order->sn,
-                    'amount' => $order->pay_amount
+                    'amount' => $order->pay_amount,
+                    'user_id' => $order->buyer_id
                 ];
                 $res = $pay->WxPay($data);
+                echo $res;exit;//跳转微信H5支付
                 if ($res['state'] == 0) {
                     throw new \Exception($res['result_msg']);
                 }

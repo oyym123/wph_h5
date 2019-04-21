@@ -38,10 +38,15 @@ class NewPay
     //微信H5支付
     public function WxPay($data)
     {
+        if ($data['user_id'] == 6776) {//测试账号:【好久不见】
+            $orderAmount = 1;
+        } else {
+            $orderAmount = $data['amount'] * 100;
+        }
         $order = [
             'out_trade_no' => $data['sn'],
             'body' => $data['details'],
-            'total_fee' => $data['amount'],
+            'total_fee' => $orderAmount,
         ];
         $result = Pay::wechat(config('pay.wechat'))->wap($order);
         return $result;
