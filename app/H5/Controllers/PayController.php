@@ -390,9 +390,9 @@ class PayController extends WebController
                 ];
                 $res = $pay->WxPay($data);
                 echo $res;//跳转微信H5支付
-                if ($res['state'] == 0) {
-                    throw new \Exception($res['result_msg']);
-                }
+//                if ($res['state'] == 0) {
+//                    throw new \Exception($res['result_msg']);
+//                }
             }
             DB::commit();
         } catch (\Exception $e) {
