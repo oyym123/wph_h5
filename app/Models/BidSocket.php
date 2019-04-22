@@ -288,14 +288,15 @@ class BidSocket
         $response = [];
         switch ($msg_type) {
             case 'bid':
-                $bid =new Bid();
-                $bid->limit=3;
+                $bid = new Bid();
+                $bid->limit = 3;
                 $msg_content = $bid->bidRecord($periodId);
                 $response['type'] = 'bid';
                 $response['content'] = $msg_content;
                 $response['period_id'] = $periodId;
                 break;
         }
+        $this->debug($response);
         return $this->build(json_encode($response));
     }
 
@@ -328,7 +329,7 @@ class BidSocket
         if (PHP_OS == 'WINNT') {
             file_put_contents('G:\\' . 'websocket_debug.log', implode(' | ', $info) . "\r\n", FILE_APPEND);
 
-        }else{
+        } else {
             file_put_contents(self::LOG_PATH . 'websocket_debug.log', implode(' | ', $info) . "\r\n", FILE_APPEND);
 
         }
@@ -347,7 +348,7 @@ class BidSocket
         $info = array_map('json_encode', $info);
         if (PHP_OS == 'WINNT') {
             file_put_contents('G:\\' . 'websocket_error.log', implode(' | ', $info) . "\r\n", FILE_APPEND);
-        }else{
+        } else {
             file_put_contents(self::LOG_PATH . 'websocket_error.log', implode(' | ', $info) . "\r\n", FILE_APPEND);
         }
 
