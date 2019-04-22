@@ -55,8 +55,8 @@ class BidSocket
         }
 
         $this->sockets[0] = ['resource' => $this->master];
-        $pid = 'SYSTEM';
-        //$pid = posix_getpid();linux下使用
+        //$pid = 'SYSTEM';
+        $pid = posix_getpid();//linux下使用
         $this->debug(["server: {$this->master} started,pid: {$pid}"]);
 
         while (true) {
