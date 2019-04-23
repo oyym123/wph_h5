@@ -164,6 +164,15 @@ class BidController extends WebController
         $ws = new BidSocket("127.0.0.1", "8081");
     }
 
+    //node websocket
+    public function nodeSocket()
+    {
+        if (PHP_OS == 'WINNT') { //本地测试使用
+            exec("node G:node/server.js");
+        } else {
+            exec("/usr/sbin/node /usr/local/node/server.js");
+        }
+    }
 
     /** 计划任务视图 */
     public function scheduledTasks()
