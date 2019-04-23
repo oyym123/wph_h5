@@ -42,7 +42,7 @@ class Bid extends Common
     protected $table = 'bid';
 
     /** 真人竞拍 */
-    public function personBid($periodId, $auto = 0, $autoObj=[])
+    public function personBid($periodId, $auto = 0, $autoObj = [])
     {
         $redis = app('redis')->connection('first');
         if ($auto == 0) { //表示没有自动竞拍，则记录支出,进行正常收费
@@ -620,11 +620,18 @@ class Bid extends Common
 
     public function socket($periodId)
     {
-        set_time_limit(0);
+        $bid = new Bid();
+        $bid->limit = 3;
+        $msg_content = $bid->bidRecord($periodId);
+        $response['type'] = 'bid';
+        $response['period_id'] = $periodId;
+        $response['content'] = $msg_content;
+        //携带key 防止websocket被攻击 key=cf3216cd-8e05-3a3d-a2ef-1eae97b17e86
+        $res = base64_encode('cf3216cd-8e05-3a3d-a2ef-1eae97b17e86' . json_encode($response));
         if (PHP_OS == 'WINNT') { //本地测试使用
-            shell_exec("node G:node/client.js $periodId");
+            exec("node G:node/client.js $res");
         } else {
-            exec("/usr/sbin/node /usr/local/node/client.js $periodId");
+            exec("/usr/sbin/node /usr/local/node/client.js $res");
         }
     }
 
