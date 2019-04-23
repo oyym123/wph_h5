@@ -296,8 +296,10 @@ class BidSocket
                 $response['period_id'] = $periodId;
                 break;
         }
-        $this->debug($response);
-        return $this->build(json_encode($response));
+        if($msg_type == 'bid'){
+            $this->debug($response);
+            return $this->build(json_encode($response));
+        }
     }
 
     /**
