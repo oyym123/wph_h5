@@ -607,8 +607,7 @@
         function connect() {
             // 创建websocket
             @if(PHP_OS == 'WINNT') //本地测试专用
-          //  ws = new WebSocket("ws://127.0.0.1:8081");
-            ws = new WebSocket("wss://wph.ouyym.com/wss");
+            ws = new WebSocket("ws://127.0.0.1:8081");
             @else //线上环境
             ws = new WebSocket("wss://{{ $_SERVER['HTTP_HOST'] }}/wss");
             @endif

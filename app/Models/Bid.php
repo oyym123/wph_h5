@@ -620,19 +620,25 @@ class Bid extends Common
 
     public function socket($periodId)
     {
-        $bid = new Bid();
-        $bid->limit = 3;
-        $msg_content = $bid->bidRecord($periodId);
-        $response['type'] = 'bid';
-        $response['period_id'] = $periodId;
-        $response['content'] = $msg_content;
-        //携带key 防止websocket被攻击 key=cf3216cd-8e05-3a3d-a2ef-1eae97b17e86
-        $res = base64_encode('cf3216cd-8e05-3a3d-a2ef-1eae97b17e86' . json_encode($response));
         if (PHP_OS == 'WINNT') { //本地测试使用
-            exec("node G:node/client.js $res");
+            exec("node G:node/client.js $periodId");
         } else {
-            exec("/usr/sbin/node /usr/local/node/client.js $res");
+            exec("/usr/sbin/node /usr/local/node/client.js $periodId");
         }
+
+//        $bid = new Bid();
+//        $bid->limit = 3;
+//        $msg_content = $bid->bidRecord($periodId);
+//        $response['type'] = 'bid';
+//        $response['period_id'] = $periodId;
+//        $response['content'] = $msg_content;
+//        //携带key 防止websocket被攻击 key=cf3216cd-8e05-3a3d-a2ef-1eae97b17e86
+//        $res = base64_encode('cf3216cd-8e05-3a3d-a2ef-1eae97b17e86' . json_encode($response));
+//        if (PHP_OS == 'WINNT') { //本地测试使用
+//            exec("node G:node/client.js $res");
+//        } else {
+//            exec("/usr/sbin/node /usr/local/node/client.js $res");
+//        }
     }
 
     /** 清除数据，防止数据过大影响查询 */
