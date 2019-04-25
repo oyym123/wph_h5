@@ -19,6 +19,7 @@ use App\Models\RechargeCard;
 use App\Models\UserAddress;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\URL;
 
 class PayController extends WebController
 {
@@ -39,7 +40,7 @@ class PayController extends WebController
 
 
     /**
-     * @SWG\Get(path="/api/pay/confirm",
+     * @SWG\Get(path="/h5/pay/confirm",
      *   tags={"支付"},
      *   summary="确认订单",
      *   description="Author: OYYM",
@@ -155,7 +156,9 @@ class PayController extends WebController
             'period_id' => $periodId,
             'sn' => $request->sn,
             'img_cover' => $product->getImgCover(),
-            'order_type' => $type
+            'order_type' => $type,
+            'msg' => $request->msg ?: '',
+            'status' => isset($order->status) ? $order->status : Order::STATUS_WAIT_PAY
         ];
 
         return view('h5.pay.confirm', $res);
@@ -204,7 +207,7 @@ class PayController extends WebController
             'recharge_card_id' => $recharge->id,
         ];
         $res = [];
-       // print_r($orderInfo);exit;
+        // print_r($orderInfo);exit;
         DB::beginTransaction();
         try {
             $order = $order->createOrder($orderInfo);
@@ -227,7 +230,7 @@ class PayController extends WebController
             DB::rollback();
             self::showMsg($e->getMessage(), 4); // 等待处理
         }
-      //  self::showMsg($res);
+        //  self::showMsg($res);
     }
 
     /**
@@ -299,7 +302,7 @@ class PayController extends WebController
                     $type = Order::TYPE_BUY_BY_DIFF;
                 }
             }
-        } else {
+        } else { //表示是购物币购买
             $type = Order::TYPE_SHOP;
             if ($product->is_shop) {
                 $isShop = $product->is_shop;
@@ -317,6 +320,12 @@ class PayController extends WebController
             $periodId = $order->period_id;
         }
 
+        //验证订单是否是待支付状态
+        if (isset($order->status) && $order->status != Order::STATUS_WAIT_PAY) {
+            return redirect('/h5/pay/confirm?product_id=' . $order->product_id .
+                '&sn=' . $order->sn . '&period_id=' . $order->period_id . '&msg=' . '该订单已支付成功,请返回!');
+        }
+
         $data = [
             'amount' => $payAmount,
             'product_id' => $product->id,
@@ -328,6 +337,7 @@ class PayController extends WebController
         ];
         list($amount, $discountAmount) = $orderObj->getPayAmount($data);
         $flag = 0;
+
         DB::beginTransaction();
         try {
             if ($amount == 0) {
@@ -355,6 +365,8 @@ class PayController extends WebController
                 'expired_at' => config('bid.order_expired_at'), //过期时间
             ];
 
+
+            //有订单信息 且支付状态为未支付时
             if ($order && $order->status == Order::STATUS_WAIT_PAY) {
                 if (Order::where(['id' => $order->id])->update($orderInfo)) {
                     $order = Order::find($order->id);
@@ -365,6 +377,7 @@ class PayController extends WebController
                 $orderInfo['sn'] = $orderObj->createSn();
                 $order = $orderObj->createOrder($orderInfo);
             }
+
 
             if ($order->pay_amount == 0) {
                 //表示使用了购物币打折,需要从用户账户中扣除
@@ -399,13 +412,18 @@ class PayController extends WebController
             DB::rollback();
             self::showMsg($e->getMessage(), 4); // 等待处理
         }
-
+        $result['product_id'] = $order->product_id;
+        $result['sn'] = $order->sn;
+        $result['period_id'] = $order->period_id;
         if ($flag === 1) { //表示购物币购买
-            self::showMsg('您已支付成功!', 4);
+            $result['msg'] = '您已支付成功!';
         } elseif ($flag === 2) {
-            self::showMsg('抱歉,您的购物币不足!', 4);
+            $result['msg'] = '抱歉,您的购物币不足!!';
         } else {
-            self::showMsg($res);
+
         }
+
+        return redirect('/h5/pay/confirm?product_id=' . $result['product_id'] .
+            '&sn=' . $result['sn'] . '&period_id=' . $result['period_id'] . '&msg=' . $result['msg']);
     }
 }
