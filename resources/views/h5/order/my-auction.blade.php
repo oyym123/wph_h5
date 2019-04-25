@@ -62,7 +62,7 @@
                                                     <p style="position:absolute;left: 1%;color: black">已返还
                                                         <b style="color: red">{{ $v['return_voucher_bids'] }}</b> 购物币
                                                     </p>
-                                                    <a onclick="toperiod('1','13551')">购物币专区</a>
+                                                    <a href="/h5/product/shop-list-view">购物币专区</a>
                                                     <a onclick="payorder({{$v['product_id']}},{{$v['period_id']}},'{{ $v['sn'] }}')">差价购买</a>
                                                 @elseif($v['result_status']==3)
                                                     @if($v['bid_type']==1)

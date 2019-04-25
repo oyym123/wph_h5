@@ -161,6 +161,7 @@ class PayController extends WebController
             'status' => isset($order->status) ? $order->status : Order::STATUS_WAIT_PAY
         ];
 
+
         return view('h5.pay.confirm', $res);
     }
 
