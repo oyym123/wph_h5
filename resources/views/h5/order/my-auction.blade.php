@@ -46,9 +46,9 @@
                             <div class="user_btn">
                                 <div class="return_bids"></div>
                                 @if($v['result_status']==2)
-                                        <div class="btn_wrap" style="position:relative;top: -.3rem;">
+                                    <div class="btn_wrap" style="position:relative;top: -.3rem;">
                                         @else
-                                                <div class="btn_wrap" style="position:relative;">
+                                            <div class="btn_wrap" style="position:relative;">
                                                 @endif
                                                 @if($v['result_status']==0)
                                                     <a onclick="toperiod({{$v['product_id']}},{{$v['period_id']}})">继续竞拍</a>
@@ -436,6 +436,7 @@
                         $.refreshScroller();
                     }, 500);
                 });
+
                 function addnew(cont) {
                     if (cont.length) {
                         $(".loading_more").hide();
@@ -452,8 +453,6 @@
                     }
                 }
             });
-
-
             $.init();
         });
 
@@ -472,9 +471,12 @@
         }
 
         function toperiod(gid, period_id) {
-            location.href = "/h5/product/detail?period_id=" + period_id;
+            if(period_id){
+                location.href = "/h5/product/detail?period_id=" + period_id;
+            }else{
+                location.href = "/h5/product/shop-detail?product_id=" + gid;
+            }
         }
-
 
         function toshoworder(orderid) {
             location.href = "" + orderid;
@@ -488,6 +490,5 @@
             location.href = "/h5/pay/confirm?product_id=" + pid + "&period_id=" + period_id + "&sn=" + sn;
         }
     </script>
-
     @parent
 @stop

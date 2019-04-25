@@ -56,11 +56,13 @@ class ProductController extends WebController
     }
 
 
-    public function tenZoneView(){
+    public function tenZoneView()
+    {
         return view('h5.product.ten-zone-view');
     }
 
-    public function phoneZoneView(){
+    public function phoneZoneView()
+    {
         return view('h5.product.phone-zone');
     }
 
@@ -294,10 +296,9 @@ class ProductController extends WebController
         self::showMsg($period->historyTrend($this->request->product_id));
     }
 
-
     public function shopListView()
     {
-        return view('/h5/product/shop-list');
+        return view('/h5/product/shop-list', ['list' => (new  Product())->shopList()]);
     }
 
     /**
@@ -324,12 +325,6 @@ class ProductController extends WebController
         self::showMsg($product->shopList());
     }
 
-    public function shopDetailView()
-    {
-        return view('/h5/product/shop-detail');
-    }
-
-
     /**
      * @SWG\Get(path="/api/product/shop-detail",
      *   tags={"产品"},
@@ -351,7 +346,7 @@ class ProductController extends WebController
         $this->auth();
         $product = new Product();
         $product->userId = $this->userId;
-        self::showMsg($product->shopDetail($this->request->product_id));
+        return view('/h5/product/shop-detail', ['detail' => $product->shopDetail($this->request->product_id)]);
     }
 
     /**

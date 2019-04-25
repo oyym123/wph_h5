@@ -57,7 +57,6 @@ Route::group([
     $router->get('product/history-trend', 'ProductController@historyTrend');
     $router->get('product/shop-list-view', 'ProductController@shopListView');//购物币专区视图
     $router->get('product/shop-list', 'ProductController@shopList');
-    $router->get('product/shop-detail-view', 'ProductController@shopDetailView');//购物币详情视图
     $router->get('product/shop-detail', 'ProductController@shopDetail');
     $router->get('product/history-trend', 'ProductController@historyTrend');
     $router->get('product/past-deal', 'ProductController@pastDeal');

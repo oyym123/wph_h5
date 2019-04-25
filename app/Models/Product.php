@@ -176,7 +176,7 @@ class Product extends Common
         foreach ($products as $product) {
             $data[] = [
                 'product_id' => $product->id,
-                'title' => $product->title,
+                'title' => self::changeStr($product->title, 29, '...'),
                 'sell_price' => $product->sell_price,
                 'img_cover' => $product->getImgCover(),
             ];
@@ -290,7 +290,7 @@ class Product extends Common
         $model->pay_amount = $payAmount;
         $model->sell_price = $upload->sell_price;
         $model->status = self::STATUS_ENABLE;
-		$model->init_price = $upload->init_price;
+        $model->init_price = $upload->init_price;
         $model->countdown_length = $countdownLength;
         $model->bid_step = 0.1;
         $model->buy_by_diff = 1;

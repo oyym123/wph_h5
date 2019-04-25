@@ -254,10 +254,12 @@
 	            </span>
             </label>
         </div>
+        @if($status == 10)
         <div class="submit_wrap">实付款：<em id="J-payNums">￥{{ $pay_amount }}</em><a href="javascript:register()"
                                                                                   class="ui-btn-submit-xb">立即支付</a>
         </div>
-        <input type="hidden" id="used_shopping" value="0">
+        @endif
+        <input type="hidden" id="used_shopping" value="1">
     </div>
     <div class="popup popup-about">
         <header class="bar bar-nav">
@@ -296,6 +298,10 @@
             }
         }
 
+        if ("{{ $msg }}") {
+            $.toast("{{ $msg }}");
+        }
+
         function register() {
             var used_shopping = $("#used_shopping").val();
             var message = $("#J-remark").val();
@@ -315,8 +321,6 @@
                         $.toast('请先完善收货信息');
                     }
                 }, "json");
-
-
             } else {
                 $.toast('请先阅读用户协议');
             }

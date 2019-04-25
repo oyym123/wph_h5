@@ -135,7 +135,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/h5/product/shop-detail" class="item-link item-content">
+                        <a href="/h5/product/shop-list-view" class="item-link item-content">
                             <div class="item-media"><img style="height: 24px;" src="/images/h5/gouwubi.png"></div>
                             <div class="item-inner" style="margin-left: .3rem;">
                                 <div class="item-title">购物币专区</div>

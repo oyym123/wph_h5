@@ -144,9 +144,9 @@ class Common extends Model
     /**
      * 解析并送出JSON
      * 200101
-     * @param  array $res 资源数组，如果是一个字符串则当成错误信息输出
-     * @param  int $state 状态值，默认为0
-     * @param  int $msg 是否直接输出,1为返回值
+     * @param array $res 资源数组，如果是一个字符串则当成错误信息输出
+     * @param int $state 状态值，默认为0
+     * @param int $msg 是否直接输出,1为返回值
      * @return array
      **/
     public static function showMsg($res, $code = 0, $msg = '成功')
@@ -287,7 +287,6 @@ class Common extends Model
         exit;
     }
 
-
     /**
      * @param string $string 要截取的字符串
      * @param int $len 要截取的长度
@@ -300,7 +299,8 @@ class Common extends Model
             $tmp = mb_substr($string, 0, $len, 'utf8');
             return $tmp . $tail;
         } else {
-            return $string;
+            $tail = str_repeat('　', $len - mb_strlen($string));
+            return $string . $tail; //没有的也凑满字数
         }
     }
 }
