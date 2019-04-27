@@ -461,7 +461,7 @@ class OrderController extends WebController
     }
 
     /**
-     * @SWG\Get(path="/api/order/transport-detail",
+     * @SWG\Get(path="/h5/order/transport-detail",
      *   tags={"我的竞拍"},
      *   summary="物流详情",
      *   description="Author: OYYM",
@@ -530,7 +530,7 @@ class OrderController extends WebController
     public function transportDetail()
     {
         $this->auth();
-        self::showMsg((new order())->transportDetail($this->request->sn, $this->userId));
+        return view('/h5/order/transport-detail', (new order())->transportDetail($this->request->sn, $this->userId));
     }
 
 

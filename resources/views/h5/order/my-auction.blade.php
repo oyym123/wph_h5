@@ -75,6 +75,8 @@
 
                                                 @elseif($v['result_status']==5)
                                                     <a onclick="toperiod('1','13551')">晒单有奖</a>
+                                                @elseif($v['result_status']==6 && $v['order_status']==25)
+                                                    <a  href="/h5/order/transport-detail?sn={{ $v['sn'] }}">物流详情</a>
                                                 @endif
                                             </div>
                                     </div>

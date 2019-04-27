@@ -313,10 +313,12 @@ class PayController extends WebController
         $status = Order::STATUS_WAIT_PAY;
         $order = null;
         if ($request->sn) {
+
             $order = Order::where([
                 'sn' => $request->sn,
                 'buyer_id' => $this->userId,
             ])->first();
+
             $type = $order->type;
             $periodId = $order->period_id;
         }
@@ -393,6 +395,7 @@ class PayController extends WebController
                 }
                 $flag = 1;
             } else {
+
                 $pay = new NewPay();
                 $data = [
                     'details' => mb_substr($product->title, 0, 80),
@@ -421,7 +424,7 @@ class PayController extends WebController
         } elseif ($flag === 2) {
             $result['msg'] = '抱歉,您的购物币不足!!';
         } else {
-
+            $result['msg'] = '';
         }
 
         return redirect('/h5/pay/confirm?product_id=' . $result['product_id'] .
