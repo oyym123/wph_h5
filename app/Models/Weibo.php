@@ -10,7 +10,7 @@ class Weibo
     {
         include_once(__DIR__ . '/SaeTOAuthV2.php');
         $o = new SaeTOAuthV2(config('weibo.wb_akey'), config('weibo.wb_skey'));
-        $code_url = $o->getAuthorizeURL($_SERVER['HTTP_HOST'] . '/h5/wei-bo/call-back');
+        $code_url = $o->getAuthorizeURL($_SERVER['HTTP_HOST'] . '/h5/wei-bo/call-back', 'code', NULL, 'mobile');
         return $code_url;
     }
 }
