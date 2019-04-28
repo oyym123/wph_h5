@@ -73,6 +73,7 @@ Route::group([
     $router->get('bid/auto-info', 'BidController@autoInfo');
     $router->get('bid/bid-socket', 'BidController@bidSocket');
     $router->get('bid/node-socket', 'BidController@nodeSocket');
+    $router->get('bid/start-node-websocket', 'BidController@startNodeWebsocket');
 
     /** 支付 */
     $router->get('pay/confirm', 'PayController@confirm'); //确认订单
