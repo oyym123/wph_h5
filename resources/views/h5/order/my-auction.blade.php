@@ -409,7 +409,7 @@
                     endmark = 0;
 
                 function addItems() {
-                    $.post("/?i=37&c=entry&m=weliam_fastauction&p=order&ac=userorder&do=orderlist&status=all", {}, function (d) {
+                    $.post("/?i=37&c=entry&m=_fastauction&p=order&ac=userorder&do=orderlist&status=all", {}, function (d) {
                         if (d.data.length > 0) {
                             var gettpl1 = document.getElementById('orderlist').innerHTML;
                             sessionStorage.setItem("demokey", JSON.stringify(d.data));
@@ -418,7 +418,7 @@
                                 $(".allorder").append(html);
                             });
                         } else {
-                            $(".allorder").html('<div class="nodata-default"><a href="/?i=37&c=entry&m=weliam_fastauction&p=goods&ac=goods&do=category">去逛逛</a></div>');
+                            $(".allorder").html('<div class="nodata-default"><a href="/?i=37&c=entry&m=_fastauction&p=goods&ac=goods&do=category">去逛逛</a></div>');
                         }
                     }, 'json');
                 }

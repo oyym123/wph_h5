@@ -416,7 +416,7 @@
                 <div class="list-block usercenter" style="margin-top:.5rem;">
                     <ul>
                         <li>
-                            <a href="/?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=store&amp;ac=merchant&amp;do=auctionhouse&amp;auchouseid=1"
+                            <a href="/?i=37&amp;c=entry&amp;m=_fastauction&amp;p=store&amp;ac=merchant&amp;do=auctionhouse&amp;auchouseid=1"
                                class="item-link item-content">
                                 <div class="item-media"><img style="height:2.3rem;width: 2.1rem;"
                                                              src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/UYHcYfe8o2EOV00uZ12oEyh81MVC2e.png">
@@ -853,7 +853,7 @@
         });
 
         function get_late() {
-            $.post("/?i=37&c=entry&m=weliam_fastauction&p=goods&ac=goods&do=getlate&goodsid=17", {}, function (d) {
+            $.post("/?i=37&c=entry&m=_fastauction&p=goods&ac=goods&do=getlate&goodsid=17", {}, function (d) {
                 if (d.length != '') {
                     var gettpl = document.getElementById('lateauc').innerHTML;
                     laytpl(gettpl).render(d, function (html) {

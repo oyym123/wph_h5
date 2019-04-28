@@ -262,7 +262,7 @@ common.init = function(config){
 //创建url
 common.createUrl = function(pstr,acstr,dostr){
     var str = '&p='+pstr+'&ac='+acstr+'&do='+dostr;
-    return window.sysinfo.siteroot+'app/index.php?i='+window.sysinfo.uniacid+'&c=entry'+str+'&m=weliam_fastauction';
+    return window.sysinfo.siteroot+'app/index.php?i='+window.sysinfo.uniacid+'&c=entry'+str+'&m=_fastauction';
 };
 
 //懒加载

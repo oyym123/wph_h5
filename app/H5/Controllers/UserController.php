@@ -17,6 +17,7 @@ use App\Models\Pay;
 use App\Models\Period;
 use App\Models\Upload;
 use App\Models\UserAddress;
+use App\Models\Weibo;
 use App\Models\Withdraw;
 use http\Cookie;
 use Illuminate\Support\Facades\DB;
@@ -133,7 +134,7 @@ class UserController extends WebController
     //登入视图
     public function loginView()
     {
-        return view('h5.user.login');
+        return view('h5.user.login', ['weibo_url' => (new Weibo())->getUrl()]);
     }
 
     //提交登入信息

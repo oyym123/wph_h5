@@ -205,5 +205,8 @@ Route::group([
     /** 获取阿拉丁分享链接 */
     $router->get('getshareurl', 'ShareUrlController@index');
 
+    //微博授权回调
+    $router->get('wei-bo/call-back', 'WeiBoController@callBack');
+
 });
 
