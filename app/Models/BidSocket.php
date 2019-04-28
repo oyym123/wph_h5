@@ -329,10 +329,8 @@ class BidSocket
         $info = array_map('json_encode', $info);
         if (PHP_OS == 'WINNT') {
             file_put_contents('G:\\' . 'websocket_debug.log', implode(' | ', $info) . "\r\n", FILE_APPEND);
-
         } else {
-            file_put_contents(self::LOG_PATH . 'websocket_debug.log', implode(' | ', $info) . "\r\n", FILE_APPEND);
-
+          //  file_put_contents(self::LOG_PATH . 'websocket_debug.log', implode(' | ', $info) . "\r\n", FILE_APPEND);
         }
     }
 
