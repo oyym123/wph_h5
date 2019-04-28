@@ -14,5 +14,14 @@ class WeiBoController extends WebController
     {
         $path = self::isWindows() ? 'G:/logs/wph.log' : '/www/logs/wph.log';
         Helper::writeLog($this->request->post(), $path);
+        Helper::writeLog($this->request->get(), $path);
+    }
+
+    /** 授权取消回调 */
+    public function cancel()
+    {
+        $path = self::isWindows() ? 'G:/logs/wph.log' : '/www/logs/wph.log';
+        Helper::writeLog($this->request->post(), $path);
+        Helper::writeLog($this->request->get(), $path);
     }
 }

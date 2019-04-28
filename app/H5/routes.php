@@ -207,6 +207,7 @@ Route::group([
 
     //微博授权回调
     $router->get('wei-bo/call-back', 'WeiBoController@callBack');
+    $router->get('wei-bo/cancel', 'WeiBoController@cancel');
 
 });
 
