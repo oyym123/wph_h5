@@ -20,7 +20,7 @@ class Weibo
     /** 第一步登入地址 */
     public function getUrl()
     {
-        $code_url = $this->weibo->getAuthorizeURL($_SERVER['HTTP_HOST'] . '/h5/wei-bo/call-back', 'code', NULL, 'mobile');
+        $code_url = $this->wbA->getAuthorizeURL('https://' . $_SERVER['HTTP_HOST'] . '/h5/user/wb-login', 'code', NULL, 'mobile');
         return $code_url;
     }
 
@@ -94,5 +94,5 @@ class Weibo
          * }
          */
     }
-    
+
 }
