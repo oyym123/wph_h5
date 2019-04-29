@@ -78,7 +78,7 @@ class EvaluateController extends WebController
 
     public function submitView()
     {
-        return view();
+        return view('h5.evaluate.submit');
     }
 
     /**

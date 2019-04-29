@@ -168,6 +168,7 @@ Route::group([
     /** 晒单 */
     $router->get('evaluate/rule', 'EvaluateController@rule'); //晒单规则
     $router->post('evaluate/upload-img', 'EvaluateController@uploadImg'); //提交晒单
+    $router->get('evaluate/submit-view', 'EvaluateController@submitView'); //提交晒单视图
     $router->post('evaluate/submit', 'EvaluateController@submit'); //提交晒单
     $router->get('evaluate/lists', 'EvaluateController@lists'); //首页晒单列表
     $router->get('evaluate/detail', 'EvaluateController@detail'); //晒单详情
