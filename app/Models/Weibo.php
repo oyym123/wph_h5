@@ -29,7 +29,7 @@ class Weibo
     {
         $keys = [
             'code' => $code,
-            'redirect_uri' => $_SERVER['HTTP_HOST'] . '/h5/wei-bo/call-back'
+            'redirect_uri' => 'https://' . $_SERVER['HTTP_HOST'] . '/h5/user/wb-login'
         ];
 
         /** @var
@@ -44,9 +44,9 @@ class Weibo
         $res = $this->weibo->getAccessToken('code', $keys);
         //第三步
         $this->wbC = new SaeTClientV2(config('weibo.wb_akey'), config('weibo.wb_skey'), $res['access_token']);
-
         $userInfo = $this->wbC->show_user_by_id($res['uid']);
-        return $userInfo;
+        return $userInfo + ['uid' => $res['uid']];
+
         /**
          * {
          * "id": 1404376560,

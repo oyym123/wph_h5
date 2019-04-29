@@ -140,9 +140,10 @@ class UserController extends WebController
     //微博登入
     public function wbLogin()
     {
+        $userInfo = (new Weibo())->getAccessToken($this->request->code);
         $path = self::isWindows() ? 'G:/logs/wph.log' : '/www/logs/wph.log';
-        Helper::writeLog($this->request->post(), $path);
-        Helper::writeLog($this->request->get(), $path);
+        Helper::writeLog($userInfo, $path);
+        Helper::writeLog($this->request->get, $path);
     }
 
     //提交账号密码登入信息
