@@ -57,11 +57,11 @@
                 {{--<p onclick="wechatsign()" style="margin-top: 5px;margin-bottom: 5px;"><img src="https://demo..cn/addons/_fastauction/app/resource/images/weixin.png" style="width: 50px;"></p>--}}
                 {{--<p>微信</p>--}}
                 {{--</span>--}}
-                
+
                 <span class="weui-agree" style="text-align: center;color:#AAAAAA;">
                 	        		<span class="external">第三方快速登录</span>
-                	        		<p onclick="weibosign()" style="margin-top: 5px;margin-bottom: 5px;"><img
-                                                src="/images/h5/weibo.png" style="width: 50px;"></p>
+                	        		<p  style="margin-top: 5px;margin-bottom: 5px;">
+                                        <a href="{{ $weibo_url }}"><img src="/images/h5/weibo.png" style="width: 50px;"></a>
                 	        		<p>微博</p>
                 	            </span>
             </div>
@@ -100,11 +100,6 @@
         function wechatsign() {
             location.href = "/?i=37&c=entry&m=_fastauction&p=member&ac=user&do=wechatsign";
         }
-
-        function weibosign() {
-            location.href = "{{ $weibo_url }}";
-        }
-
 
         function validate() {
             if ($('#weuiAgree').is(":checked")) {
