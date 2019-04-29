@@ -2,6 +2,7 @@
 /**
  * H5数据接口路由
  */
+
 use Illuminate\Routing\Router;
 use App\Models\Auctioneer;
 
@@ -84,6 +85,7 @@ Route::group([
 
 
     /** 用户中心 */
+    $router->get('user/wb-login', 'UserController@wbLogin');//微博登入
     $router->get('user/update-view', 'UserController@updateView');//修改信息视图
     $router->post('user/update', 'UserController@update');//修改信息
     $router->get('user/my-info', 'UserController@myInfo');//基本信息

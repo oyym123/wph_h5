@@ -137,7 +137,15 @@ class UserController extends WebController
         return view('h5.user.login', ['weibo_url' => (new Weibo())->getUrl()]);
     }
 
-    //提交登入信息
+    //微博登入
+    public function wbLogin()
+    {
+        $path = self::isWindows() ? 'G:/logs/wph.log' : '/www/logs/wph.log';
+        Helper::writeLog($this->request->post(), $path);
+        Helper::writeLog($this->request->get(), $path);
+    }
+
+    //提交账号密码登入信息
     public function login()
     {
         $request = $this->request;
