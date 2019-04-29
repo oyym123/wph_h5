@@ -193,7 +193,7 @@ class SaeTOAuthV2
             $params['username'] = $keys['username'];
             $params['password'] = $keys['password'];
         } else {
-            throw new OAuthException("wrong auth type");
+            throw new Exception("wrong auth type");
         }
 
         $response = $this->oAuthRequest($this->accessTokenURL(), 'POST', $params);
@@ -202,7 +202,7 @@ class SaeTOAuthV2
             $this->access_token = $token['access_token'];
             //$this->refresh_token = $token['refresh_token'];
         } else {
-            throw new OAuthException("get access token failed." . $token['error']);
+            throw new Exception("get access token failed." . $token['error']);
         }
         return $token;
     }
