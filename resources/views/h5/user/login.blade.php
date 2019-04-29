@@ -57,13 +57,13 @@
                 {{--<p onclick="wechatsign()" style="margin-top: 5px;margin-bottom: 5px;"><img src="https://demo..cn/addons/_fastauction/app/resource/images/weixin.png" style="width: 50px;"></p>--}}
                 {{--<p>微信</p>--}}
                 {{--</span>--}}
-                <p><a href="{{ $weibo_url }}"><img src="weibo_login.png" title="点击进入授权页面" alt="点击进入授权页面"
-                                                   border="0"/></a></p>
-                {{--                <span class="weui-agree" style="text-align: center;color:#AAAAAA;">--}}
-                {{--	        		<span class="external">第三方快速登录</span>--}}
-                {{--	        		<p onclick="wechatsign()" style="margin-top: 5px;margin-bottom: 5px;"><img src="/images/h5/weibo.png" style="width: 50px;"></p>--}}
-                {{--	        		<p>微博</p>--}}
-                {{--	            </span>--}}
+                
+                <span class="weui-agree" style="text-align: center;color:#AAAAAA;">
+                	        		<span class="external">第三方快速登录</span>
+                	        		<p onclick="weibosign()" style="margin-top: 5px;margin-bottom: 5px;"><img
+                                                src="/images/h5/weibo.png" style="width: 50px;"></p>
+                	        		<p>微博</p>
+                	            </span>
             </div>
         </div>
     </div>
@@ -100,6 +100,11 @@
         function wechatsign() {
             location.href = "/?i=37&c=entry&m=_fastauction&p=member&ac=user&do=wechatsign";
         }
+
+        function weibosign() {
+            location.href = "{{ $weibo_url }}";
+        }
+
 
         function validate() {
             if ($('#weuiAgree').is(":checked")) {
