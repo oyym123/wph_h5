@@ -177,7 +177,7 @@ class EvaluateController extends WebController
     public function detail()
     {
         $model = new Evaluate();
-        self::showMsg($model->detail($this->request->id));
+        return view('h5.evaluate.detail', ['data' => $model->detail($this->request->id)]);
     }
 
     /**

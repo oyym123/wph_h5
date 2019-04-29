@@ -58,6 +58,7 @@
                             <span class="name">{{ $v['nickname'] }}</span>
                             <span class="time">{{ $v['created_at'] }}</span>
                         </div>
+                        <a href="/h5/evaluate/detail?id={{ $v['id'] }}">
                         <div class="share_info" style="position:relative;margin-bottom: 2rem">
                             <h3 class="hidelong">{{$v['product_title']}}</h3>
                             <div class="desc">{{ $v['content'] }}</div>
@@ -67,6 +68,7 @@
                                 @endforeach
                             </div>
                         </div>
+                        </a>
                     </div>
                 @endforeach
             </div>
@@ -89,6 +91,7 @@
                 <span class="name">{{d[i].nickname }}</span>
                 <span class="time">{{ d[i].created_at }}</span>
             </div>
+            <a href="/h5/evaluate/detail?id={{  d[i].id  }}">
             <div class="share_info" style="position:relative;margin-bottom: 2rem">
                 <h3 class="hidelong">{{d[i].product_title}}</h3>
                 <div class="desc">{{ d[i].content }}</div>
@@ -98,6 +101,7 @@
                     {{#  }); }}
                 </div>
             </div>
+            </a>
         </div>
         {{# } }}
         @endverbatim
