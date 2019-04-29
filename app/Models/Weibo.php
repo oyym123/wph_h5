@@ -41,7 +41,7 @@ class Weibo
          * "uid":"12341234"
          * }
          */
-        $res = $this->weibo->getAccessToken('code', $keys);
+        $res = $this->wbA->getAccessToken('code', $keys);
         //第三步
         $this->wbC = new SaeTClientV2(config('weibo.wb_akey'), config('weibo.wb_skey'), $res['access_token']);
         $userInfo = $this->wbC->show_user_by_id($res['uid']);
