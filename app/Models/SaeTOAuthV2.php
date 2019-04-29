@@ -202,7 +202,7 @@ class SaeTOAuthV2
             $this->access_token = $token['access_token'];
             //$this->refresh_token = $token['refresh_token'];
         } else {
-            print_r($token['error']);exit;
+            print_r($token);exit;
            // throw new Exception("get access token failed." . $token['error']);
         }
         return $token;
