@@ -13,3 +13,4 @@ yarn-error.log
 sftp-config.json
 public/swagger-ui/index.html
 public/swagger-ui/index.html
+/public
