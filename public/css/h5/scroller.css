@@ -1,0 +1,27 @@
+
+
+#wrapper{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 2rem;
+    bottom: 2rem;
+    overflow: hidden;
+    z-index: 1;
+    background-color: rgb(239, 239, 244);
+}
+#wrapper li{
+    height: 10rem;
+    line-height: 10rem;
+    text-align: center;
+}
+
+
+@-webkit-keyframes loading {
+    from {
+        -webkit-transform: rotate(0deg) translateZ(0);
+    }
+    to {
+        -webkit-transform: rotate(360deg) translateZ(0);
+    }
+}
