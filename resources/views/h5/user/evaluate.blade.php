@@ -58,15 +58,17 @@
                             <span class="name">{{ $v['nickname'] }}</span>
                             <span class="time">{{ $v['created_at'] }}</span>
                         </div>
-                        <div class="share_info" style="position:relative;margin-bottom: 2rem">
-                            <h3 class="hidelong">{{$v['product_title']}}</h3>
-                            <div class="desc">{{ $v['content'] }}</div>
-                            <div class="imgs">
-                                @foreach($v['imgs'] as $img)
-                                    <img src="{{ $img }}?imageView2/1/w/150/h/150">
-                                @endforeach
+                        <a href="/h5/evaluate/detail?id={{ $v['id'] }}">
+                            <div class="share_info" style="position:relative;margin-bottom: 2rem">
+                                <h3 class="hidelong">{{$v['product_title']}}</h3>
+                                <div class="desc">{{ $v['content'] }}</div>
+                                <div class="imgs">
+                                    @foreach($v['imgs'] as $img)
+                                        <img src="{{ $img }}?imageView2/1/w/150/h/150">
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 @endforeach
             </div>
@@ -74,20 +76,22 @@
                 <div class="more"><i class="pull_icon"></i><span></span></div>
             </div>
         </div>
-        <script src="{{ asset('js/h5/iscroll.js') }}"></script>
-        <link rel="stylesheet" href="{{asset('css/h5/scroller.css')}}">
-        <script type="text/html" id="lateauc">
-            @verbatim
-            {{# for(var i = 0, len = d.length; i< len; i++){ }}
-            <div class="share_li">
-                <div class="cover1">
-                    <img style="border-radius:50%; height: 45px;"
-                         src="{{ d[i].avatar }}?imageView2/1/w/45/h/45">
-                </div>
-                <div>
-                    <span class="name">{{d[i].nickname }}</span>
-                    <span class="time">{{ d[i].created_at }}</span>
-                </div>
+    </div>
+    <script src="{{ asset('js/h5/iscroll.js') }}"></script>
+    <link rel="stylesheet" href="{{asset('css/h5/scroller.css')}}">
+    <script type="text/html" id="lateauc">
+        @verbatim
+        {{# for(var i = 0, len = d.length; i< len; i++){ }}
+        <div class="share_li">
+            <div class="cover1">
+                <img style="border-radius:50%; height: 45px;"
+                     src="{{ d[i].avatar }}?imageView2/1/w/45/h/45">
+            </div>
+            <div>
+                <span class="name">{{d[i].nickname }}</span>
+                <span class="time">{{ d[i].created_at }}</span>
+            </div>
+            <a href="/h5/evaluate/detail?id={{  d[i].id  }}">
                 <div class="share_info" style="position:relative;margin-bottom: 2rem">
                     <h3 class="hidelong">{{d[i].product_title}}</h3>
                     <div class="desc">{{ d[i].content }}</div>
@@ -97,58 +101,59 @@
                         {{#  }); }}
                     </div>
                 </div>
-            </div>
-            {{# } }}
-            @endverbatim
-        </script>
-        <script>
-            pages = 0;
-            $(function () {
-                var myscroll = new iScroll("wrapper", {
-                    onScrollMove: function () {
-                        if (this.y < (this.maxScrollY)) {
-                            $('.pull_icon').addClass('flip');
+            </a>
+        </div>
+        {{# } }}
+        @endverbatim
+    </script>
+    <script>
+        pages = 0;
+        $(function () {
+            var myscroll = new iScroll("wrapper", {
+                onScrollMove: function () {
+                    if (this.y < (this.maxScrollY)) {
+                        $('.pull_icon').addClass('flip');
 
-                        } else {
-                            $('.pull_icon').removeClass('flip loading');
-                        }
-                    },
-                    onScrollEnd: function () {
-                        if ($('.pull_icon').hasClass('flip')) {
-                            pages++;
-                            pullUpAction(pages);
-                        }
-                    },
-                    onRefresh: function () {
-                        $('.more').removeClass('flip');
+                    } else {
+                        $('.pull_icon').removeClass('flip loading');
                     }
-                });
-
-                function pullUpAction(pagenum) {
-                    setTimeout(function () {
-                        $.get("/api/evaluate/lists", {pages: pagenum}, function (d) {
-                            d = d.data;
-                            if (d !== null) {
-                                var gettpl = document.getElementById('lateauc').innerHTML;
-                                laytpl(gettpl).render(d, function (html) {
-                                    $("#latelist").append(html);
-                                });
-                            } else {
-                                $("#no-data").remove();
-                                $("#latelist").append("<p id='no-data' style='text-align: center;margin-top: 5px;'>无更多数据</p>");
-                            }
-                        }, "json");
-                        myscroll.refresh();
-                    }, 100)
-                }
-
-                if ($('.scroller').height() < $('#wrapper').height()) {
-                    $('.more').hide();
-                    myscroll.destroy();
+                },
+                onScrollEnd: function () {
+                    if ($('.pull_icon').hasClass('flip')) {
+                        pages++;
+                        pullUpAction(pages);
+                    }
+                },
+                onRefresh: function () {
+                    $('.more').removeClass('flip');
                 }
             });
-        </script>
 
+            function pullUpAction(pagenum) {
+                setTimeout(function () {
+                    $.get("/api/evaluate/lists", {pages: pagenum}, function (d) {
+                        d = d.data;
+                        if (d !== null) {
+                            var gettpl = document.getElementById('lateauc').innerHTML;
+                            laytpl(gettpl).render(d, function (html) {
+                                $("#latelist").append(html);
+                            });
+                        } else {
+                            $("#no-data").remove();
+                            $("#latelist").append("<p id='no-data' style='text-align: center;margin-top: 5px;'>无更多数据</p>");
+                        }
+                    }, "json");
+                    myscroll.refresh();
+                }, 100)
+            }
+
+            if ($('.scroller').height() < $('#wrapper').height()) {
+                $('.more').hide();
+                myscroll.destroy();
+            }
+        });
+    </script>
+    @if(empty($data))
         <div class="content infinite-scroll">
             <div class="" id="listgoods"
                  style="padding-left: 0;padding-right: 0;position: relative;background-color: white;">
@@ -157,6 +162,6 @@
                 </div>
             </div>
         </div>
-
+    @endif
     @parent
 @stop
