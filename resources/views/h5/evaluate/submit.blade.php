@@ -55,7 +55,6 @@
         <br>
         <form enctype="multipart/form-data">
             <div>
-
                 <div class="form-group" style="position:relative;top:1rem;">
                     <input id="file-1" type="file" multiple class="file" name="imgs" data-overwrite-initial="false"
                            data-min-file-count="2">
@@ -63,7 +62,8 @@
                 <input type="hidden" id="contents" value="">
             </div>
         </form>
-
+            <br/>
+            <br/>
         <div class="alert-msg" style="position: relative;top:5rem;left: 3rem">
             <img style="width: 30px;height: 30px" src="/images/h5/pencil.png"/>
             <span>
@@ -71,7 +71,7 @@
             </span>
         </div>
         <textarea id="area" class="user-msg" name="contents"
-                  style="height: 6.6rem;width: 100%;background-color: rgb(248, 248, 248)"></textarea>
+                  style="height: 8.6rem;width: 100%;background-color: rgb(248, 248, 248)"></textarea>
         <p><span id="text-count">100</span>/0</p>
         <a style="top:-4rem;" onclick="submit_content()" class="button">提交</a>
     </div>
@@ -95,7 +95,7 @@
             var content = $("textarea").val();
             $.post("/h5/evaluate/submit", {contents: content, sn: "{{ $order_sn }}"}, function (d) {
                 if (d.code == 0) {
-                    location.href = "/h5/evaluate/submit-view?sn=" + order_sn;
+                    location.href = "/h5/order/my-auction?type=1"; //我拍中列表
                 } else {
                     alert(d.message);
                 }

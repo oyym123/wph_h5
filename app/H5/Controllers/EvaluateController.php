@@ -51,12 +51,14 @@ class EvaluateController extends WebController
             'sn' => $request->sn
         ]);
         $imgs = $redis->hget('evaluate_imgs', $this->userId);
-        if (count(json_decode($imgs, true)) < 2) {
-            self::showMsg('至少传' . 2 . '张图片!', 4);
-        }
+//        if (count(json_decode($imgs, true)) < 2) {
+//            self::showMsg('至少传' . 2 . '张图片!', 4);
+//            exit;
+//        }
 
         if (count(json_decode($imgs, true)) > 9) {
             self::showMsg('最多传' . 9 . '张图片!', 4);
+            exit;
         }
 
         $data = [

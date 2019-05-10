@@ -1923,7 +1923,7 @@
             self.initBrowse($container);
         },
         renderMain: function () {
-            var self = this, dropCss = (self.isUploadable && self.dropZoneEnabled) ? ' file-drop-zone' : '',
+            var self = this, dropCss = (self.isUploadable && self.dropZoneEnabled) ? ' file-drop-zone1' : '',
                 preview = self.showPreview ? self.getLayoutTemplate('preview').repl('{class}', self.previewClass)
                     .repl('{dropClass}', dropCss) : '',
                 css = self.isDisabled ? self.captionClass + ' file-caption-disabled' : self.captionClass,
