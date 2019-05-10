@@ -771,7 +771,7 @@
                             } else if (d.status == 100) { //跳转到登入
                                 location.href = "/h5/user/login-view";
                             } else if (d.status == 40) {  //表示自动竞拍出价成功
-                                $.toast(d.message);
+                                $.toast('您已出价,请等会儿再出价吧！');
                             } else if (d.status == 30) {  //需要进行充值
                                 $.alert('您的余额不足', function () {
                                     location.href = "/h5/pay/recharge-center";
