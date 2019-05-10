@@ -61,7 +61,7 @@
                                     class="swiper-pagination-bullet swiper-pagination-bullet-active"></span></div>
                     </div>
                     <style>
-                        
+
 
                         .name {
                             font-size: small;
@@ -454,7 +454,7 @@
                 <div class="list-block usercenter" style="margin-top:.5rem;">
                     <ul>
                         <li>
-                            <a href="/?i=37&amp;c=entry&amp;m=_fastauction&amp;p=store&amp;ac=merchant&amp;do=auctionhouse&amp;auchouseid=1"
+                            <a href="/h5/auctioneer?auctioneer_id={{ $detail['auction_id'] }}"
                                class="item-link item-content">
                                 <div class="item-media"><img style="height:2.3rem;width: 2.1rem;"
                                                              src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/UYHcYfe8o2EOV00uZ12oEyh81MVC2e.png">
