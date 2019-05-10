@@ -131,7 +131,7 @@
 
             function pullUpAction(pagenum) {
                 setTimeout(function () {
-                    $.get("/api/evaluate/lists", {pages: pagenum}, function (d) {
+                    $.get("/h5/evaluate/lists", {pages: pagenum}, function (d) {
                         d = d.data;
                         if (d !== null) {
                             var gettpl = document.getElementById('lateauc').innerHTML;
