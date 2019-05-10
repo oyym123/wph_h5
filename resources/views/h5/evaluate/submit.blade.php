@@ -116,7 +116,7 @@
 
         var content = "'" + $("#contents").val() + "'";
         $("#file-1").fileinput({
-            uploadUrl: '/h5/evaluate/upload-img', // you must set a valid URL here else you will get an error
+            uploadUrl: '/h5/evaluate/upload-img?key_img={{ $order_sn }}', // you must set a valid URL here else you will get an error
             allowedFileExtensions: ['jpg', 'png', 'gif'],
             overwriteInitial: false,
             maxFileSize: 1000,

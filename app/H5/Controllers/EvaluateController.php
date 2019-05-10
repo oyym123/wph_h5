@@ -50,7 +50,7 @@ class EvaluateController extends WebController
             'buyer_id' => $this->userId,
             'sn' => $request->sn
         ]);
-        $imgs = $redis->hget('evaluate_imgs', $this->userId);
+        $imgs = $redis->hget('evaluate_imgs', $request->sn);
 //        if (count(json_decode($imgs, true)) < 2) {
 //            self::showMsg('至少传' . 2 . '张图片!', 4);
 //            exit;
@@ -107,12 +107,12 @@ class EvaluateController extends WebController
         $img = Upload::oneImg($request->file('imgs'));
         //redis缓存图片
 
-        $imgs = json_decode($redis->hget('evaluate_imgs', $this->userId), true);
+        $imgs = json_decode($redis->hget('evaluate_imgs', $request->key_img), true);
         if (!empty($imgs)) {
             $imgs = array_merge($imgs, [$img]);
-            $redis->hset('evaluate_imgs', $this->userId, json_encode($imgs));
+            $redis->hset('evaluate_imgs', $request->key_img, json_encode($imgs));
         } else {
-            $redis->hset('evaluate_imgs', $this->userId, json_encode([$img]));
+            $redis->hset('evaluate_imgs', $request->key_img, json_encode([$img]));
         }
     }
 
