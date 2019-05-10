@@ -154,6 +154,10 @@
         });
     </script>
     @if(empty($data))
+        <script>
+            $("#wrapper").hide();
+        </script>
+
         <div class="content infinite-scroll">
             <div class="" id="listgoods"
                  style="padding-left: 0;padding-right: 0;position: relative;background-color: white;">
