@@ -15,7 +15,7 @@
 <div class="page-group">
     <div class="page page-current page-inited" id="page-index" >
         <header class="bar bar-nav" style="position: fixed;">
-            <a class="button button-link button-nav pull-left back" style="padding-top: .5rem;"
+            <a class="" style="padding-top: .5rem;"
                href="javascript:history.go(-1);">
                 <span style="color: #999999;" class="icon icon-left"></span>
             </a>

@@ -530,8 +530,6 @@ class OrderController extends WebController
     public function transportDetail()
     {
         $this->auth();
-        self::showMsg((new order())->transportDetail($this->request->sn, $this->userId));
+        return view('h5.order.detail', (new order())->transportDetail($this->request->sn, $this->userId));
     }
-
-
 }

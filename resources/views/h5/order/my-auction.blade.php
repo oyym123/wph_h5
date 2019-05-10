@@ -45,6 +45,7 @@
                             </div>
                             <div class="user_btn">
                                 <div class="return_bids"></div>
+
                                 @if($v['result_status']==2)
                                     <div class="btn_wrap" style="position:relative;top: -.3rem;">
                                         @else
@@ -56,7 +57,10 @@
                                                     @if($v['order_status']==10)
                                                         <a onclick="payorder({{$v['product_id']}},{{$v['period_id']}},'{{ $v['sn'] }}')">立即付款</a>
                                                     @else
-                                                        <a>已完成</a>
+                                                        <div style="position: relative;top: -.3rem;">
+                                                        <a href="#">已完成</a>
+                                                        <a onclick="godetail('{{ $v['sn'] }}')">订单详情</a>
+                                                        </div>
                                                     @endif
                                                 @elseif($v['result_status']==2)
                                                     <p style="position:absolute;left: 1%;color: black">已返还
@@ -71,11 +75,20 @@
                                                         <a onclick="payorder({{$v['product_id']}},{{$v['period_id']}},'{{ $v['sn'] }}')">支付差价</a>
                                                     @endif
                                                 @elseif($v['result_status']==4)
-                                                    <a onclick="toperiod('1','13551')">确认收货</a>
-
+                                                    <div style="position: relative;top: -.3rem;">
+                                                        <a onclick="qsgood('{{ $v['sn'] }}')">确认收货</a>
+                                                        <a onclick="godetail('{{ $v['sn'] }}')">订单详情</a>
+                                                    </div>
                                                 @elseif($v['result_status']==5)
-                                                    <a onclick="toperiod('1','13551')">晒单有奖</a>
+                                                    <div style="position: relative;top: -.3rem;">
+                                                    <a onclick="toshoworder('{{ $v['sn'] }}')">晒单有奖</a>
+                                                    <a onclick="godetail('{{ $v['sn'] }}')">订单详情</a>
+                                                    </div>
+                                                @elseif($v['result_status']==6)
+{{--                                                    <a onclick="toshoworder('{{ $v['sn'] }}')">待发货</a>--}}
+{{--                                                    <a onclick="godetail('{{ $v['sn'] }}')">订单详情</a>--}}
                                                 @endif
+
                                             </div>
                                     </div>
                             </div>
@@ -458,9 +471,9 @@
 
         function qsgood(sn) {
             $.confirm("确定要签收商品吗？", function () {
-                $.post("/h5/order/confirm-receipt", {sn: sn}, function (d) {
+                $.get("/h5/order/confirm-receipt", {sn: sn}, function (d) {
                     d = d.data
-                    if (d.status) {
+                    if (d.code >= 0) {
                         $.toast('签收成功');
                         location.reload();
                     } else {
@@ -470,22 +483,26 @@
             });
         }
 
+        //前往订单详情页
+        function godetail(sn) {
+            location.href = "/h5/order/transport-detail?sn=" + sn;
+        }
+
+        //前往竞拍详情页
         function toperiod(gid, period_id) {
-            if(period_id){
+            if (period_id) {
                 location.href = "/h5/product/detail?period_id=" + period_id;
-            }else{
+            } else {
                 location.href = "/h5/product/shop-detail?product_id=" + gid;
             }
         }
 
-        function toshoworder(orderid) {
-            location.href = "" + orderid;
+        //晒单
+        function toshoworder(order_sn) {
+            location.href = "/h5/evaluate/submit-view?sn=" + order_sn;
         }
 
-        function toshoworder(orderid) {
-            location.href = "" + orderid;
-        }
-
+        //支付订单
         function payorder(pid, period_id, sn) {
             location.href = "/h5/pay/confirm?product_id=" + pid + "&period_id=" + period_id + "&sn=" + sn;
         }

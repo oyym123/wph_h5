@@ -44,38 +44,13 @@ class EvaluateController extends WebController
     {
         $this->auth();
         $request = $this->request;
-
+        $redis = app('redis')->connection('first');
         $order = (new Order())->getOrder([
             'status' => Order::STATUS_CONFIRM_RECEIVING,
             'buyer_id' => $this->userId,
             'sn' => $request->sn
         ]);
-
-        //上传图片
-        $img = Upload::oneImg($request->file('imgs'));
-        //redis缓存图片
-        $redis = app('redis')->connection('first');
-        $imgs = json_decode($redis->hget('evaluate_imgs', $this->userId), true);
-        if (!empty($imgs)) {
-            $imgs = array_merge($imgs, [$img]);
-            $redis->hset('evaluate_imgs', $this->userId, json_encode($imgs));
-        } else {
-            $redis->hset('evaluate_imgs', $this->userId, json_encode([$img]));
-        }
         $imgs = $redis->hget('evaluate_imgs', $this->userId);
-
-        $data = [
-            'order_id' => $order->id,
-            'product_id' => $order->product_id,
-            'period_id' => $order->period_id,
-            'content' => $request->contents,
-            'user_id' => $this->userId,
-        ];
-
-        if ($request->submit_flag == 1) { //表示提交所有内容
-            $data['imgs'] = $imgs;
-        }
-
         if (count(json_decode($imgs, true)) < 2) {
             self::showMsg('至少传' . 2 . '张图片!', 4);
         }
@@ -124,12 +99,19 @@ class EvaluateController extends WebController
      */
     public function uploadImg()
     {
-        $this->auth();
-        $img = Upload::oneImg($this->request->img);
-        self::showMsg([
-            'url' => $img,
-            'full_url' => config('qiniu.domain') . $img
-        ]);
+        $redis = app('redis')->connection('first');
+        $request = $this->request;
+        //上传图片
+        $img = Upload::oneImg($request->file('imgs'));
+        //redis缓存图片
+
+        $imgs = json_decode($redis->hget('evaluate_imgs', $this->userId), true);
+        if (!empty($imgs)) {
+            $imgs = array_merge($imgs, [$img]);
+            $redis->hset('evaluate_imgs', $this->userId, json_encode($imgs));
+        } else {
+            $redis->hset('evaluate_imgs', $this->userId, json_encode([$img]));
+        }
     }
 
     /**
