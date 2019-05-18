@@ -4,7 +4,7 @@
     首页
 @stop
 @section('title_head')
-    微排行
+    往前成交
 @stop
 @section('content')
 <div id="wrapper">
@@ -49,7 +49,7 @@
         <span class="deal_price">成交价：<em>￥{{d[i].bid_price}}</em></span>
         </span>
         <span class="save_price" style="top: 0.5rem;">
-            <em>{{d[i].save_price}}</em>节省
+            <em>{{d[i].save_price}}%</em>节省
         </span>
     </div>
     {{# } }}

@@ -244,6 +244,7 @@ class Product extends Common
         }
         $url = $upload->jd_url;
         $output = self::getInfo("$url");
+
         preg_match_all("/cd.jd.com\/description(.*)(?)\'/siU", $output, $desc);
 
         $descImage = $imgUrls = $descImages = $imgs = [];
@@ -278,6 +279,7 @@ class Product extends Common
         foreach ($imgUrls as $imgUrl) {
             $imgs[] = QiniuHelper::fetchImg('img13.360buyimg.com/n1/s450x450_' . $imgUrl)[0]['key'];
         }
+//        print_r($imgs);exit;
         $model = new Product();
         $model->title = $title;
         $model->type = $upload->product_type;

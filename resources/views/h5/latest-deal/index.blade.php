@@ -71,7 +71,7 @@
         <span class="market_price">市场价：￥{{d[i].sell_price}}</span>
         <span class="deal_price">成交价：<em>￥{{d[i].bid_price}}</em></span>
         </span>
-            <span class="save_price"><em>{{d[i].save_price}}</em>节省
+            <span class="save_price"><em>{{d[i].save_price}}%</em>节省
                 <a href="javascript:;" onclick="nextPeriod({{d[i].product_id}})"  class="bid_btn"></a></span>
         </div>
         {{# } }}

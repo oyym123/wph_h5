@@ -59,7 +59,8 @@ class ProductController extends Controller
 
     public function show()
     {
-        echo "<script>history.go(-1);</script>";
+       // print_r('123213');exit;
+       // echo "<script>history.go(-1);</script>";
     }
 
     /**

@@ -307,6 +307,7 @@ class Period extends Common
                 'auctioneer_tags' => $auctioneer->tags,
                 'auctioneer_license' => $auctioneer->number,
                 'auctioneer_name' => $auctioneer->name,
+         
             ],
             'guide' => [
                 [

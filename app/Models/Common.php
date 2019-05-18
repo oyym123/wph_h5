@@ -297,7 +297,11 @@ class Common extends Model
     {
         if (mb_strlen($string) > $len) {
             $tmp = mb_substr($string, 0, $len, 'utf8');
-            return $tmp . $tail;
+            if ($len > 10 && $len < 30) {//表示是产品
+                return $tmp . $tail . '　　';
+            } else {
+                return $tmp . $tail;
+            }
         } else {
             $tail = str_repeat('　', $len - mb_strlen($string));
             return $string . $tail; //没有的也凑满字数

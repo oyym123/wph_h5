@@ -322,7 +322,7 @@
                         <img src="/images/h5/chujia.png" style="height: 25px;width: 25px;"><span
                                 style="position: relative;top: -6px;">出价记录</span>
                         <span style="color: #999999;position: relative;top: -6px;margin-left: 5px;"><span
-                                    id="auctimes">{{ $detail['bid_users_count'] }}</span>条</span><span
+                                    id="auctimes">{{ $detail['bid_count'] }}</span>条</span><span
                                 style="float: right;color: #999999;"><i
                                     class="icon iconfont icon-right"></i></span></div>
                     <div class="infolist" id="infolist">
@@ -694,7 +694,7 @@
             //   ws = new WebSocket("ws://wph.ouyym.com/ws");
             ws = new WebSocket("ws://122.114.63.148:8082");
             @else //线上环境
-            ws = new WebSocket("wss://{{ $_SERVER['HTTP_HOST'] }}/wss");
+            ws = new WebSocket("wss://api.95wx.cn/wss");
             @endif
 
             // 当有消息时根据消息类型显示不同信息

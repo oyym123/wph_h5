@@ -1,9 +1,9 @@
 @extends('layouts.h5')
 @section('title')
-    首页
+    分类
 @stop
 @section('title_head')
-    微排行
+    产品分类
 @stop
 @section('content')
     <div class="content native-scroll">
@@ -104,9 +104,10 @@
         function connect() {
             // 创建websocket
             @if(PHP_OS == 'WINNT') //本地测试专用
-            ws = new WebSocket("ws://127.0.0.1:8081");
+        //    ws = new WebSocket("ws://127.0.0.1:8081");
+            ws = new WebSocket("wss://api.95wx.cn/wss");
             @else //线上环境
-            ws = new WebSocket("wss://{{ $_SERVER['HTTP_HOST'] }}/wss");
+            ws = new WebSocket("wss://api.95wx.cn/wss");
             @endif
 
             // 当有消息时根据消息类型显示不同信息
