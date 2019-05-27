@@ -225,6 +225,17 @@
         @endverbatim
     </script>
     <script>
+
+        window.onscroll = function () {
+            // console.log("1:" + $(document).scrollTop());
+            console.log(window.innerHeight);//在谷歌浏览器中请使用 innerHeight以替换clientHeight
+            console.log($(document).scrollTop());
+            console.log(document.body.scrollHeight);//以上三个属性打印出来之后当滚动条滚到底部 1 + 2 = 3。
+            if(window.innerHeight + $(document).scrollTop() == document.body.scrollHeight){
+                addChildTimer = setInterval(addItems, 500);//滚动完之后的下拉加载，此处只是做了一个简单的实现添加了十个元素。
+            }
+        };
+
         $('#J-close').click(function () {
             $('.mod_guide').hide();
 
