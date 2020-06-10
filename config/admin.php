@@ -5,7 +5,7 @@ return [
     /*
      * Laravel-admin name.
      */
-    'name' => '阿卡索',
+    'name' => '阿卡索SEO后台',
 
     /*
      * Logo in admin panel header.
