@@ -55,6 +55,7 @@ return [
             ],
         ],
 
+        
         'providers' => [
             'admin' => [
                 'driver' => 'eloquent',
