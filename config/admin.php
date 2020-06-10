@@ -10,12 +10,12 @@ return [
     /*
      * Logo in admin panel header.
      */
-    'logo' => '<b>阿卡索泛目录</b> 后台',
+    'logo' => '<b>阿卡索SEO</b> 后台',
 
     /*
      * Mini-logo in admin panel header.
      */
-    'logo-mini' => '<b>阿卡索泛目录</b>',
+    'logo-mini' => '<b>阿卡索SEO</b>',
 
     /*
      * Route configration.
@@ -55,7 +55,7 @@ return [
             ],
         ],
 
-        
+
         'providers' => [
             'admin' => [
                 'driver' => 'eloquent',
