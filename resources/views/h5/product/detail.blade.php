@@ -62,6 +62,44 @@
                     </div>
                     <style>
 
+
+                        .name {
+                            font-size: small;
+                            position: absolute;
+                            left: 3rem;
+                        }
+
+                        .time {
+                            position: absolute;
+                            right: 20px;
+                            font-size: small;
+                        }
+
+                        .share_li {
+                            position: relative;
+                            left: -0.3rem;
+                            background-color: white;
+                        }
+
+                        .share_info {
+                            position: absolute;
+                            right: -.6rem;
+                            top: 1.5rem;
+                        }
+
+                        .share_li .share_info .imgs {
+                            width: 14.225rem;
+                            font-size: 0;
+                        }
+
+                        .share_li .share_info .imgs img {
+                            width: 4.25rem;
+                            height: 4.25rem;
+                            background: #ccc;
+                            margin: 0.3rem 0.3rem 0 0;
+                        }
+
+
                         .banner {
                             visibility: visible;
                             width: 100%;
@@ -284,7 +322,7 @@
                         <img src="/images/h5/chujia.png" style="height: 25px;width: 25px;"><span
                                 style="position: relative;top: -6px;">出价记录</span>
                         <span style="color: #999999;position: relative;top: -6px;margin-left: 5px;"><span
-                                    id="auctimes">{{ $detail['bid_users_count'] }}</span>条</span><span
+                                    id="auctimes">{{ $detail['bid_count'] }}</span>条</span><span
                                 style="float: right;color: #999999;"><i
                                     class="icon iconfont icon-right"></i></span></div>
                     <div class="infolist" id="infolist">
@@ -416,7 +454,7 @@
                 <div class="list-block usercenter" style="margin-top:.5rem;">
                     <ul>
                         <li>
-                            <a href="/?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=store&amp;ac=merchant&amp;do=auctionhouse&amp;auchouseid=1"
+                            <a href="/h5/auctioneer?auctioneer_id={{ $detail['auction_id'] }}"
                                class="item-link item-content">
                                 <div class="item-media"><img style="height:2.3rem;width: 2.1rem;"
                                                              src="http://operate.oss-cn-shenzhen.aliyuncs.com/images/37/2018/01/UYHcYfe8o2EOV00uZ12oEyh81MVC2e.png">
@@ -549,6 +587,36 @@
             </div>
         </div>
     </div>
+
+    <script type="text/html" id="lateauc2">
+        @verbatim
+        {{# for(var i = 0, len = d.length; i< len; i++){ }}
+        <div class="share_li">
+            <div class="cover1">
+                <img style="border-radius:50%; height: 45px;"
+                     src="{{ d[i].avatar }}?imageView2/1/w/45/h/45">
+            </div>
+            <div>
+                <span class="name">{{d[i].nickname }}</span>
+                <span class="time">{{ d[i].created_at }}</span>
+            </div>
+            <a href="/h5/evaluate/detail?id={{  d[i].id  }}">
+                <div class="share_info" style="position:relative;margin-bottom: 2rem">
+                    <h3 class="hidelong">{{d[i].product_title}}</h3>
+                    <div class="desc">{{ d[i].content }}</div>
+                    <div class="imgs">
+                        {{# $.each(d[i].imgs, function(index, item){}}
+                        <img src="{{ item }}?imageView2/1/w/150/h/150">
+                        {{#  }); }}
+                    </div>
+                </div>
+            </a>
+        </div>
+        {{# } }}
+        @endverbatim
+    </script>
+
+
     <script type="text/html" id="lateauc">
         @verbatim
         {{# for(var i = 0, len = d.length; i< len; i++){ }}
@@ -591,6 +659,21 @@
         @endverbatim
     </script>
     <script>
+
+        $.get("/h5/evaluate", {product_id: "{{ $detail['product_id'] }}"}, function (d) {
+            d = d.data;
+            if (d !== null) {
+                var gettpl = document.getElementById('lateauc2').innerHTML;
+                laytpl(gettpl).render(d, function (html) {
+                    $("#selfing").append(html);
+                });
+            } else {
+                $("#no-data").remove();
+                $("#selfing").append("<p id='no-data' style='text-align: center;margin-top: 5px;'>无更多数据</p>");
+            }
+        }, "json");
+
+
         window.onbeforeunload = function () { //检测是关闭了浏览器页面,关闭后访问的请求量减1，当访问量为0时，不发推送消息
             $.get("/h5/product/cancel-visit", {period_id: "{{ $detail['id'] }}"}, function (d) {
 
@@ -598,19 +681,20 @@
         };
 
         @if($detail['period_status']==1)
-          $('.auced').show();
+        $('.auced').show();
         $('.aucing').hide();
         @endif
 
         connect();
+
         // 连接服务端
         function connect() {
             // 创建websocket
             @if(PHP_OS == 'WINNT') //本地测试专用
-         //   ws = new WebSocket("ws://wph.ouyym.com/ws");
+            //   ws = new WebSocket("ws://wph.ouyym.com/ws");
             ws = new WebSocket("ws://122.114.63.148:8082");
             @else //线上环境
-            ws = new WebSocket("wss://{{ $_SERVER['HTTP_HOST'] }}/wss");
+            ws = new WebSocket("wss://api.95wx.cn/wss");
             @endif
 
             // 当有消息时根据消息类型显示不同信息
@@ -771,7 +855,7 @@
                             } else if (d.status == 100) { //跳转到登入
                                 location.href = "/h5/user/login-view";
                             } else if (d.status == 40) {  //表示自动竞拍出价成功
-                                $.toast(d.message);
+                                $.toast('您已出价,请等会儿再出价吧！');
                             } else if (d.status == 30) {  //需要进行充值
                                 $.alert('您的余额不足', function () {
                                     location.href = "/h5/pay/recharge-center";
@@ -788,9 +872,11 @@
                 $('.tool_tips').removeClass('pop');
             });
         });
+
         function showtip() {
             $('.tool_tips').addClass('pop');
         }
+
         function changenum(aucnum) {
             $('.qunum').each(function () {
                 $(this).removeClass('focus');
@@ -812,6 +898,7 @@
                 $('.qu4').addClass('focus');
             }
         }
+
         function addnum(flag) {
             $('.qunum').each(function () {
                 $(this).removeClass('focus');
@@ -853,7 +940,7 @@
         });
 
         function get_late() {
-            $.post("/?i=37&c=entry&m=weliam_fastauction&p=goods&ac=goods&do=getlate&goodsid=17", {}, function (d) {
+            $.post("/?i=37&c=entry&m=_fastauction&p=goods&ac=goods&do=getlate&goodsid=17", {}, function (d) {
                 if (d.length != '') {
                     var gettpl = document.getElementById('lateauc').innerHTML;
                     laytpl(gettpl).render(d, function (html) {
@@ -864,8 +951,9 @@
         }
 
         @if($detail['is_favorite'] == 1)
-            $('.collent').hide();
+        $('.collent').hide();
         $('.canclcollent').show();
+
         @endif
 
         function addcollection(e) {
@@ -908,6 +996,7 @@
                 $('#customerdia').show();
             }
         }
+
         $("#customermask").click(function () {
             $('#customermask').hide();
             $('#customerdia').hide();

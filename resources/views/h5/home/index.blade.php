@@ -3,7 +3,7 @@
     首页
 @stop
 @section('title_head')
-    微排行
+    微拍行
 @stop
 @section('content')
     <div id="wrapper">
@@ -18,7 +18,7 @@
                             @foreach ($banner as $k => $v)
                                 <div onclick="location.href=''" class="swiper-slide swiper-slide-active"
                                      style="min-height: 100px; font-size: 0px; width: 360px;">
-                                    <img src="{{ $v['img'] }}?imageView2/1/w/900/h/500">
+                                    <img src="{{ $v['img'] }}?imageView2/1/w/900/h/350">
                                 </div>
                             @endforeach
                         </div>
@@ -225,6 +225,17 @@
         @endverbatim
     </script>
     <script>
+
+        window.onscroll = function () {
+            // console.log("1:" + $(document).scrollTop());
+            console.log(window.innerHeight);//在谷歌浏览器中请使用 innerHeight以替换clientHeight
+            console.log($(document).scrollTop());
+            console.log(document.body.scrollHeight);//以上三个属性打印出来之后当滚动条滚到底部 1 + 2 = 3。
+            if(window.innerHeight + $(document).scrollTop() == document.body.scrollHeight){
+                addChildTimer = setInterval(addItems, 500);//滚动完之后的下拉加载，此处只是做了一个简单的实现添加了十个元素。
+            }
+        };
+
         $('#J-close').click(function () {
             $('.mod_guide').hide();
 
@@ -289,7 +300,7 @@
             @if(PHP_OS == 'WINNT') //本地测试专用
             ws = new WebSocket("ws://127.0.0.1:8081");
             @else //线上环境
-            ws = new WebSocket("wss://{{ $_SERVER['HTTP_HOST'] }}/wss");
+            ws = new WebSocket("wss://api.95wx.cn/wss");
             @endif
 
             // 当有消息时根据消息类型显示不同信息
@@ -344,7 +355,9 @@
         }
         function get_goods(type) {
             $.get("/h5/home/get-period", {
-                type: type
+                type: type,
+                pages: 0,
+                limit:6,
             }, function (d) {
                 if (d.data.length != '') {
                     console.log(d);

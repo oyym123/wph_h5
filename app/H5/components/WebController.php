@@ -27,11 +27,6 @@ class WebController extends Controller
 
     public function __construct(Request $request)
     {
-//        session(['user'=>'000000000000000000000000']);
-//        session()->save();
-//        print_r(session()->all());exit;
-
-      //  return response('121')->withCookie('site','LaravelAcademy.org',30,'/','laravel.app');
         $request && $this->request = $request;
         $request->pages && $this->pages = $request->pages;
         $request->limit && $this->limit = $request->limit;
@@ -42,13 +37,9 @@ class WebController extends Controller
         }
 
         if ($request->session()->has('user_info')) { //获取用户信息
-
             $user = json_decode(session('user_info'));
-            // print_r($user);exit;
-            //$user = json_decode($cook['user_info']);
             $this->userId = $user->id;
             $this->userIdent = User::find($this->userId);
-          //  print_r($next($request));exit;
             //判断账号是否可用
             if ($this->userIdent->status == User::STATUS_DISABLE) {
                 list($info, $status) = (new Common())->returnRes('', Common::CODE_FREEZE_ACCOUNT);

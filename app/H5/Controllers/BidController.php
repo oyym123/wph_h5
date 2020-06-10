@@ -164,7 +164,7 @@ class BidController extends WebController
         $ws = new BidSocket("127.0.0.1", "8081");
     }
 
-    //node websocket
+    //node websocket 【暂时不可用】
     public function nodeSocket()
     {
         if (PHP_OS == 'WINNT') { //本地测试使用
@@ -172,6 +172,12 @@ class BidController extends WebController
         } else {
             exec("/usr/sbin/node /usr/local/node/server.js");
         }
+    }
+
+    /** 开启node定时任务 */
+    public function startNodeWebsocket()
+    {
+        exec("/usr/sbin/node /usr/local/node/setTime.js");
     }
 
     /** 计划任务视图 */

@@ -98,6 +98,28 @@ class UploadProductController extends Controller
         });
     }
 
+//    public function show()
+//    {
+//        echo "<script>history.go(-1);</script>";
+//    }
+
+    /**
+     * Show interface.
+     *
+     * @param mixed   $id
+     * @param Content $content
+     *
+     * @return Content
+     */
+    public function show($id, Content $content)
+    {
+        return $content
+            ->header(trans('admin.permissions'))
+            ->description(trans('admin.detail'))
+            ->body($this->detail($id));
+    }
+
+
     /**
      * Make a form builder.
      *
@@ -112,7 +134,7 @@ class UploadProductController extends Controller
             ]);
 			$form->currency('init_price', '初始价')->symbol('￥')->rules('required', [
                 'required' => '请填写初始价',
-            ]);
+            ])->default(0);
             $form->text('jd_url', '京东产品详情网址')->rules('required', [
                 'required' => '请填写京东产品详情网址',
             ]);

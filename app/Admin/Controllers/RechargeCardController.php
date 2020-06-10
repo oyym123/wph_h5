@@ -11,6 +11,7 @@ use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use Illuminate\Support\MessageBag;
 
 class RechargeCardController extends Controller
 {
@@ -90,10 +91,8 @@ class RechargeCardController extends Controller
     }
 
 
-    public function show()
-    {
-        echo "<script>history.go(-1);</script>";
-    }
+
+
     /**
      * Make a form builder.
      *
@@ -103,13 +102,16 @@ class RechargeCardController extends Controller
     {
         return Admin::form(RechargeCard::class, function (Form $form) {
             $form->display('id', 'ID');
-            $form->currency('amount', '充值金额')->symbol('￥')->rules('required', [
+            $form->currency('amount1', '充值金额')->symbol('￥')->rules('required', [
                 'required' => '请填写充值金额',
-            ])->default(0);
+            ]);
+
             $form->currency('gift_amount', '赠送金额')->symbol('￥')->rules('required', [
                 'required' => '请填写赠送金额',
-            ])->default(0);
+            ]);
             $form->switch('status', '状态')->states(Common::getStates())->default(1);
         });
+        echo '<pre>';
+        print_r($t);exit;
     }
 }

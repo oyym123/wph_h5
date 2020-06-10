@@ -51,7 +51,7 @@
                                     </div>
                                     <div class="txt">购物币</div>
                                 </div>
-                                {{--<div class="col-25 col-row" onclick="location.href='/?i=37&amp;c=entry&amp;m=weliam_fastauction&amp;p=member&amp;ac=user&amp;do=mycredit'">--}}
+                                {{--<div class="col-25 col-row" onclick="location.href='/?i=37&amp;c=entry&amp;m=_fastauction&amp;p=member&amp;ac=user&amp;do=mycredit'">--}}
                                     {{--<div class="icondiv">--}}
                                         {{--<span class="property">0</span>--}}
                                     {{--</div>--}}

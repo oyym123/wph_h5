@@ -45,8 +45,12 @@ class Evaluate extends Common
             $product = $products->getCacheProduct($evaluate->product_id);
             $images = [];
             $imgs = json_decode($evaluate->imgs);
-            foreach ($imgs as $img) {
-                $images[] = env('QINIU_URL_IMAGES') . $img;
+            if ($imgs) {
+                foreach ($imgs as $key => $img) {
+                    if ($key < 9) {
+                        $images[] = env('QINIU_URL_IMAGES') . $img;
+                    }
+                }
             }
             $data[] = [
                 'id' => $evaluate->id,

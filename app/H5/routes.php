@@ -2,6 +2,7 @@
 /**
  * H5数据接口路由
  */
+
 use Illuminate\Routing\Router;
 use App\Models\Auctioneer;
 
@@ -73,6 +74,7 @@ Route::group([
     $router->get('bid/auto-info', 'BidController@autoInfo');
     $router->get('bid/bid-socket', 'BidController@bidSocket');
     $router->get('bid/node-socket', 'BidController@nodeSocket');
+    $router->get('bid/start-node-websocket', 'BidController@startNodeWebsocket');
 
     /** 支付 */
     $router->get('pay/confirm', 'PayController@confirm'); //确认订单
@@ -83,6 +85,7 @@ Route::group([
 
 
     /** 用户中心 */
+    $router->get('user/wb-login', 'UserController@wbLogin');//微博登入
     $router->get('user/update-view', 'UserController@updateView');//修改信息视图
     $router->post('user/update', 'UserController@update');//修改信息
     $router->get('user/my-info', 'UserController@myInfo');//基本信息
@@ -165,6 +168,7 @@ Route::group([
     /** 晒单 */
     $router->get('evaluate/rule', 'EvaluateController@rule'); //晒单规则
     $router->post('evaluate/upload-img', 'EvaluateController@uploadImg'); //提交晒单
+    $router->get('evaluate/submit-view', 'EvaluateController@submitView'); //提交晒单视图
     $router->post('evaluate/submit', 'EvaluateController@submit'); //提交晒单
     $router->get('evaluate/lists', 'EvaluateController@lists'); //首页晒单列表
     $router->get('evaluate/detail', 'EvaluateController@detail'); //晒单详情
@@ -203,6 +207,10 @@ Route::group([
 
     /** 获取阿拉丁分享链接 */
     $router->get('getshareurl', 'ShareUrlController@index');
+
+    //微博授权回调
+    $router->get('wei-bo/call-back', 'WeiBoController@callBack');
+    $router->get('wei-bo/cancel', 'WeiBoController@cancel');
 
 });
 

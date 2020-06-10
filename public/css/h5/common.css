@@ -107,7 +107,7 @@ address, cite, dfn, em, var, i {font-style: normal;font-weight: normal;}
 .gooddiv .endtime{color: #333;font-size: 0.9rem;}
 .gooddiv .goodmoney{font-size: 0.9rem;font-weight: bold;width: 70%;margin:0 auto;}
 .gooddiv .endmoney{color: #333;font-size: 0.9rem;font-weight: bold;}
-.gooddiv .goodmember{font-size: 0.6rem;}
+.gooddiv .goodmember{font-size: 0.6rem;height:1.75rem}
 .gooddiv .toauc{margin: 0.375rem auto 0;display: block;height: 1.75rem;line-height: 1.8rem;width: 6.25rem;color: #fff;font-size: 0.7rem;background: #EF1544;text-align: center;}
 .gooddiv .aucend{margin: 0.375rem auto 0;display: block;height: 1.75rem;line-height: 1.8rem;width: 6.25rem;color: #fff;font-size: 0.7rem;background: #999;text-align: center;}
 .tipin{background-color:#EF1544;color:#fff}

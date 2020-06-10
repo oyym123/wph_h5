@@ -4,29 +4,20 @@ namespace App\H5\Controllers;
 
 use App\Helpers\Helper;
 use App\Helpers\QiniuHelper;
-use App\Helpers\WXBizDataCrypt;
-use App\Http\Requests\BindMobilePost;
-use App\Models\Bid;
 use App\Models\City;
 use App\Models\Evaluate;
 use App\Models\Expend;
 use App\Models\Income;
 use App\Models\Invite;
-use App\Models\Order;
-use App\Models\Pay;
 use App\Models\Period;
 use App\Models\Upload;
 use App\Models\UserAddress;
+use App\Models\Weibo;
 use App\Models\Withdraw;
-use http\Cookie;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\RegisterUserPost;
 use App\User;
 use App\H5\components\WebController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redis;
-use Ramsey\Uuid\Uuid;
 
 class UserController extends WebController
 {
@@ -34,7 +25,7 @@ class UserController extends WebController
     public function __construct(Request $request)
     {
         parent::__construct($request);
-        $nologin = ['registerView', 'loginView', 'login', 'register', 'checkSms'];
+        $nologin = ['registerView', 'loginView', 'login', 'register', 'checkSms', 'wbLogin'];
         //在该数组里的方法名，都不需要身份验证
         if (!in_array($this->getMName(), $nologin)) {
 
@@ -110,6 +101,7 @@ class UserController extends WebController
                 }
             }
             session()->put('user_info', json_encode(DB::table('users')->where('id', $model->id)->first()));
+            session()->save();
             self::showMsg('注册成功!');
         }
     }
@@ -133,10 +125,62 @@ class UserController extends WebController
     //登入视图
     public function loginView()
     {
-        return view('h5.user.login');
+        return view('h5.user.login', ['weibo_url' => (new Weibo())->getUrl()]);
     }
 
-    //提交登入信息
+    //微博登入
+    public function wbLogin()
+    {
+        $request = $this->request;
+        $userInfo = (new Weibo())->getAccessToken($this->request->code);
+        $user = DB::table('users')->where(['wb_uid' => md5($userInfo['idstr'])])->first();
+        if ($user) { //表示已经有微博账号
+            session()->put('user_info', json_encode($user));
+            session()->save(); //如果后面执行了exit等终止操作 则需要次方法强制保存
+            return redirect('/h5/user/center');
+        } elseif (isset($userInfo['id']) && !empty($userInfo['id'])) { //注册一个
+            $avatar = QiniuHelper::fetchImg($userInfo['avatar_hd'])[0]['key'];
+            $token = md5(time());
+            $data = [
+                'session_key' => $token,
+                'open_id' => '',
+                'nickname' => $userInfo['name'] ?: '佚名',
+                'name' => $userInfo['screen_name'] ?: '佚名',
+                'avatar' => $avatar ?: 'default_user_photo10.png',
+                'is_real' => USER::TYPE_REAL_PERSON,
+                'token' => $token,
+                'mobile' => '',
+                'wb_uid' => md5($userInfo['idstr'])
+            ];
+            $address = Helper::ipToAddress($request->getClientIp());
+            list($province, $city) = City::simplifyCity($address['region'], $address['city']);
+            $data['ip'] = $address['ip'];
+            $data['country'] = $address['country'];
+            $data['province'] = $province ?: '北京';
+            $data['city'] = $city ?: '';
+            $data['email'] = rand(10000, 99999) . '@163.com';
+            $data['gift_currency'] = config('bid.user_gift_currency');
+            $data['spid'] = $request->spid ?: '';
+            $data['password'] = '';
+            $model = (new User())->saveData($data);
+            //保存邀请码【随机生成唯一码 119087 + 用户id】
+            $invite_code = 119087 + $model->id;
+            DB::table('users')->where('id', $model->id)->update(['invite_code' => $invite_code]);
+            if ($request->invite_code && empty($model->be_invited_code)) {
+                if ((new Invite())->checkoutCode($request->invite_code, $model->id)) {
+                    DB::table('users')->where('id', $model->id)->update([
+                        'invite_code' => $invite_code,
+                        'be_invited_code' => $request->invite_code
+                    ]);
+                    (new Invite())->saveData($model->id, $request->invite_code);
+                }
+            }
+            session()->put('user_info', json_encode(DB::table('users')->where('id', $model->id)->first()));
+            return redirect('/h5/user/center');
+        }
+    }
+
+    //提交账号密码登入信息
     public function login()
     {
         $request = $this->request;
@@ -146,8 +190,6 @@ class UserController extends WebController
         ])->first();
 
         if ($user) {
-//            $user = \Cookie::make('user_info', json_encode($user), 30000);
-//            return response(['code' => 1, 'message' => '登入成功'])->withCookie($user);
             session()->put('user_info', json_encode($user));
             session()->save(); //如果后面执行了exit等终止操作 则需要次方法强制保存
             self::showMsg(['session_info' => session()->getId()]);

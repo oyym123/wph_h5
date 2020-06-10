@@ -38,7 +38,7 @@ class NewPay
     //微信H5支付
     public function WxPay($data)
     {
-        if ($data['user_id'] == 6776) {//测试账号:【好久不见】
+        if ($data['user_id'] == 40170) {//测试账号:【13161057904】
             $orderAmount = 1;
         } else {
             $orderAmount = $data['amount'] * 100;

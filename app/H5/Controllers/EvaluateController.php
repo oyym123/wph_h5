@@ -13,6 +13,7 @@ use App\H5\components\WebController;
 use App\Models\Evaluate;
 use App\Models\Order;
 use App\Models\Upload;
+use Illuminate\Support\Facades\DB;
 use zgldh\QiniuStorage\QiniuStorage;
 
 class EvaluateController extends WebController
@@ -43,23 +44,21 @@ class EvaluateController extends WebController
     {
         $this->auth();
         $request = $this->request;
+        $redis = app('redis')->connection('first');
         $order = (new Order())->getOrder([
             'status' => Order::STATUS_CONFIRM_RECEIVING,
             'buyer_id' => $this->userId,
             'sn' => $request->sn
         ]);
-        //$imgs = Upload::manyImg($request->file('imgs'));
-        $imgs = $request->imgs;
-        if (is_array($imgs)) {
-            $imgs = json_encode($imgs);
-        }
-
-        if (count(json_decode($imgs, true)) < 2) {
-            self::showMsg('至少传' . 2 . '张图片!', 4);
-        }
+        $imgs = $redis->hget('evaluate_imgs', $request->sn);
+//        if (count(json_decode($imgs, true)) < 2) {
+//            self::showMsg('至少传' . 2 . '张图片!', 4);
+//            exit;
+//        }
 
         if (count(json_decode($imgs, true)) > 9) {
             self::showMsg('最多传' . 9 . '张图片!', 4);
+            exit;
         }
 
         $data = [
@@ -78,7 +77,7 @@ class EvaluateController extends WebController
 
     public function submitView()
     {
-        return view();
+        return view('h5.evaluate.submit', ['order_sn' => $this->request->sn]);
     }
 
     /**
@@ -102,12 +101,19 @@ class EvaluateController extends WebController
      */
     public function uploadImg()
     {
-        $this->auth();
-        $img = Upload::oneImg($this->request->img);
-        self::showMsg([
-            'url' => $img,
-            'full_url' => config('qiniu.domain') . $img
-        ]);
+        $redis = app('redis')->connection('first');
+        $request = $this->request;
+        //上传图片
+        $img = Upload::oneImg($request->file('imgs'));
+        //redis缓存图片
+
+        $imgs = json_decode($redis->hget('evaluate_imgs', $request->key_img), true);
+        if (!empty($imgs)) {
+            $imgs = array_merge($imgs, [$img]);
+            $redis->hset('evaluate_imgs', $request->key_img, json_encode($imgs));
+        } else {
+            $redis->hset('evaluate_imgs', $request->key_img, json_encode([$img]));
+        }
     }
 
     /**
@@ -177,7 +183,7 @@ class EvaluateController extends WebController
     public function detail()
     {
         $model = new Evaluate();
-        self::showMsg($model->detail($this->request->id));
+        return view('h5.evaluate.detail', ['data' => $model->detail($this->request->id)]);
     }
 
     /**
