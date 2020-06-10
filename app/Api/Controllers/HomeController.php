@@ -9,6 +9,10 @@ use App\Models\Period;
 
 class HomeController extends WebController
 {
+
+
+
+
     public function successView()
     {
         return view('api.home.success');

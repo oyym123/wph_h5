@@ -35,6 +35,7 @@ Route::group(['middleware' => 'web'], function () {
 
     //首页
     Route::get('home', 'HomeController@index');
+    Route::get('web-driver', 'WebDriverController@index');
     Route::get('home/get-period', 'HomeController@getPeriod');
     Route::get('home/deal-end', 'HomeController@dealEnd');
 

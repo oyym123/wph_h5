@@ -5,17 +5,17 @@ return [
     /*
      * Laravel-admin name.
      */
-    'name' => '51微拍',
+    'name' => '阿卡索',
 
     /*
      * Logo in admin panel header.
      */
-    'logo' => '<b>51微拍</b> 后台',
+    'logo' => '<b>阿卡索泛目录</b> 后台',
 
     /*
      * Mini-logo in admin panel header.
      */
-    'logo-mini' => '<b>51微拍</b>',
+    'logo-mini' => '<b>阿卡索泛目录</b>',
 
     /*
      * Route configration.
